@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Navigation</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        button { padding: 10px 20px; background: #e31e24; color: white; border: none; cursor: pointer; }
+        #output { margin-top: 20px; white-space: pre; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>Update Navigation Menu</h1>
+    <p>This will add a "Virtual Tour" link to the navigation menu in all HTML files.</p>
+    <button id="updateBtn">Update Navigation</button>
+    <div id="output"></div>
+
+    <script>
+        document.getElementById('updateBtn').addEventListener('click', async () => {
+            const output = document.getElementById('output');
+            output.textContent = 'Starting update...\n\n';
+            
+            try {
+                // Get all HTML files
+                const response = await fetch('/?list-files');
+                const files = await response.json();
+                const htmlFiles = files.filter(file => file.endsWith('.html'));
+                
+                for (const file of htmlFiles) {
+                    output.textContent += `Processing ${file}... `;
+                    
+                    // Skip the current file
+                    if (file === 'update-nav.html') {
+                        output.textContent += 'Skipped (this file)\n';
+                        continue;
+                    }
+                    
+                    // Read the file
+                    const fileResponse = await fetch(`/${file}`);
+                    let content = await fileResponse.text();
+                    
+                    // Check if Virtual Tour link already exists
+                    if (content.includes('virtual-tour.html')) {
+                        output.textContent += 'Skipped (already has Virtual Tour link)\n';
+                        continue;
+                    }
+                    
+                    // Find the navigation menu
+                    const navRegex = /(<ul[^>]*class=["']nav-links["'][^>]*>)([\s\S]*?)(<\/ul>)/i;
+                    const match = content.match(navRegex);
+                    
+                    if (match) {
+                        const [fullMatch, openingTag, menuContent, closingTag] = match;
+                        
+                        // Create the new menu item
+                        const virtualTourItem = '\n                        <li><a href="virtual-tour.html">Virtual Tour</a></li>';
+                        
+                        // Insert before the Contact link if it exists, otherwise at the end
+                        const updatedMenuContent = menuContent.replace(
+                            /<li><a[^>]*href=["']contact\.html["'][^>]*>Contact<\/a><\/li>/i,
+                            `${virtualTourItem}\n                        <li><a href="contact.html">Contact</a></li>`
+                        );
+                        
+                        // If the replacement didn't work (no Contact link), append to the end
+                        const newMenuContent = updatedMenuContent !== menuContent 
+                            ? updatedMenuContent 
+                            : menuContent.replace(/<\/ul>/i, `${virtualTourItem}\n                    </ul>`);
+                        
+                        // Replace the old menu with the updated one
+                        const updatedContent = content.replace(
+                            navRegex, 
+                            `$1${newMenuContent}$3`
+                        );
+                        
+                        // Save the updated file
+                        await fetch(`/${file}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'text/plain' },
+                            body: updatedContent
+                        });
+                        
+                        output.textContent += 'Updated\n';
+                    } else {
+                        output.textContent += 'Skipped (no navigation menu found)\n';
+                    }
+                }
+                
+                output.textContent += '\nUpdate complete!';
+            } catch (error) {
+                output.textContent += '\nError: ' + error.message;
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

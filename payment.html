@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Secure payment options for your wholesale orders. We accept M-Pesa via Paybill.">
+    <title>Payment - SpurMount Wholesale</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .payment-methods {
+            display: grid;
+            gap: 2rem;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        
+        .payment-method {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .payment-method h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .paybill-info {
+            background: #f0f8ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+        
+        .steps {
+            margin: 1.5rem 0 0 1.5rem;
+        }
+        
+        .steps li {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <div class="logo">SpurMount</div>
+            <nav class="main-nav">
+                <div class="container">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li class="dropdown">
+                            <a href="products.html">Products <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="products.html?category=electronics">Electronics</a></li>
+                                <li><a href="products.html?category=groceries">Groceries</a></li>
+                                <li><a href="products.html?category=beverages">Beverages</a></li>
+                                <li><a href="products.html?category=household">Household</a></li>
+                                <li><a href="products.html?category=personal-care">Personal Care</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="how-to-order.html">How to Order</a></li>
+                        <li><a href="price-alerts.html" class="price-alerts-link">
+                            <i class="fas fa-bell"></i> Price Alerts
+                            <span class="alert-count" id="price-alert-count"></span>
+                        </a></li>
+                        <li><a href="payment.html" class="active">Payment</a></li>
+                        <li><a href="delivery.html">Delivery</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                    <div class="mobile-menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Payment Section -->
+    <main class="container">
+        <h1>Payment Methods</h1>
+        <p class="center-text">We offer secure and convenient payment options for your wholesale orders.</p>
+        
+        <div class="payment-methods">
+            <div class="payment-method">
+                <h3><i class="fas fa-mobile-alt"></i> M-Pesa Payment</h3>
+                <p>Pay conveniently via M-Pesa using our Paybill number:</p>
+                
+                <div class="paybill-info">
+                    <p><strong>Paybill Number:</strong> 123456</p>
+                    <p><strong>Account Number:</strong> Your Order Number</p>
+                </div>
+                
+                <h4>How to Pay via M-Pesa:</h4>
+                <ol class="steps">
+                    <li>Go to M-Pesa on your phone</li>
+                    <li>Select <strong>Lipa na M-Pesa</strong> > <strong>Pay Bill</strong></li>
+                    <li>Enter Business No: <strong>123456</strong></li>
+                    <li>Enter Account No: <strong>Your Order Number</strong></li>
+                    <li>Enter the Amount</li>
+                    <li>Enter your M-Pesa PIN and send</li>
+                    <li>You will receive a confirmation message</li>
+                </ol>
+                
+                <p class="center-text" style="margin-top: 1.5rem;">
+                    <a href="https://wa.me/254712345678?text=Hello!%20I%20need%20help%20with%20payment" class="cta-button">
+                        <i class="fab fa-whatsapp"></i> Need Help with Payment?
+                    </a>
+                </p>
+            </div>
+            
+            <div class="payment-method">
+                <h3><i class="fas fa-info-circle"></i> Payment Information</h3>
+                <ul>
+                    <li>All prices are in Kenyan Shillings (KES)</li>
+                    <li>Payment must be made in full before delivery</li>
+                    <li>You will receive an SMS and email confirmation once payment is received</li>
+                    <li>For large orders, please contact us for bank transfer details</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="how-to-order.html">How to Order</a></li>
+                    <li><a href="payment.html">Payment</a></li>
+                    <li><a href="delivery.html">Delivery</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-phone"></i> +254 712 345 678</p>
+                <p><i class="fas fa-envelope"></i> info@spurmount.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</p>
+            </div>
+            <div class="footer-section">
+                <h3>Payment Methods</h3>
+                <div class="paybill-info">
+                    <p>Paybill: 123456</p>
+                    <p>Account: Your Business Name</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 SpurMount Wholesale. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu')?.addEventListener('click', function() {
+            document.querySelector('nav ul').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

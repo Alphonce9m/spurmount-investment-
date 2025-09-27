@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - SpurMount Wholesale</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Product Detail Styles */
+        .product-detail-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .product-gallery {
+            position: relative;
+        }
+        
+        .main-product-image {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .product-info h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .product-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e31e24;
+            margin: 15px 0;
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        
+        .discount-badge {
+            background: #ffebee;
+            color: #e53935;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 15px;
+            margin-left: 10px;
+        }
+        
+        .product-description {
+            margin: 20px 0;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .product-meta {
+            margin: 20px 0;
+        }
+        
+        .meta-item {
+            display: flex;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .meta-label {
+            font-weight: 600;
+            width: 120px;
+            color: #666;
+        }
+        
+        .meta-value {
+            flex: 1;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-left: none;
+            border-right: none;
+            font-size: 16px;
+        }
+        
+        .add-to-cart-btn {
+            background: #e31e24;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: #c5191f;
+        }
+        
+        .wishlist-btn {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            margin-left: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .wishlist-btn:hover {
+            background: #eee;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        .share-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .facebook { background: #3b5998; }
+        .twitter { background: #1da1f2; }
+        .whatsapp { background: #25d366; }
+        
+        /* Responsive Design */
+        @media (max-width: 991px) {
+            .product-detail-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .main-product-image {
+                height: 350px;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+            
+            .wishlist-btn {
+                margin-left: 0;
+                margin-top: 10px;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-product-image {
+                height: 280px;
+            }
+            
+            .product-info h1 {
+                font-size: 24px;
+            }
+            
+            .product-price {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <div class="logo">SpurMount</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="how-to-order.html">How to Order</a></li>
+                    <li><a href="delivery.html">Delivery</a></li>
+                    <li><a href="payment.html">Payment</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="virtual-tour.html">Virtual Tour</a></li>
+                    <li><a href="price-alerts.html" class="price-alerts-link">
+                        <i class="fas fa-bell"></i> Price Alerts
+                        <span class="alert-count" id="price-alert-count"></span>
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Product Detail Section -->
+    <main class="container">
+        <div class="product-detail-container">
+            <div class="product-gallery">
+                <img src="https://via.placeholder.com/600x600" alt="Product Image" class="main-product-image">
+            </div>
+            
+            <div class="product-info">
+                <h1 id="product-name">Tusker Lager Beer Crate</h1>
+                <div class="product-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Brand:</span>
+                        <span class="meta-value" id="product-brand">Tusker</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Category:</span>
+                        <span class="meta-value" id="product-category">Beverages</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Availability:</span>
+                        <span class="meta-value" id="product-availability">In Stock (50+ units)</span>
+                    </div>
+                </div>
+                
+                <div class="product-price">
+                    <span id="product-price">Ksh 2,400</span>
+                    <span class="original-price">Ksh 2,800</span>
+                    <span class="discount-badge">Save 14%</span>
+                </div>
+                
+                <div class="product-description">
+                    <p>Experience the authentic taste of Kenya with Tusker Lager Beer. This premium quality lager is brewed using the finest ingredients, including pure Kenyan water, malted barley, and the finest hops. Each crate contains 24 x 500ml bottles of refreshing Tusker Lager, perfect for your business or special events.</p>
+                    <p>Key Features:</p>
+                    <ul>
+                        <li>24 x 500ml bottles per crate</li>
+                        <li>Alcohol Content: 4.2%</li>
+                        <li>Premium quality ingredients</li>
+                        <li>Distinctive crisp taste</li>
+                        <li>Perfect for resale or events</li>
+                    </ul>
+                </div>
+                
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button class="quantity-btn minus">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1">
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    
+                    <button class="add-to-cart-btn">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                    
+                    <button class="wishlist-btn">
+                        <i class="far fa-heart"></i> Save
+                    </button>
+                </div>
+                
+                <div class="share-buttons">
+                    <span>Share:</span>
+                    <a href="#" class="share-btn facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="share-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recommendation Sections -->
+        <div class="container">
+            <!-- Frequently Bought Together -->
+            <div id="frequently-bought-together" class="recommendations-section">
+                <!-- Content will be loaded by JavaScript -->
+            </div>
+            
+            <!-- Customers Also Bought -->
+            <div id="customers-also-bought" class="recommendations-section">
+                <!-- Content will be loaded by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="how-to-order.html">How to Order</a></li>
+                    <li><a href="payment.html">Payment</a></li>
+                    <li><a href="delivery.html">Delivery</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-phone"></i> +254 712 345 678</p>
+                <p><i class="fas fa-envelope"></i> info@spurmount.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</p>
+            </div>
+            <div class="footer-section">
+                <h3>Payment Methods</h3>
+                <div class="paybill-info">
+                    <p>Paybill: 123456</p>
+                    <p>Account: Your Business Name</p>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 SpurMount Wholesale. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/recommendations.js"></script>
+    <script>
+        // Product quantity controls
+        const minusBtn = document.querySelector('.quantity-btn.minus');
+        const plusBtn = document.querySelector('.quantity-btn.plus');
+        const quantityInput = document.querySelector('.quantity-input');
+        
+        if (minusBtn && plusBtn && quantityInput) {
+            minusBtn.addEventListener('click', () => {
+                let value = parseInt(quantityInput.value);
+                if (value > 1) {
+                    quantityInput.value = value - 1;
+                }
+            });
+            
+            plusBtn.addEventListener('click', () => {
+                let value = parseInt(quantityInput.value);
+                quantityInput.value = value + 1;
+            });
+            
+            quantityInput.addEventListener('change', () => {
+                let value = parseInt(quantityInput.value);
+                if (isNaN(value) || value < 1) {
+                    quantityInput.value = 1;
+                }
+            });
+        }
+        
+        // Update product details based on URL parameter
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id')) || 1;
+            
+            // In a real application, you would fetch product details from an API
+            // For now, we'll just update the title to show the product ID
+            document.title = `Product ${productId} - SpurMount Wholesale`;
+        });
+    </script>
+</body>
+</html>
