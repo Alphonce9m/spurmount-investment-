@@ -2,191 +2,228 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="SpurMount Wholesale - Your trusted wholesale partner for premium dry food products. We offer a wide range of grains, pulses, spices, dry fruits, and more at competitive prices. Shop now for quality dry food items in Kenya.">
-    <meta name="keywords" content="wholesale dry food, bulk purchase, SpurMount, grains, pulses, spices, dry fruits, nuts, flour, pasta, noodles, Kenya, Nairobi, food wholesale">
-    <meta name="author" content="SpurMount Wholesale">
-    <meta name="theme-color" content="#e31e24">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://spurmount.com/" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spurmount Investment - Premium Investment Solutions</title>
+    <meta name="description" content="Spurmount Investment offers premium investment solutions with a focus on growth and sustainability. Join us today for expert financial guidance.">
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://spurmount.com/">
-    <meta property="og:title" content="SpurMount Wholesale - Your Trusted Wholesale Partner">
-    <meta property="og:description" content="Shop quality wholesale products at competitive prices. Fast delivery and excellent customer service.">
-    <meta property="og:image" content="https://spurmount.com/images/og-image.jpg">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
     
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://spurmount.com/">
-    <meta name="twitter:title" content="SpurMount Wholesale - Your Trusted Wholesale Partner">
-    <meta name="twitter:description" content="Shop quality wholesale products at competitive prices. Fast delivery and excellent customer service.">
-    <meta name="twitter:image" content="https://spurmount.com/images/twitter-card.jpg">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <title>SpurMount Wholesale - Your Trusted Wholesale Partner</title>
-    <link rel="stylesheet" href="css/style.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="css/enhancements.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="css/modern.css" media="print" onload="this.media='all'">
-    <style>
-        /* Critical CSS */
-        .loading-spinner {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.9);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #e31e24;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/modern.css">
+    <link rel="stylesheet" href="css/custom.css">
 </head>
 <body>
-    <!-- Loading Spinner -->
-    <div id="loadingSpinner" class="loading-spinner">
-        <div class="spinner"></div>
-        <p>Loading...</p>
-    </div>
-    <!-- Header Section -->
-    <div data-include-html="partials/header.html"></div>
-
-    <!-- Click & Collect Banner -->
-    <div class="click-collect-banner">
-        <div class="click-collect-container">
-            <div class="click-collect-message">
-                <i class="fas fa-store-alt click-collect-icon"></i>
-                <span>Over <span id="click-collect-counter">12 orders</span> picked up in the last hour</span>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Spurmount Investment Logo">
+                <span>Spurmount</span>
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#investments">Investments</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                <button class="search-toggle" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="#" class="btn btn-outline">Login</a>
+                <a href="#" class="btn btn-primary">Get Started</a>
             </div>
-            <a href="#how-it-works" class="click-collect-link">How Click & Collect works <i class="fas fa-chevron-right"></i></a>
+            
+            <button class="mobile-menu-toggle" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
+    </header>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-header">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Spurmount Investment Logo">
+                <span>Spurmount</span>
+            </a>
+            <button class="mobile-menu-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <ul class="mobile-nav-links">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#investments">Investments</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li>
+                <a href="#" class="btn btn-primary" style="width: 100%; text-align: center;">Get Started</a>
+            </li>
+        </ul>
     </div>
-
+    
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="home" class="hero">
         <div class="container">
-            <h1>Premium Dry Food Wholesale Supplier</h1>
-            <p>Your trusted source for high-quality grains, pulses, spices, and more. We deliver the finest dry food products directly to your business.</p>
-            <div class="hero-buttons">
-                <a href="products.html" class="cta-button">Browse Products</a>
-                <a href="contact.html" class="cta-button secondary">Request a Quote</a>
-            </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials-section">
-        <div class="container">
-            <h2>What Our Customers Say</h2>
-            <div class="testimonials-grid">
-                <div class="testimonial">
-                    <div class="testimonial-content">
-                        <i class="fas fa-quote-left"></i>
-                        <p>"The quality of spices we received was exceptional. Our customers noticed the difference immediately. Will definitely order again!"</p>
-                        <div class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-info">
-                            <h4>James Mwangi</h4>
-                            <span>Restaurant Owner, Nairobi</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial">
-                    <div class="testimonial-content">
-                        <i class="fas fa-quote-left"></i>
-                        <p>"Reliable delivery and consistent quality. Their pulses are the best I've found in the Nairobi area. Highly recommended for any food business."</p>
-                        <div class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-info">
-                            <h4>Sarah Atieno</h4>
-                            <span>Catering Business, Mombasa</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial">
-                    <div class="testimonial-content">
-                        <i class="fas fa-quote-left"></i>
-                        <p>"Excellent customer service and the best prices for bulk orders. The quality of their dry fruits is unmatched in the market."</p>
-                        <div class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-info">
-                            <h4>David Ochieng</h4>
-                            <span>Retail Store, Kisumu</span>
-                        </div>
-                    </div>
+            <div class="hero-content">
+                <h1>Smart Investments for a Secure Future</h1>
+                <p>At Spurmount Investment, we help you grow your wealth with strategic investment solutions tailored to your financial goals. Start building your future today with our expert guidance.</p>
+                <div class="hero-cta">
+                    <a href="#contact" class="btn btn-primary btn-lg">Get Started</a>
+                    <a href="#services" class="btn btn-outline btn-lg">Learn More</a>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Featured Products Section -->
-    <section class="featured-products">
+    
+    <!-- Features Bar -->
+    <section class="features-bar">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Proven Track Record</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secure Investments</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Competitive Returns</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-headset"></i>
+                    <span>24/7 Support</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="section">
         <div class="container">
             <div class="section-header">
-                <h2>Our Premium Dry Food Selection</h2>
-                <p>Discover our handpicked selection of the finest dry food products</p>
+                <h2>About Spurmount Investment</h2>
+                <p>We are a leading investment firm dedicated to helping individuals and businesses achieve their financial goals through smart and strategic investments.</p>
+            </div>
+            
+            <div class="about-grid">
+                <div class="about-content">
+                    <h3>Your Trusted Partner in Financial Growth</h3>
+                    <p>With over 15 years of experience in the financial industry, Spurmount Investment has established itself as a trusted name in investment management. Our team of experts is committed to delivering exceptional results through careful analysis and strategic planning.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Personalized investment strategies</li>
+                        <li><i class="fas fa-check-circle"></i> Transparent fee structure</li>
+                        <li><i class="fas fa-check-circle"></i> Diversified portfolio options</li>
+                        <li><i class="fas fa-check-circle"></i> Regular performance reports</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary">Learn More About Us</a>
+                </div>
+                <div class="about-image">
+                    <img src="images/about.jpg" alt="Our team at Spurmount Investment" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Services Section -->
+    <section id="services" class="section bg-light">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Investment Services</h2>
+                <p>We offer a comprehensive range of investment services designed to meet your unique financial needs.</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <h3>Wealth Management</h3>
+                    <p>Comprehensive wealth management solutions tailored to your financial goals and risk tolerance.</p>
+                    <a href="#" class="read-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Portfolio Management</h3>
+                    <p>Expert management of your investment portfolio to maximize returns while managing risk.</p>
+                    <a href="#" class="read-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>Real Estate Investments</h3>
+                    <p>Access to premium real estate investment opportunities with high growth potential.</p>
+                    <a href="#" class="read-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3>Retirement Planning</h3>
+                    <p>Strategic planning to ensure a comfortable and secure retirement.</p>
+                    <a href="#" class="read-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Investments Section -->
+    <section id="investments" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Investment Opportunities</h2>
+                <p>Explore our carefully curated selection of investment opportunities with strong growth potential.</p>
             </div>
             
             <div class="product-categories">
-                <button class="category-btn active" data-category="all">All Products</button>
-                <button class="category-btn" data-category="grains">Grains & Cereals</button>
-                <button class="category-btn" data-category="pulses">Pulses & Legumes</button>
-                <button class="category-btn" data-category="spices">Spices</button>
-                <button class="category-btn" data-category="dry-fruits">Dry Fruits & Nuts</button>
+                <button class="category-btn active" data-category="all">All Investments</button>
+                <button class="category-btn" data-category="stocks">Stocks</button>
+                <button class="category-btn" data-category="bonds">Bonds</button>
+                <button class="category-btn" data-category="real-estate">Real Estate</button>
+                <button class="category-btn" data-category="crypto">Cryptocurrency</button>
             </div>
             
             <div class="products-grid">
-                <!-- Product 1 -->
-                <div class="product-card" data-category="grains">
-                    <div class="product-badge">Bestseller</div>
+                <!-- Investment 1 -->
+                <div class="product-card" data-category="stocks">
+                    <div class="product-badge new">New</div>
                     <div class="product-image">
-                        <img src="images/products/rice-basmati.jpg" alt="Basmati Rice" loading="lazy">
+                        <img src="images/investments/tech-stocks.jpg" alt="Tech Stocks">
                         <div class="product-overlay">
-                            <button class="quick-view-btn" data-product="basmati-rice">Quick View</button>
+                            <button class="quick-view-btn">
+                                <i class="fas fa-eye"></i> Quick View
+                            </button>
                         </div>
                     </div>
                     <div class="product-info">
-                        <span class="product-category">Grains & Cereals</span>
-                        <h3 class="product-title">Premium Basmati Rice</h3>
+                        <span class="product-category">Stocks</span>
+                        <h3 class="product-title">Tech Growth Fund</h3>
+                        <p class="product-description">Invest in a diversified portfolio of leading technology companies with high growth potential.</p>
                         <div class="product-rating">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
@@ -196,28 +233,30 @@
                             <span class="rating-count">(128)</span>
                         </div>
                         <div class="product-price">
-                            <span class="current-price">KSh 2,499</span>
-                            <span class="original-price">KSh 2,799</span>
-                            <span class="discount">Save 11%</span>
+                            <span class="price">$1,250.00</span>
+                            <span class="original-price">$1,500.00</span>
                         </div>
-                        <button class="add-to-cart-btn">
-                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        <button class="add-to-cart">
+                            <i class="fas fa-plus"></i> Add to Portfolio
                         </button>
                     </div>
                 </div>
                 
-                <!-- Product 2 -->
-                <div class="product-card" data-category="pulses">
-                    <div class="product-badge new">New</div>
+                <!-- Investment 2 -->
+                <div class="product-card" data-category="real-estate">
+                    <div class="product-badge bestseller">Bestseller</div>
                     <div class="product-image">
-                        <img src="images/products/green-gram.jpg" alt="Green Gram" loading="lazy">
+                        <img src="images/investments/real-estate.jpg" alt="Real Estate">
                         <div class="product-overlay">
-                            <button class="quick-view-btn" data-product="green-gram">Quick View</button>
+                            <button class="quick-view-btn">
+                                <i class="fas fa-eye"></i> Quick View
+                            </button>
                         </div>
                     </div>
                     <div class="product-info">
-                        <span class="product-category">Pulses & Legumes</span>
-                        <h3 class="product-title">Green Gram (Ndengu)</h3>
+                        <span class="product-category">Real Estate</span>
+                        <h3 class="product-title">Luxury Apartments</h3>
+                        <p class="product-description">Invest in premium residential properties in prime locations with high rental yields.</p>
                         <div class="product-rating">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
@@ -227,328 +266,349 @@
                             <span class="rating-count">(89)</span>
                         </div>
                         <div class="product-price">
-                            <span class="current-price">KSh 180</span>
-                            <span class="unit">per kg</span>
+                            <span class="price">$250,000.00</span>
+                            <span class="original-price">$275,000.00</span>
                         </div>
-                        <button class="add-to-cart-btn">
-                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        <button class="add-to-cart">
+                            <i class="fas fa-plus"></i> Add to Portfolio
                         </button>
                     </div>
                 </div>
                 
-                <!-- Product 3 -->
-                <div class="product-card" data-category="spices">
-                    <div class="product-badge">Popular</div>
+                <!-- Investment 3 -->
+                <div class="product-card" data-category="bonds">
+                    <div class="product-badge limited">Limited</div>
                     <div class="product-image">
-                        <img src="images/products/turmeric-powder.jpg" alt="Turmeric Powder" loading="lazy">
+                        <img src="images/investments/government-bonds.jpg" alt="Government Bonds">
                         <div class="product-overlay">
-                            <button class="quick-view-btn" data-product="turmeric-powder">Quick View</button>
+                            <button class="quick-view-btn">
+                                <i class="fas fa-eye"></i> Quick View
+                            </button>
                         </div>
                     </div>
                     <div class="product-info">
-                        <span class="product-category">Spices</span>
-                        <h3 class="product-title">Pure Turmeric Powder</h3>
+                        <span class="product-category">Bonds</span>
+                        <h3 class="product-title">Government Bonds</h3>
+                        <p class="product-description">Low-risk investment with guaranteed returns backed by government securities.</p>
                         <div class="product-rating">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
-                            <span class="rating-count">(256)</span>
+                            <span class="rating-count">(215)</span>
                         </div>
                         <div class="product-price">
-                            <span class="current-price">KSh 350</span>
-                            <span class="unit">per 500g</span>
+                            <span class="price">$5,000.00</span>
+                            <span class="original-price">$5,500.00</span>
                         </div>
-                        <button class="add-to-cart-btn">
-                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        <button class="add-to-cart">
+                            <i class="fas fa-plus"></i> Add to Portfolio
                         </button>
                     </div>
                 </div>
                 
-                <!-- Product 4 -->
-                <div class="product-card" data-category="dry-fruits">
-                    <div class="product-badge">Limited Stock</div>
+                <!-- Investment 4 -->
+                <div class="product-card" data-category="crypto">
+                    <div class="product-badge sale">Sale</div>
                     <div class="product-image">
-                        <img src="images/products/cashew-nuts.jpg" alt="Cashew Nuts" loading="lazy">
+                        <img src="images/investments/crypto.jpg" alt="Cryptocurrency">
                         <div class="product-overlay">
-                            <button class="quick-view-btn" data-product="cashew-nuts">Quick View</button>
+                            <button class="quick-view-btn">
+                                <i class="fas fa-eye"></i> Quick View
+                            </button>
                         </div>
                     </div>
                     <div class="product-info">
-                        <span class="product-category">Dry Fruits & Nuts</span>
-                        <h3 class="product-title">Premium Cashew Nuts</h3>
+                        <span class="product-category">Cryptocurrency</span>
+                        <h3 class="product-title">Crypto Portfolio</h3>
+                        <p class="product-description">Diversified cryptocurrency portfolio with automated rebalancing and risk management.</p>
                         <div class="product-rating">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star-half-alt"></i>
-                            <span class="rating-count">(174)</span>
+                            <span class="rating-count">(342)</span>
                         </div>
                         <div class="product-price">
-                            <span class="current-price">KSh 1,899</span>
-                            <span class="unit">per kg</span>
+                            <span class="price">$2,500.00</span>
+                            <span class="original-price">$3,000.00</span>
                         </div>
-                        <button class="add-to-cart-btn">
-                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        <button class="add-to-cart">
+                            <i class="fas fa-plus"></i> Add to Portfolio
                         </button>
                     </div>
                 </div>
             </div>
             
             <div class="view-all-container">
-                <a href="products.html" class="view-all-btn">View All Products <i class="fas fa-arrow-right"></i></a>
+                <a href="#" class="view-all-btn">View All Investments</a>
             </div>
         </div>
     </section>
-
-    <!-- Features Section -->
-    <section class="info-section">
+    
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
         <div class="container">
-            <h2>Why Choose Our Dry Food Products?</h2>
-            <div class="features-grid">
-                <div class="feature">
-                    <i class="fas fa-certificate"></i>
-                    <h3>Premium Quality</h3>
-                    <p>Carefully sourced and inspected dry food products that meet the highest quality standards</p>
+            <div class="section-header">
+                <h2>What Our Clients Say</h2>
+                <p>Hear from our satisfied clients who have achieved their financial goals with our investment solutions.</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <!-- Testimonial 1 -->
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>"Spurmount Investment has completely transformed my approach to personal finance. Their expert advice and personalized investment strategy have helped me grow my portfolio by over 30% in just one year."</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="images/testimonials/client1.jpg" alt="Sarah Johnson">
+                            </div>
+                            <div class="author-info">
+                                <h4>Sarah Johnson</h4>
+                                <span>Portfolio Manager</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature">
-                    <i class="fas fa-boxes"></i>
-                    <h3>Wide Selection</h3>
-                    <p>Extensive range of dry food items including grains, pulses, spices, and more</p>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>"I was skeptical about investing at first, but the team at Spurmount made the process so easy to understand. They took the time to explain everything and helped me build a diversified portfolio that aligns with my risk tolerance."</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="images/testimonials/client2.jpg" alt="Michael Chen">
+                            </div>
+                            <div class="author-info">
+                                <h4>Michael Chen</h4>
+                                <span>Small Business Owner</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature">
-                    <i class="fas fa-tags"></i>
-                    <h3>Competitive Pricing</h3>
-                    <p>Wholesale prices that help your business grow with better margins</p>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-shield-alt"></i>
-                    <h3>Food Safety</h3>
-                    <p>Strict quality control and proper storage to ensure food safety standards</p>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-truck"></i>
-                    <h3>Reliable Supply</h3>
-                    <p>Consistent stock availability and reliable delivery schedules</p>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-headset"></i>
-                    <h3>Expert Support</h3>
-                    <p>Knowledgeable team to assist with product selection and orders</p>
+                
+                <!-- Testimonial 3 -->
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>"The level of professionalism and expertise at Spurmount is unmatched. They've helped me plan for retirement and my children's education with a clear, actionable strategy. I couldn't be happier with the results."</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="images/testimonials/client3.jpg" alt="Emily Rodriguez">
+                            </div>
+                            <div class="author-info">
+                                <h4>Emily Rodriguez</h4>
+                                <span>Marketing Director</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-                    <p>Browse our catalog and add items to your cart</p>
-                </div>
-                <div class="feature">
-                    <div class="step-number">2</div>
-                    <h3>Select Collection</h3>
-                    <p>Choose your preferred pickup location and time slot</p>
-                </div>
-                <div class="feature">
-                    <div class="step-number">3</div>
-                    <h3>Pay & Confirm</h3>
-                    <p>Complete your purchase securely online</p>
-                </div>
-                <div class="feature">
-                    <div class="step-number">4</div>
-                    <h3>Collect Your Order</h3>
-                    <p>Pick up your order at the selected location</p>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 30px;">
-                <a href="products.html" class="cta-button">Start Shopping Now</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Products -->
-    <section class="info-section">
+    
+    <!-- CTA Section -->
+    <section class="cta-section">
         <div class="container">
-            <h2>Featured Products</h2>
-            <div class="products-grid">
-                <div class="product-card">
-                    <div class="product-image-container">
-                        <img src="https://via.placeholder.com/300x200" alt="Premium Rice" class="product-image">
-                        <button class="price-alert-btn" data-product-id="pr1" data-product-name="Premium Rice" data-current-price="6500" data-image="https://via.placeholder.com/300x200">
-                            <i class="far fa-bell"></i> Price Alert
-                        </button>
-                    </div>
-                    <h3>Premium Rice</h3>
-                    <p>High-quality rice in 50kg bags</p>
-                    <p class="price">Ksh 6,500</p>
-                    <div class="product-actions">
-                        <a href="https://wa.me/254712345678?text=I%20would%20like%20to%20order%20Premium%20Rice" class="order-btn">
-                            <i class="fab fa-whatsapp"></i> Order Now
-                        </a>
-                    </div>
+            <div class="cta-content">
+                <h2>Ready to Start Investing?</h2>
+                <p>Join thousands of investors who trust Spurmount with their financial future. Get started today with as little as $1,000.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-primary btn-lg">Open an Account</a>
+                    <a href="#" class="btn btn-outline btn-lg">Schedule a Consultation</a>
                 </div>
-                <div class="product-card">
-                    <div class="product-image-container">
-                        <img src="https://via.placeholder.com/300x200" alt="Cooking Oil" class="product-image">
-                        <button class="price-alert-btn" data-product-id="co1" data-product-name="Cooking Oil" data-current-price="1200" data-image="https://via.placeholder.com/300x200">
-                            <i class="far fa-bell"></i> Price Alert
-                        </button>
-                    </div>
-                    <h3>Cooking Oil</h3>
-                    <p>5L jerrycans of pure vegetable oil</p>
-                    <p class="price">Ksh 1,200</p>
-                    <div class="product-actions">
-                        <a href="https://wa.me/254712345678?text=I%20would%20like%20to%20order%20Cooking%20Oil" class="order-btn">
-                            <i class="fab fa-whatsapp"></i> Order Now
-                        </a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-image-container">
-                        <img src="https://via.placeholder.com/300x200" alt="Wheat Flour" class="product-image">
-                        <button class="price-alert-btn" data-product-id="wf1" data-product-name="Wheat Flour" data-current-price="180" data-image="https://via.placeholder.com/300x200">
-                            <i class="far fa-bell"></i> Price Alert
-                        </button>
-                    </div>
-                    <h3>Wheat Flour</h3>
-                    <p>Premium grade wheat flour 2kg</p>
-                    <p class="price">Ksh 180</p>
-                    <div class="product-actions">
-                        <a href="https://wa.me/254712345678?text=I%20would%20like%20to%20order%20Wheat%20Flour" class="order-btn">
-                            <i class="fab fa-whatsapp"></i> Order Now
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center">
-                <a href="products.html" class="cta-button">View All Products</a>
             </div>
         </div>
     </section>
-
+    
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Get In Touch</h2>
+                <p>Have questions about our investment services? We'd love to hear from you.</p>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <p>Fill out the form or reach out to us directly using the contact information below.</p>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Our Office</h4>
+                            <p>123 Investment Ave, Suite 456<br>New York, NY 10001</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Phone</h4>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <p>info@spurmountinvestment.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-icon" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" name="phone" placeholder="Phone Number">
+                        </div>
+                        <div class="form-group">
+                            <select id="subject" name="subject" required>
+                                <option value="" disabled selected>Select Subject</option>
+                                <option value="investment">Investment Inquiry</option>
+                                <option value="account">Account Support</option>
+                                <option value="partnership">Partnership</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <!-- Footer -->
-    <div data-include-html="partials/footer.html"></div>
-
-    <!-- Back to Top Button -->
-    <button id="backToTop" aria-label="Back to top" class="back-to-top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <!-- JavaScript Files with defer for better loading -->
-    <script>
-        // Show loading spinner
-        document.getElementById('loadingSpinner').style.display = 'flex';
-        
-        // Hide spinner when page is fully loaded
-        window.addEventListener('load', function() {
-            document.getElementById('loadingSpinner').style.display = 'none';
-        });
-        
-        // Back to Top Button
-        const backToTopButton = document.getElementById('backToTop');
-        if (backToTopButton) {
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 300) {
-                    backToTopButton.style.display = 'flex';
-                } else {
-                    backToTopButton.style.display = 'none';
-                }
-            });
-            
-            backToTopButton.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        }
-        
-        // Initialize mobile menu functionality
-        function initMobileMenu() {
-            const mobileMenu = document.querySelector('.mobile-menu');
-            const navLinks = document.querySelector('.nav-links');
-            
-            if (mobileMenu && navLinks) {
-                // Toggle menu on mobile menu button click
-                mobileMenu.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    navLinks.classList.toggle('active');
-                    document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
-                });
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <img src="images/logo-white.png" alt="Spurmount Investment Logo">
+                        <span>Spurmount</span>
+                    </div>
+                    <p>Your trusted partner in building wealth through smart investments and financial planning.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
                 
-                // Close menu when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!mobileMenu.contains(e.target) && !navLinks.contains(e.target)) {
-                        navLinks.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#investments">Investments</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
                 
-                // Close menu when clicking on a link
-                document.querySelectorAll('.nav-links a').forEach(link => {
-                    link.addEventListener('click', () => {
-                        navLinks.classList.remove('active');
-                        document.body.style.overflow = '';
-                    });
-                });
-            }
-        }
-        
-        // Initialize components function
-        function initializeComponents() {
-            // Add active class to current page in navigation
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                if (link.getAttribute('href') === currentPage) {
-                    link.classList.add('active');
-                }
-            });
+                <div class="footer-col">
+                    <h3>Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Wealth Management</a></li>
+                        <li><a href="#">Portfolio Management</a></li>
+                        <li><a href="#">Retirement Planning</a></li>
+                        <li><a href="#">Tax Planning</a></li>
+                        <li><a href="#">Estate Planning</a></li>
+                        <li><a href="#">Investment Advisory</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter for the latest investment tips and updates.</p>
+                    <form class="newsletter-form">
+                        <div class="input-group">
+                            <input type="email" placeholder="Your Email" required>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-phone-alt"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-envelope"></i> info@spurmountinvestment.com</p>
+                    </div>
+                </div>
+            </div>
             
-            // Initialize tooltips
-            const tooltipElements = document.querySelectorAll('[title]');
-            tooltipElements.forEach(el => {
-                const tooltip = document.createElement('span');
-                tooltip.className = 'tooltip';
-                tooltip.textContent = el.getAttribute('title');
-                el.appendChild(tooltip);
-                
-                el.addEventListener('mouseenter', () => {
-                    tooltip.style.visibility = 'visible';
-                    tooltip.style.opacity = '1';
-                });
-                
-                el.addEventListener('mouseleave', () => {
-                    tooltip.style.visibility = 'hidden';
-                    tooltip.style.opacity = '0';
-                });
-            });
-        }
-
-        // Initialize components after DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize mobile menu
-            initMobileMenu();
-            
-            // Initialize components
-            if (typeof includeHTML !== 'function') {
-                // If SSI is not used, initialize components directly
-                initializeComponents();
-            } else {
-                // If SSI is used, the SSI handler will call initializeComponents
-                // after the partials are loaded
-                window.initializeComponents = initializeComponents;
-            }
-        });
-    </script>
-    <script src="js/products.js"></script>
-    <script src="js/price-alerts.js"></script>
-    <script src="js/click-collect.js"></script>
-    <script src="js/virtual-tour.js"></script>
-    <script src="js/recommendations.js"></script>
-    <script src="js/search.js"></script>
-    <script src="js/ssi-handler.js"></script>
-    <script src="js/mobile-menu.js"></script>
-    <script src="js/modern.js"></script>
-    <script src="js/debug.js"></script>
-    <script src="js/enhancements.js"></script>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    &copy; 2023 Spurmount Investment. All Rights Reserved.
+                </div>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Risk Disclosure</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="js/main.js" defer></script>
 </body>
 </html>
