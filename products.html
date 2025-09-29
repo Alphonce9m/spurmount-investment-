@@ -4,277 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - SpurMount Wholesale</title>
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* Additional styles for recommendations */
-        .recommendations-section {
-            margin: 40px 0;
-            padding: 30px 0;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-        }
-        
-        .recommendations-section .section-title {
-            font-size: 22px;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
-            color: #333;
-        }
-        
-        .recommendations-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 15px;
-        }
-        
-        .product-details {
-            padding: 15px;
-        }
-        
-        .product-description {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 10px;
-            min-height: 40px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            display: -moz-box;
-            -moz-line-clamp: 2;
-            -moz-box-orient: vertical;
-            display: -ms-box;
-            -ms-line-clamp: 2;
-            -ms-box-orient: vertical;
-            display: box;
-            line-clamp: 2;
-            box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .product-image-container {
-            position: relative;
-            overflow: hidden;
-            background: white;
-            padding: 15px;
-            text-align: center;
-            height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .product-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-    </style>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/custom.css">
 </head>
 <body>
-    <!-- Header Section -->
-    <header>
-        <div class="header-container">
-            <div class="logo">SpurMount</div>
-            <nav class="main-nav">
-                <div class="container">
-                    <ul class="nav-links">
-                        <li><a href="index.html">Home</a></li>
-                        <li class="dropdown">
-                            <a href="products.html" class="active">Products <i class="fas fa-chevron-down"></i></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="products.html?category=electronics">Electronics</a></li>
-                                <li><a href="products.html?category=groceries">Groceries</a></li>
-                                <li><a href="products.html?category=beverages">Beverages</a></li>
-                                <li><a href="products.html?category=household">Household</a></li>
-                                <li><a href="products.html?category=personal-care">Personal Care</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="how-to-order.html">How to Order</a></li>
-                        <li><a href="price-alerts.html" class="price-alerts-link">
-                            <i class="fas fa-bell"></i> Price Alerts
-                            <span class="alert-count" id="price-alert-count"></span>
-                        </a></li>
-                        <li><a href="payment.html">Payment</a></li>
-                        <li><a href="delivery.html">Delivery</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                    <div class="mobile-menu">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </header>
+    <!-- Include Header -->
+    <!--#include virtual="partials/header.html" -->
 
-    <!-- Products Section -->
-    <section class="info-section">
+    <!-- Page Header -->
+    <section class="page-header">
         <div class="container">
             <h1>Our Products</h1>
-            <div class="category-filter">
-                <button class="filter-btn active" data-category="all">All Products</button>
-                <button class="filter-btn" data-category="groceries">Groceries</button>
-                <button class="filter-btn" data-category="beverages">Beverages</button>
-                <button class="filter-btn" data-category="household">Household</button>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Products</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="container">
+            <div class="products-header">
+                <div class="products-count">
+                    <p>Showing <span id="showing-count">1-12</span> of <span id="total-count">24</span> products</p>
+                </div>
+                <div class="products-sort">
+                    <label for="sort-by">Sort by:</label>
+                    <select id="sort-by" class="form-select">
+                        <option value="featured">Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name-asc">Name: A to Z</option>
+                        <option value="name-desc">Name: Z to A</option>
+                    </select>
+                </div>
             </div>
-            
+
             <div class="products-grid">
                 <!-- Product 1 -->
-                <div class="product-card" data-category="groceries">
-                    <img src="https://via.placeholder.com/300x200" alt="Premium Rice" class="product-image">
-                    <h3>Premium Rice</h3>
-                    <p>50kg bag of high-quality rice</p>
-                    <p class="price">Ksh 6,500</p>
-                    <a href="https://wa.me/254712345678?text=I%20would%20like%20to%20order%20Premium%20Rice" class="order-btn">
-                        <i class="fab fa-whatsapp"></i> Order Now
-                    </a>
+                <div class="product-card">
+                    <div class="product-badge">Bestseller</div>
+                    <div class="product-image">
+                        <img src="images/products/rice.jpg" alt="Premium Rice">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">Premium Rice</h3>
+                        <p class="product-desc">High quality rice, perfect for restaurants and households</p>
+                        <div class="product-price">
+                            <span class="price">Ksh 2,500</span>
+                            <span class="unit">per 50kg bag</span>
+                        </div>
+                        <div class="product-moq">Min. Order: 5 bags</div>
+                        <a href="https://wa.me/254700000000?text=I%20would%20like%20to%20order%20Premium%20Rice" class="btn btn-block btn-whatsapp" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Order Now
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Product 2 -->
-                <div class="product-card" data-category="groceries">
-                    <img src="https://via.placeholder.com/300x200" alt="Maize Flour" class="product-image">
-                    <h3>Maize Flour</h3>
-                    <p>2kg packet of fine maize flour</p>
-                    <p class="price">Ksh 150</p>
-                    <a href="https://wa.me/254712345678?text=I%20would%20like%20to%20order%20Maize%20Flour" class="order-btn">
-                        <i class="fab fa-whatsapp"></i> Order Now
-                    </a>
+                <div class="product-card">
+                    <div class="product-badge">New</div>
+                    <div class="product-image">
+                        <img src="images/products/beans.jpg" alt="Beans">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title">Beans</h3>
+                        <p class="product-desc">Fresh and nutritious beans, packed with protein</p>
+                        <div class="product-price">
+                            <span class="price">Ksh 180</span>
+                            <span class="unit">per kg</span>
+                        </div>
+                        <div class="product-moq">Min. Order: 10kg</div>
+                        <a href="https://wa.me/254700000000?text=I%20would%20like%20to%20order%20Beans" class="btn btn-block btn-whatsapp" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Order Now
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Product 3 -->
-                <div class="product-card" data-category="beverages">
-                    <img src="https://via.placeholder.com/300x200" alt="Bottled Water" class="product-image">
-                    <h3>Bottled Water</h3>
-                    <p>24 x 500ml bottles</p>
-                    <p class="price">Ksh 500</p>
-                    <a href="https://wa.me/254712345678?text=I%20would%20like%20to%20order%20Bottled%20Water" class="order-btn">
-                        <i class="fab fa-whatsapp"></i> Order Now
-                    </a>
-                </div>
+                <!-- Add more products as needed -->
+            </div>
 
-                <!-- Product 4 -->
-                <div class="product-card" data-category="household">
-                    <img src="https://via.placeholder.com/300x200" alt="Detergent" class="product-image">
-                    <h3>Laundry Detergent</h3>
-                    <p>5kg bucket of washing powder</p>
-                    <p class="price">Ksh 1,200</p>
-                    <a href="https://wa.me/254712345678?text=I%20would%20like%20to%20order%20Laundry%20Detergent" class="order-btn">
-                        <i class="fab fa-whatsapp"></i> Order Now
-                    </a>
-                </div>
-
-                <!-- Product 5 -->
-                <div class="product-card" data-category="groceries">
-                    <img src="https://via.placeholder.com/300x200" alt="Sugar" class="product-image">
-                    <h3>Sugar</h3>
-                    <p>50kg bag of refined sugar</p>
-                    <p class="price">Ksh 5,800</p>
-                    <a href="https://wa.me/254712345678?text=I%20would%20like%20to%20order%20Sugar" class="order-btn">
-                        <i class="fab fa-whatsapp"></i> Order Now
-                    </a>
-                </div>
-
-                <!-- Product 6 -->
-                <div class="product-card" data-category="beverages">
-                    <img src="https://via.placeholder.com/300x200" alt="Juice" class="product-image">
-                    <h3>Fruit Juice</h3>
-                    <p>12 x 1L cartons of assorted flavors</p>
-                    <p class="price">Ksh 2,400</p>
-                    <a href="https://wa.me/254712345678?text=I%20would%20like%20to%20order%20Fruit%20Juice" class="order-btn">
-                        <i class="fab fa-whatsapp"></i> Order Now
-                    </a>
-                </div>
+            <!-- Pagination -->
+            <div class="pagination">
+                <a href="#" class="page-link disabled"><i class="fas fa-chevron-left"></i> Previous</a>
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <a href="#" class="page-link">Next <i class="fas fa-chevron-right"></i></a>
             </div>
         </div>
     </section>
 
-    <!-- Recommendation Sections -->
-    <section class="container">
-        <!-- Frequently Bought Together -->
-        <div id="frequently-bought-together" class="recommendations-section">
-            <!-- Content will be loaded by JavaScript -->
-        </div>
-        
-        <!-- Customers Also Bought -->
-        <div id="customers-also-bought" class="recommendations-section">
-            <!-- Content will be loaded by JavaScript -->
-        </div>
-    </section>
+    <!-- Include Footer -->
+    <!--#include virtual="partials/footer.html" -->
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="products.html">Products</a></li>
-                    <li><a href="how-to-order.html">How to Order</a></li>
-                    <li><a href="payment.html">Payment</a></li>
-                    <li><a href="delivery.html">Delivery</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact Us</h3>
-                <p><i class="fas fa-phone"></i> +254 712 345 678</p>
-                <p><i class="fas fa-envelope"></i> info@spurmount.com</p>
-                <p><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</p>
-            </div>
-            <div class="footer-section">
-                <h3>Payment Methods</h3>
-                <div class="paybill-info">
-                    <p>Paybill: 123456</p>
-                    <p>Account: Your Business Name</p>
-                </div>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2023 SpurMount Wholesale. All Rights Reserved.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
-            document.querySelector('nav ul').classList.toggle('active');
-        });
-
-        // Product filtering
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const productCards = document.querySelectorAll('.product-card');
-
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove active class from all buttons
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                // Add active class to clicked button
-                button.classList.add('active');
-                
-                const category = button.getAttribute('data-category');
-                
-                productCards.forEach(card => {
-                    if (category === 'all' || card.getAttribute('data-category') === category) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        });
-    </script>
-    <script src="js/recommendations.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

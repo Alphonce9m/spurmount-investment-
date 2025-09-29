@@ -1,20 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Detail - SpurMount Wholesale</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
+{% extends 'base.html' %}
+
+{% block title %}Product Detail - SpurMount Wholesale{% endblock %}
+
+{% block extra_css %}
+<style>
         /* Product Detail Styles */
         .product-detail-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
+            margin: 30px 0;
         }
         
         .product-gallery {
@@ -28,21 +23,28 @@
             background: #fff;
             border: 1px solid #eee;
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+            cursor: zoom-in;
+        }
+        
+        .main-product-image:hover {
+            transform: scale(1.02);
         }
         
         .product-info h1 {
             font-size: 28px;
             margin-bottom: 15px;
             color: #333;
+            font-weight: 600;
         }
         
         .product-price {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
-            color: #e31e24;
-            margin: 15px 0;
+            color: var(--primary);
+            margin: 20px 0;
         }
         
         .original-price {
@@ -117,22 +119,19 @@
         }
         
         .add-to-cart-btn {
-            background: #e31e24;
+            background: var(--primary);
             color: white;
             border: none;
             padding: 12px 30px;
             font-size: 16px;
             font-weight: 600;
-            border-radius: 4px;
+            border-radius: 50px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            transition: background 0.3s;
-        }
-        
-        .add-to-cart-btn:hover {
-            background: #c5191f;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .wishlist-btn {
@@ -185,6 +184,30 @@
         .twitter { background: #1da1f2; }
         .whatsapp { background: #25d366; }
         
+        /* Product Tabs */
+        .product-tabs {
+            margin-top: 40px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .nav-tabs .nav-link {
+            color: #555;
+            font-weight: 500;
+            border: none;
+            padding: 12px 20px;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary);
+            background: none;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .tab-content {
+            padding: 20px 0;
+        }
+        
         /* Responsive Design */
         @media (max-width: 991px) {
             .product-detail-container {
@@ -198,6 +221,7 @@
             
             .product-actions {
                 flex-direction: column;
+                gap: 10px;
             }
             
             .wishlist-btn {
@@ -221,77 +245,61 @@
             }
         }
     </style>
-</head>
-<body>
-    <!-- Header Section -->
-    <header>
-        <div class="header-container">
-            <div class="logo">SpurMount</div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="products.html">Products</a></li>
-                    <li><a href="how-to-order.html">How to Order</a></li>
-                    <li><a href="delivery.html">Delivery</a></li>
-                    <li><a href="payment.html">Payment</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="virtual-tour.html">Virtual Tour</a></li>
-                    <li><a href="price-alerts.html" class="price-alerts-link">
-                        <i class="fas fa-bell"></i> Price Alerts
-                        <span class="alert-count" id="price-alert-count"></span>
-                    </a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+{% endblock %}
 
-    <!-- Product Detail Section -->
-    <main class="container">
+{% block content %}
+<!-- Product Detail Section -->
+<section class="product-detail py-5">
+    <div class="container">
         <div class="product-detail-container">
             <div class="product-gallery">
                 <img src="https://via.placeholder.com/600x600" alt="Product Image" class="main-product-image">
             </div>
             
             <div class="product-info">
-                <h1 id="product-name">Tusker Lager Beer Crate</h1>
+                <h1 id="product-name">Premium Basmati Rice (50kg)</h1>
                 <div class="product-meta">
                     <div class="meta-item">
                         <span class="meta-label">Brand:</span>
-                        <span class="meta-value" id="product-brand">Tusker</span>
+                        <span class="meta-value" id="product-brand">Royal Aroma</span>
                     </div>
                     <div class="meta-item">
                         <span class="meta-label">Category:</span>
-                        <span class="meta-value" id="product-category">Beverages</span>
+                        <span class="meta-value" id="product-category">Rice & Grains</span>
                     </div>
                     <div class="meta-item">
                         <span class="meta-label">Availability:</span>
-                        <span class="meta-value" id="product-availability">In Stock (50+ units)</span>
+                        <span class="meta-value text-success" id="product-availability">In Stock (100+ bags)</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Product Code:</span>
+                        <span class="meta-value">RICE-BAS-50</span>
                     </div>
                 </div>
                 
                 <div class="product-price">
-                    <span id="product-price">Ksh 2,400</span>
-                    <span class="original-price">Ksh 2,800</span>
-                    <span class="discount-badge">Save 14%</span>
+                    <span id="product-price">Ksh 7,999</span>
+                    <span class="original-price">Ksh 8,500</span>
+                    <span class="discount-badge">Save 6%</span>
                 </div>
                 
                 <div class="product-description">
-                    <p>Experience the authentic taste of Kenya with Tusker Lager Beer. This premium quality lager is brewed using the finest ingredients, including pure Kenyan water, malted barley, and the finest hops. Each crate contains 24 x 500ml bottles of refreshing Tusker Lager, perfect for your business or special events.</p>
+                    <p>Premium quality Basmati rice imported directly from Pakistan. Known for its long grains, delicate aroma, and non-sticky texture, this rice is perfect for biryani, pilau, and other traditional dishes. Each 50kg bag is vacuum-packed to preserve freshness and aroma.</p>
                     <p>Key Features:</p>
                     <ul>
-                        <li>24 x 500ml bottles per crate</li>
-                        <li>Alcohol Content: 4.2%</li>
-                        <li>Premium quality ingredients</li>
-                        <li>Distinctive crisp taste</li>
-                        <li>Perfect for resale or events</li>
+                        <li>Extra-long grain Basmati rice (8.3mm+)</li>
+                        <li>Vacuum-packed 50kg bags for maximum freshness</li>
+                        <li>Non-sticky and fluffy when cooked</li>
+                        <li>Naturally aromatic with a distinctive flavor</li>
+                        <li>Ideal for restaurants, hotels, and catering businesses</li>
                     </ul>
                 </div>
                 
                 <div class="product-actions">
                     <div class="quantity-selector">
                         <button class="quantity-btn minus">-</button>
-                        <input type="number" class="quantity-input" value="1" min="1">
+                        <input type="number" class="quantity-input" value="1" min="1" max="100">
+                        <span class="quantity-unit">bags</span>
                         <button class="quantity-btn plus">+</button>
                     </div>
                     
@@ -299,9 +307,46 @@
                         <i class="fas fa-shopping-cart"></i> Add to Cart
                     </button>
                     
-                    <button class="wishlist-btn">
+                    <button class="wishlist-btn" title="Add to wishlist">
                         <i class="far fa-heart"></i> Save
                     </button>
+                    
+                    <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#bulkEnquiryModal">
+                        <i class="fas fa-truck"></i> Bulk Enquiry
+                    </button>
+                </div>
+                
+                <!-- Bulk Enquiry Modal -->
+                <div class="modal fade" id="bulkEnquiryModal" tabindex="-1" aria-labelledby="bulkEnquiryModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="bulkEnquiryModalLabel">Bulk Order Enquiry</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="bulkEnquiryForm">
+                                    <div class="mb-3">
+                                        <label for="enquiryQuantity" class="form-label">Quantity (Bags)</label>
+                                        <input type="number" class="form-control" id="enquiryQuantity" min="10" value="10" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="enquiryName" class="form-label">Your Name</label>
+                                        <input type="text" class="form-control" id="enquiryName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="enquiryPhone" class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" id="enquiryPhone" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="enquiryMessage" class="form-label">Additional Details</label>
+                                        <textarea class="form-control" id="enquiryMessage" rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Send Enquiry</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="share-buttons">
@@ -322,88 +367,147 @@
             
             <!-- Customers Also Bought -->
             <div id="customers-also-bought" class="recommendations-section">
-                <!-- Content will be loaded by JavaScript -->
-            </div>
         </div>
-    </main>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="products.html">Products</a></li>
-                    <li><a href="how-to-order.html">How to Order</a></li>
-                    <li><a href="payment.html">Payment</a></li>
-                    <li><a href="delivery.html">Delivery</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact Us</h3>
-                <p><i class="fas fa-phone"></i> +254 712 345 678</p>
-                <p><i class="fas fa-envelope"></i> info@spurmount.com</p>
-                <p><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</p>
-            </div>
-            <div class="footer-section">
-                <h3>Payment Methods</h3>
-                <div class="paybill-info">
-                    <p>Paybill: 123456</p>
-                    <p>Account: Your Business Name</p>
-                </div>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+<section class="related-products py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title">You May Also Like</h2>
+        <div class="row">
+            <!-- Product Card 1 -->
+            <!-- Product Card 1 -->
+            <div class="col-md-3 col-6 mb-4">
+                <div class="card product-card h-100">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/300x300" class="card-img-top" alt="Premium Rice">
+                        <div class="badge bg-danger position-absolute" style="top: 10px; right: 10px">-15%</div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Premium Rice</h5>
+                        <p class="card-text mt-auto">
+                            <span class="text-primary fw-bold">Ksh 2,500</span>
+                            <small class="text-muted text-decoration-line-through ms-2">Ksh 2,800</small>
+                        </p>
+                        <button class="btn btn-outline-primary btn-sm w-100 mt-2">
+                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                        </button>
+                    </div>
                 </div>
             </div>
+            
+            <!-- Product Card 2 -->
+            <div class="col-md-3 col-6 mb-4">
+                <div class="card product-card h-100">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/300x300" class="card-img-top" alt="Beans">
+                        <div class="badge bg-success position-absolute" style="top: 10px; right: 10px">New</div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Beans</h5>
+                        <p class="card-text mt-auto">
+                            <span class="text-primary fw-bold">Ksh 1,800</span>
+                            <small class="text-muted text-decoration-line-through ms-2">Ksh 2,000</small>
+                        </p>
+                        <button class="btn btn-outline-primary btn-sm w-100 mt-2">
+                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 3 -->
+            <div class="col-md-3 col-6 mb-4">
+                <div class="card product-card h-100">
+                    <img src="https://via.placeholder.com/300x300" class="card-img-top" alt="Maize Flour">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Maize Flour</h5>
+                        <p class="card-text mt-auto">
+                            <span class="text-primary fw-bold">Ksh 1,200</span>
+                        </p>
+                        <button class="btn btn-outline-primary btn-sm w-100 mt-2">
+                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 4 -->
+            <div class="col-md-3 col-6 mb-4">
+                <div class="card product-card h-100">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/300x300" class="card-img-top" alt="Green Grams">
+                        <div class="badge bg-warning text-dark position-absolute" style="top: 10px; right: 10px">Limited</div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Green Grams</h5>
+                        <p class="card-text mt-auto">
+                            <span class="text-primary fw-bold">Ksh 2,100</span>
+                            <small class="text-muted text-decoration-line-through ms-2">Ksh 2,400</small>
+                        </p>
+                        <button class="btn btn-outline-primary btn-sm w-100 mt-2">
+                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <!-- Repeat for more products -->
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2023 SpurMount Wholesale. All Rights Reserved.</p>
-        </div>
-    </footer>
+    </div>
+</section>
 
-    <script src="js/mobile-menu.js"></script>
-    <script src="js/recommendations.js"></script>
-    <script>
-        // Product quantity controls
-        const minusBtn = document.querySelector('.quantity-btn.minus');
-        const plusBtn = document.querySelector('.quantity-btn.plus');
-        const quantityInput = document.querySelector('.quantity-input');
-        
-        if (minusBtn && plusBtn && quantityInput) {
-            minusBtn.addEventListener('click', () => {
-                let value = parseInt(quantityInput.value);
-                if (value > 1) {
-                    quantityInput.value = value - 1;
-                }
-            });
-            
-            plusBtn.addEventListener('click', () => {
-                let value = parseInt(quantityInput.value);
-                quantityInput.value = value + 1;
-            });
-            
-            quantityInput.addEventListener('change', () => {
-                let value = parseInt(quantityInput.value);
-                if (isNaN(value) || value < 1) {
-                    quantityInput.value = 1;
-                }
-            });
-        }
-        
-        // Update product details based on URL parameter
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const productId = parseInt(urlParams.get('id')) || 1;
-            
-            // In a real application, you would fetch product details from an API
-            // For now, we'll just update the title to show the product ID
-            document.title = `Product ${productId} - SpurMount Wholesale`;
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Product gallery functionality
+    $(document).ready(function() {
+        // Handle quantity buttons
+        $('.quantity-btn.minus').click(function(e) {
+            e.preventDefault();
+            var $input = $(this).siblings('.quantity-input');
+            var value = parseInt($input.val());
+            if (value > 1) {
+                $input.val(value - 1);
+            }
         });
-    </script>
-</body>
-</html>
+        
+        $('.quantity-btn.plus').click(function(e) {
+            e.preventDefault();
+            var $input = $(this).siblings('.quantity-input');
+            var value = parseInt($input.val());
+            $input.val(value + 1);
+        });
+        
+        // Handle image zoom
+        $('.main-product-image').on('mousemove', function(e) {
+            // Add zoom effect here if needed
+        });
+        
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Initialize tabs
+        var tabEls = document.querySelectorAll('button[data-bs-toggle="tab"]');
+        tabEls.forEach(function(tabEl) {
+            tabEl.addEventListener('click', function (event) {
+                event.preventDefault();
+                var tab = new bootstrap.Tab(tabEl);
+                tab.show();
+            });
+        });
+
+        // Handle bulk enquiry form submission
+        $('#bulkEnquiryForm').on('submit', function(e) {
+            e.preventDefault();
+            // Add form submission logic here
+            alert('Thank you for your enquiry! We will contact you shortly.');
+            $('#bulkEnquiryModal').modal('hide');
+        });
+    });
+</script>
+{% endblock %}

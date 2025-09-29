@@ -36,9 +36,9 @@
     "dotenv": "^17.2.2"
   },
   "bugs": {
-    "url": "https://github.com/Alphonce9m/spurmount-investment-/issues"
+    "url": "https://github.com/Alphonce9m/spurmount-wholesale/issues"
   },
-  "homepage": "https://github.com/Alphonce9m/spurmount-investment-#readme",
+  "homepage": "https://github.com/Alphonce9m/spurmount-wholesale#readme",
   "devDependencies": {
     "autoprefixer": "^10.4.0",
     "clean-webpack-plugin": "^4.0.0",
