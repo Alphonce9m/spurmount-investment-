@@ -9,7 +9,6 @@ import StatsSection from "@/components/StatsSection";
 import TrustBadges from "@/components/TrustBadges";
 import FAQSection from "@/components/FAQSection";
 import PromoBanner from "@/components/PromoBanner";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import heroBanner from "@/assets/hero-banner.jpg";
 
 const Home = () => {
@@ -41,7 +40,6 @@ const Home = () => {
     <div className="min-h-screen flex flex-col">
       <PromoBanner />
       <Navbar />
-      <FloatingWhatsApp />
       
       {/* Hero Section */}
       <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden">
