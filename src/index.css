@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* SpurMount Brand Colors - Navy Blue & Orange */
+    /* Spurmount Brand Colors - Navy Blue & Orange */
     --background: 0 0% 100%;
     --foreground: 217 91% 15%;
     

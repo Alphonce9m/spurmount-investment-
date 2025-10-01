@@ -1,8 +1,8 @@
-# SpurMount Trading & Investment Wholesalers
+# Spurmount Trading & Investment Wholesalers
 
 ## Project Overview
 
-This is the official website for SpurMount Trading & Investment Wholesalers, a premier wholesale provider of quality groceries, beverages, and household products.
+This is the official website for Spurmount Trading & Investment Wholesalers, a premier wholesale provider of quality groceries, beverages, and household products.
 
 ## Getting Started
 

@@ -109,7 +109,7 @@ INSERT INTO public.products (name, description, category, price, stock_quantity,
 
 -- Insert sample testimonials
 INSERT INTO public.testimonials (customer_name, company_name, testimonial_text, rating, is_featured) VALUES
-('Jane Wanjiru', 'Nairobi Fresh Grocers', 'SpurMount has been our reliable supplier for over 2 years. Their products are always fresh and prices competitive. Highly recommended!', 5, true),
+('Jane Wanjiru', 'Nairobi Fresh Grocers', 'Spurmount has been our reliable supplier for over 2 years. Their products are always fresh and prices competitive. Highly recommended!', 5, true),
 ('David Omondi', 'Eastlands Restaurant', 'Excellent service and quality products. The delivery is always on time and the customer service is outstanding.', 5, true),
-('Grace Mwangi', 'Westlands Supermarket', 'We have tried many wholesalers but SpurMount stands out. Their commitment to quality and customer satisfaction is unmatched.', 5, true),
-('Peter Kimani', 'CBD Food Store', 'Great wholesale prices and genuine products. SpurMount has helped our business grow significantly.', 4, false);
+('Grace Mwangi', 'Westlands Supermarket', 'We have tried many wholesalers but Spurmount stands out. Their commitment to quality and customer satisfaction is unmatched.', 5, true),
+('Peter Kimani', 'CBD Food Store', 'Great wholesale prices and genuine products. Spurmount has helped our business grow significantly.', 4, false);

@@ -19,15 +19,19 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
+    <nav className="bg-background border-b sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <ShoppingCart className="h-8 w-8 text-primary" />
+            <img 
+              src="/assets/logo.png" 
+              alt="Spurmount Logo" 
+              className="h-8 w-auto"
+            />
             <div className="flex flex-col">
-              <span className="text-lg font-bold text-primary">SpurMount</span>
-              <span className="text-xs text-muted-foreground">Trading & Investment</span>
+              <span className="text-lg font-bold text-primary">Spurmount</span>
+              <span className="text-xs text-muted-foreground -mt-1">Trading & Investment</span>
             </div>
           </Link>
 

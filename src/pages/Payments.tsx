@@ -11,7 +11,7 @@ const Payments = () => {
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   const paybillNumber = "123456"; // Replace with actual paybill
-  const accountNumber = "SpurMount"; // Replace with actual account format
+  const accountNumber = "Spurmount"; // Replace with actual account format
 
   const copyToClipboard = (text: string, field: string) => {
     navigator.clipboard.writeText(text);

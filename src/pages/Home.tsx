@@ -58,7 +58,7 @@ const Home = () => {
         
         <div className="container mx-auto px-4 z-10 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground mb-6 animate-fade-up font-heading">
-            SpurMount Trading & Investment
+            Spurmount Trading & Investment
           </h1>
           <p className="text-xl md:text-2xl text-primary-foreground/90 mb-4 animate-fade-up" style={{ animationDelay: "0.1s" }}>
             Eat Quality, Live Quality

@@ -11,10 +11,10 @@ const About = () => {
       <div className="container mx-auto px-4 py-12 flex-grow">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">About SpurMount</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">About Spurmount</h1>
           <p className="text-xl text-primary font-semibold mb-4">Eat Quality, Live Quality</p>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            SpurMount Trading & Investment Wholesalers is your trusted partner for quality wholesale products.
+            Spurmount Trading & Investment Wholesalers is your trusted partner for quality wholesale products.
             We are committed to providing businesses with the finest groceries, beverages, and household items
             at competitive prices.
           </p>
@@ -27,7 +27,7 @@ const About = () => {
               <h2 className="text-3xl font-bold mb-6 text-card-foreground">Our Story</h2>
               <div className="space-y-4 text-muted-foreground text-lg">
                 <p>
-                  Founded with a vision to transform wholesale trading in Kenya, SpurMount Trading & Investment
+                  Founded with a vision to transform wholesale trading in Kenya, Spurmount Trading & Investment
                   Wholesalers has grown to become a reliable source for quality products at wholesale prices.
                 </p>
                 <p>
@@ -88,7 +88,7 @@ const About = () => {
 
         {/* Why Choose Us */}
         <section className="gradient-hero rounded-2xl p-8 md:p-12 text-center">
-          <h2 className="text-3xl font-bold mb-6 text-primary-foreground">Why Choose SpurMount?</h2>
+          <h2 className="text-3xl font-bold mb-6 text-primary-foreground">Why Choose Spurmount?</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto text-left">
             <div className="flex items-start space-x-3">
               <div className="w-2 h-2 bg-accent rounded-full mt-2"></div>
