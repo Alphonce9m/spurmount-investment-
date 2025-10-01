@@ -1,91 +1,199 @@
-<!-- Top Bar -->
-<div class="top-bar">
-    <div class="container">
-        <div class="top-bar-inner">
-            <div class="top-bar-links">
-                <a href="#" class="top-bar-link"><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</a>
-                <a href="tel:+254700000000" class="top-bar-link"><i class="fas fa-phone"></i> +254 700 000 000</a>
-                <a href="mailto:info@spurmount.com" class="top-bar-link"><i class="fas fa-envelope"></i> info@spurmount.com</a>
-            </div>
-            <div class="top-bar-actions">
-                <a href="#" class="top-bar-link"><i class="fas fa-user"></i> My Account</a>
-                <a href="#" class="top-bar-link"><i class="fas fa-heart"></i> Wishlist</a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Main Header -->
 <header class="main-header">
-    <div class="container">
-        <div class="header-inner">
-            <!-- Logo -->
-            <div class="logo">
-                <a href="index.html" class="logo-link">
-                    <img src="images/logo.png" alt="SpurMount Trading & Investment" class="logo-img">
-                    <span class="logo-text">SpurMount <span>Wholesale</span></span>
-                </a>
-            </div>
-
-            <!-- Search Bar -->
-            <div class="search-container">
-                <form class="search-form" action="products.html" method="GET">
-                    <div class="search-input-group">
-                        <select class="search-categories" name="category">
-                            <option value="all">All Categories</option>
-                            <option value="grains">Grains & Cereals</option>
-                            <option value="pulses">Pulses & Legumes</option>
-                            <option value="spices">Spices & Seasonings</option>
-                            <option value="dry-fruits">Dry Fruits & Nuts</option>
-                        </select>
-                        <input type="text" class="search-input" placeholder="Search for products..." name="q">
-                        <button type="submit" class="search-button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- WhatsApp Order Button -->
-            <div class="whatsapp-order">
-                <a href="https://wa.me/254700000000?text=Hello%20SpurMount%2C%20I%20would%20like%20to%20place%20an%20order" class="whatsapp-btn" target="_blank">
-                    <i class="fab fa-whatsapp"></i> Order on WhatsApp
-                </a>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <div class="contact-info">
+                    <a href="tel:+254700000000"><i class="fas fa-phone-alt"></i> +254 700 000 000</a>
+                    <a href="mailto:info@spurmount.co.ke"><i class="fas fa-envelope"></i> info@spurmount.co.ke</a>
+                </div>
+                <div class="top-links">
+                    <a href="#"><i class="fas fa-truck"></i> Track Order</a>
+                    <a href="#"><i class="fas fa-question-circle"></i> Help</a>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Main Navigation -->
-    <nav class="main-navigation">
+    <nav class="main-nav">
         <div class="container">
-            <ul class="nav-menu">
-                <li class="menu-item">
-                    <a href="index.html"><i class="fas fa-home"></i> Home</a>
-                </li>
-                <li class="menu-item">
-                    <a href="products.html">Products <i class="fas fa-chevron-down"></i></a>
-                    <ul class="submenu">
-                        <li><a href="products.html?category=grains">Grains & Cereals</a></li>
-                        <li><a href="products.html?category=pulses">Pulses & Legumes</a></li>
-                        <li><a href="products.html?category=spices">Spices & Seasonings</a></li>
-                        <li><a href="products.html?category=dry-fruits">Dry Fruits & Nuts</a></li>
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a href="how-to-order.html">How to Order</a>
-                </li>
-                <li class="menu-item">
-                    <a href="about.html">About Us</a>
-                </li>
-                <li class="menu-item">
-                    <a href="contact.html">Contact</a>
-                </li>
-            </ul>
-            
-            <!-- Mobile Menu Toggle -->
-            <div class="mobile-menu-toggle">
-                <i class="fas fa-bars"></i>
+            <div class="nav-container">
+                <!-- Logo -->
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="images/logo.png" alt="SpurMount Wholesale" class="logo-img">
+                        <span class="logo-text">SpurMount</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <ul class="nav-links">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li class="dropdown">
+                        <a href="#">Categories <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-menu">
+                            <a href="category/grains.html">Grains & Cereals</a>
+                            <a href="category/pulses.html">Pulses & Legumes</a>
+                            <a href="category/spices.html">Spices & Herbs</a>
+                            <a href="category/nuts.html">Nuts & Seeds</a>
+                        </div>
+                    </li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+
+                <!-- Header Actions -->
+                <div class="header-actions">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search products...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="action-buttons">
+                        <a href="#" class="action-btn" title="Account">
+                            <i class="far fa-user"></i>
+                            <span class="d-none d-md-inline">Account</span>
+                        </a>
+                        <a href="cart.html" class="action-btn cart-btn" title="Cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count">0</span>
+                            <span class="d-none d-md-inline">Cart</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Toggle -->
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
             </div>
         </div>
     </nav>
+</header>
+                
+                <!-- Search Container -->
+                <div class="header-action-item search-container-wrapper d-none d-md-block">
+                    <div class="search-container">
+                        <form id="searchForm" class="search-form">
+                            <input type="text" id="searchInput" placeholder="Search products..." autocomplete="off" aria-label="Search products">
+                            <button type="submit" class="search-btn" title="Search" aria-label="Search">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
+                        <div id="searchResults" class="search-results"></div>
+                    </div>
+                </div>
+                
+                <!-- Phone -->
+                <div class="header-action-item">
+                    <a href="tel:+254700000000" class="header-action-link" title="Call Us">
+                        <i class="fas fa-phone-alt"></i>
+                        <span class="d-none d-lg-inline">+254 700 000000</span>
+                    </a>
+                </div>
+                
+                <!-- Cart -->
+                <div class="header-action-item cart-dropdown">
+                    <a href="cart.html" class="header-action-link" title="Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="action-badge">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Search Overlay -->
+<div class="mobile-search-overlay">
+    <div class="mobile-search-header">
+        <button class="mobile-search-close">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="search-container mobile-search">
+            <form id="mobileSearchForm" class="search-form">
+                <input type="text" id="mobileSearchInput" placeholder="Search products..." autocomplete="off" aria-label="Search products">
+                <button type="submit" class="search-btn" title="Search" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+            <div id="mobileSearchResults" class="search-results"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu">
+    <div class="mobile-menu-header">
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="SpurMount Wholesale" class="logo-img">
+        </a>
+        <button class="mobile-menu-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <!-- Mobile Search -->
+    <div class="mobile-search-container d-md-none">
+        <div class="search-container">
+            <form id="mobileSearchFormMenu" class="search-form">
+                <input type="text" id="mobileSearchInputMenu" placeholder="Search products..." autocomplete="off">
+                <button type="submit" class="search-btn" title="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <nav class="mobile-navigation">
+        <ul class="mobile-menu-links">
+            <li class="menu-item active"><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li class="menu-item"><a href="products.html"><i class="fas fa-box-open"></i> Products</a></li>
+            <li class="menu-item"><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li class="menu-item"><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li class="menu-item"><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
+            <li class="menu-item"><a href="wishlist.html"><i class="fas fa-heart"></i> Wishlist</a></li>
+            <li class="menu-item"><a href="orders.html"><i class="fas fa-shopping-bag"></i> My Orders</a></li>
+        </ul>
+    </nav>
+    
+    <div class="mobile-menu-footer">
+        <div class="mobile-menu-contacts">
+            <a href="tel:+254700000000" class="mobile-contact-link">
+                <i class="fas fa-phone-alt"></i> +254 700 000000
+            </a>
+            <a href="mailto:info@spurmount.co.ke" class="mobile-contact-link">
+                <i class="fas fa-envelope"></i> info@spurmount.co.ke
+            </a>
+        </div>
+        
+        <div class="mobile-menu-social">
+            <a href="#" class="social-link" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-link" target="_blank" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-link" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://wa.me/254700000000" class="social-link" target="_blank" aria-label="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+    </div>
+    
+    <div class="mobile-menu-actions">
+        <a href="tel:+254700000000" class="btn btn-outline">
+            <i class="fas fa-phone-alt"></i> Call Us
+        </a>
+        <a href="https://wa.me/254700000000" class="btn btn-primary" target="_blank">
+            <i class="fab fa-whatsapp"></i> WhatsApp Us
+        </a>
+    </div>
+</div>
+
+<script src="../js/header-new.js"></script>
 </header>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fast and reliable delivery services for your wholesale orders. We deliver across Kenya.">
+    <title>Delivery - SpurMount Wholesale</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .delivery-info {
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        
+        .delivery-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .delivery-areas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .area-card {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .area-card h4 {
+            color: var(--primary-color);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .delivery-faq {
+            margin-top: 3rem;
+        }
+        
+        .faq-item {
+            margin-bottom: 1.5rem;
+        }
+        
+        .faq-question {
+            font-weight: 600;
+            color: var(--primary-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f0f8ff;
+            border-radius: 4px;
+        }
+        
+        .faq-answer {
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 0 0 4px 4px;
+            margin-top: -4px;
+            display: none;
+        }
+        
+        .faq-answer.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <div class="logo">SpurMount</div>
+            <nav class="main-nav">
+                <div class="container">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li class="dropdown">
+                            <a href="products.html">Products <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="products.html?category=electronics">Electronics</a></li>
+                                <li><a href="products.html?category=groceries">Groceries</a></li>
+                                <li><a href="products.html?category=beverages">Beverages</a></li>
+                                <li><a href="products.html?category=household">Household</a></li>
+                                <li><a href="products.html?category=personal-care">Personal Care</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="how-to-order.html">How to Order</a></li>
+                        <li><a href="price-alerts.html" class="price-alerts-link">
+                            <i class="fas fa-bell"></i> Price Alerts
+                            <span class="alert-count" id="price-alert-count"></span>
+                        </a></li>
+                        <li><a href="payment.html">Payment</a></li>
+                        <li><a href="delivery.html" class="active">Delivery</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                    <div class="mobile-menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Delivery Section -->
+    <main class="container">
+        <h1>Delivery Information</h1>
+        <p class="center-text">Fast and reliable delivery services for your wholesale orders</p>
+        
+        <div class="delivery-info">
+            <div class="delivery-card">
+                <h2><i class="fas fa-truck"></i> Delivery Areas & Timelines</h2>
+                <p>We deliver to all major towns and cities across Kenya. Below are our estimated delivery times and charges:</p>
+                
+                <div class="delivery-areas">
+                    <div class="area-card">
+                        <h4><i class="fas fa-map-marker-alt"></i> Nairobi & Surrounding Areas</h4>
+                        <p><strong>Delivery Time:</strong> 24-48 hours</p>
+                        <p><strong>Delivery Fee:</strong> KES 300-500</p>
+                        <p><small>Free delivery for orders above KES 10,000</small></p>
+                    </div>
+                    
+                    <div class="area-card">
+                        <h4><i class="fas fa-map-marker-alt"></i> Major Towns</h4>
+                        <p><strong>Delivery Time:</strong> 2-3 business days</p>
+                        <p><strong>Delivery Fee:</strong> KES 500-1,000</p>
+                        <p><small>Free delivery for orders above KES 15,000</small></p>
+                    </div>
+                    
+                    <div class="area-card">
+                        <h4><i class="fas fa-map-marker-alt"></i> Upcountry Areas</h4>
+                        <p><strong>Delivery Time:</strong> 3-5 business days</p>
+                        <p><strong>Delivery Fee:</strong> KES 800-2,000</p>
+                        <p><small>Contact us for exact rates</small></p>
+                    </div>
+                </div>
+                
+                <p class="center-text" style="margin-top: 2rem;">
+                    <a href="contact.html" class="cta-button">
+                        <i class="fas fa-question-circle"></i> Check Delivery to Your Area
+                    </a>
+                </p>
+            </div>
+            
+            <div class="delivery-card">
+                <h2><i class="fas fa-clock"></i> Delivery Process</h2>
+                <ol class="steps">
+                    <li>Place your order and complete payment</li>
+                    <li>Receive order confirmation via email/SMS</li>
+                    <li>We process and pack your order (1 business day)</li>
+                    <li>Your order is dispatched for delivery</li>
+                    <li>Receive delivery notification with tracking details</li>
+                    <li>Sign and receive your order</li>
+                </ol>
+                
+                <div class="center-text" style="margin-top: 2rem;">
+                    <a href="https://wa.me/254712345678?text=Hello!%20I%20have%20a%20question%20about%20delivery" class="cta-button">
+                        <i class="fab fa-whatsapp"></i> Track My Order
+                    </a>
+                </div>
+            </div>
+            
+            <div class="delivery-faq">
+                <h2><i class="far fa-question-circle"></i> Delivery FAQs</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How can I track my order?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Once your order is dispatched, you'll receive a tracking number via SMS and email. You can use this to track your order on our website or contact our customer service for updates.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What are your delivery hours?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        We deliver Monday to Saturday, 8:00 AM to 6:00 PM. Deliveries are not made on Sundays and public holidays.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What if I'm not available to receive my delivery?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        If you're not available, our delivery team will attempt to contact you to reschedule. Alternatively, you can authorize someone else to receive the order on your behalf.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Do you offer same-day delivery?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, we offer same-day delivery for orders placed before 12:00 PM within Nairobi, subject to product availability and delivery location. Additional charges may apply.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="how-to-order.html">How to Order</a></li>
+                    <li><a href="payment.html">Payment</a></li>
+                    <li><a href="delivery.html">Delivery</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-phone"></i> +254 712 345 678</p>
+                <p><i class="fas fa-envelope"></i> info@spurmount.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</p>
+            </div>
+            <div class="footer-section">
+                <h3>Business Hours</h3>
+                <p><strong>Mon - Fri:</strong> 8:00 AM - 6:00 PM</p>
+                <p><strong>Saturday:</strong> 9:00 AM - 4:00 PM</p>
+                <p><strong>Sunday:</strong> Closed</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 SpurMount Wholesale. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu')?.addEventListener('click', function() {
+            document.querySelector('nav ul').classList.toggle('active');
+        });
+        
+        // FAQ accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('i');
+                
+                // Toggle active class on answer
+                answer.classList.toggle('active');
+                
+                // Toggle icon
+                if (answer.classList.contains('active')) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+                
+                // Close other open answers
+                faqQuestions.forEach(otherQuestion => {
+                    if (otherQuestion !== question) {
+                        otherQuestion.nextElementSibling.classList.remove('active');
+                        const otherIcon = otherQuestion.querySelector('i');
+                        otherIcon.classList.remove('fa-chevron-up');
+                        otherIcon.classList.add('fa-chevron-down');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

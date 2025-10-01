@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Alerts - SpurMount Wholesale</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .alerts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .sort-options {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .sort-btn {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .sort-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .alert-status {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: #e6f7ee;
+            color: #10b981;
+        }
+        
+        .status-triggered {
+            background: #fef3f2;
+            color: #f04438;
+        }
+        
+        .no-alerts {
+            text-align: center;
+            padding: 40px 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 2px dashed #e0e0e0;
+            margin-top: 20px;
+        }
+        
+        .no-alerts i {
+            font-size: 48px;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+        
+        .no-alerts h3 {
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .no-alerts p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+        
+        .alert-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-edit {
+            background: #f0f4ff;
+            color: #3b82f6;
+            border: 1px solid #bfdbfe;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-edit:hover {
+            background: #e0e7ff;
+        }
+        
+        .btn-remove {
+            background: #fff5f5;
+            color: #ef4444;
+            border: 1px solid #fecaca;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-remove:hover {
+            background: #fee2e2;
+        }
+        
+        @media (max-width: 768px) {
+            .alerts-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .sort-options {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <div class="logo">SpurMount</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="how-to-order.html">How to Order</a></li>
+                    <li><a href="payment.html">Payment</a></li>
+                    <li><a href="delivery.html">Delivery</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="virtual-tour.html">Virtual Tour</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="page-header">
+            <h1>My Price Alerts</h1>
+            <p>Manage your price drop notifications here</p>
+        </div>
+
+            <!-- Alerts will be displayed here -->
+        </div>
+
+        <div class="price-alert-container">
+            <div class="price-alert-header">
+                <h1>My Price Alerts</h1>
+                <p>Manage your price drop notifications in one place</p>
+            </div>
+            <div class="sort-options">
+                <button class="sort-btn active" data-sort="date-desc">Newest First</button>
+                <button class="sort-btn" data-sort="price-asc">Price: Low to High</button>
+                <button class="sort-btn" data-sort="price-desc">Price: High to Low</button>
+                <button class="sort-btn" data-sort="name">Product Name</button>
+            </div>
+        </div>
+        
+        <div id="price-alert-list">
+            <!-- Price alerts will be dynamically inserted here -->
+            <div class="no-alerts" id="no-alerts-message">
+                <i class="far fa-bell-slash"></i>
+                <h3>No price alerts yet</h3>
+                <p>Set up price alerts to get notified when prices drop on your favorite products.</p>
+                <a href="index.html" class="cta-button">Browse Products</a>
+            </div>
+        </div>
+        
+        <div class="how-it-works" style="margin-top: 50px; background: #f9f9f9; padding: 30px; border-radius: 8px;">
+            <h2 style="text-align: center; margin-bottom: 30px;">How Price Alerts Work</h2>
+            <div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div class="feature" style="text-align: center; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                    <div style="width: 60px; height: 60px; background: #e6f7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                        <i class="fas fa-bell" style="font-size: 24px; color: #1890ff;"></i>
+                    </div>
+                    <h3>1. Set Your Alert</h3>
+                    <p>Click the "Price Alert" button on any product and enter your target price.</p>
+                </div>
+                <div class="feature" style="text-align: center; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                    <div style="width: 60px; height: 60px; background: #fff7e6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                        <i class="fas fa-search-dollar" style="font-size: 24px; color: #faad14;"></i>
+                    </div>
+                    <h3>2. We Monitor Prices</h3>
+                    <p>Our system tracks prices 24/7 and alerts you when they drop.</p>
+                </div>
+                <div class="feature" style="text-align: center; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                    <div style="width: 60px; height: 60px; background: #f6ffed; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                        <i class="fas fa-shopping-cart" style="font-size: 24px; color: #52c41a;"></i>
+                    </div>
+                    <h3>3. Shop & Save</h3>
+                    <p>Get notified and purchase at your target price to maximize savings.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 40px; text-align: center; padding: 20px; background: #f0f7ff; border-radius: 8px;">
+            <h3>Need Help?</h3>
+            <p>If you have any questions about price alerts, check out our <a href="faq.html" style="color: #1890ff; text-decoration: underline;">FAQ page</a> or <a href="contact.html" style="color: #1890ff; text-decoration: underline;">contact our support team</a>.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>SpurMount Wholesale is your trusted partner for quality products at wholesale prices.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="how-to-order.html">How to Order</a></li>
+                    <li><a href="payment.html">Payment</a></li>
+                    <li><a href="delivery.html">Delivery</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: info@spurmount.co.ke</p>
+                <p>Phone: +254 700 000000</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 SpurMount Wholesale. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/price-alerts.js"></script>
+    
+    <script>
+        // Initialize any page-specific JavaScript here
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add active class to current page in navigation
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('nav a').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Clear all alerts button
+            const clearAllBtn = document.getElementById('clear-all-alerts');
+            if (clearAllBtn) {
+                clearAllBtn.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to clear all price alerts?')) {
+                        localStorage.removeItem('priceAlerts');
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Tour - SpurMount Wholesale</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Virtual Tour Styles */
+        .virtual-tour-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .virtual-tour-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .virtual-tour-header h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .virtual-tour-header p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+        
+        #pano {
+            width: 100%;
+            height: 70vh;
+            min-height: 500px;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+        
+        .control-btn.secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        .control-btn.secondary:hover {
+            background: #eee;
+        }
+        
+        .hotspot-info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .hotspot-info.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .hotspot-info h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .hotspot-info p {
+            margin: 0 0 15px;
+            line-height: 1.6;
+        }
+        
+        .hotspot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .hotspot-item {
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .hotspot-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .hotspot-item i {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .hotspot-item span {
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #pano {
+                height: 60vh;
+                min-height: 400px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .virtual-tour-header h1 {
+                font-size: 2rem;
+            }
+            
+            #pano {
+                height: 50vh;
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <div class="logo">SpurMount</div>
+            <nav class="main-nav">
+                <div class="container">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li class="dropdown">
+                            <a href="products.html">Products <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="products.html?category=electronics">Electronics</a></li>
+                                <li><a href="products.html?category=groceries">Groceries</a></li>
+                                <li><a href="products.html?category=beverages">Beverages</a></li>
+                                <li><a href="products.html?category=household">Household</a></li>
+                                <li><a href="products.html?category=personal-care">Personal Care</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="how-to-order.html">How to Order</a></li>
+                        <li><a href="price-alerts.html" class="price-alerts-link">
+                            <i class="fas fa-bell"></i> Price Alerts
+                            <span class="alert-count" id="price-alert-count"></span>
+                        </a></li>
+                        <li><a href="payment.html">Payment</a></li>
+                        <li><a href="delivery.html">Delivery</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                    <div class="mobile-menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="virtual-tour-container">
+        <div class="virtual-tour-header">
+            <h1>Virtual Warehouse Tour</h1>
+            <p>Explore our state-of-the-art wholesale warehouse from the comfort of your home. Get a 360° view of our facilities and see where we store and prepare your orders.</p>
+        </div>
+        
+        <!-- 360° Viewer Container -->
+        <div id="pano"></div>
+        
+        <!-- Controls -->
+        <div class="controls">
+            <button id="fullscreen-btn" class="control-btn">
+                <i class="fas fa-expand"></i> Fullscreen
+            </button>
+            <button id="vr-btn" class="control-btn secondary">
+                <i class="fas fa-vr-cardboard"></i> VR Mode
+            </button>
+            <button id="auto-rotate-btn" class="control-btn secondary">
+                <i class="fas fa-sync"></i> Auto-rotate
+            </button>
+        </div>
+        
+        <!-- Hotspot Information -->
+        <div id="hotspot-info" class="hotspot-info">
+            <h3 id="hotspot-title">Warehouse Section</h3>
+            <p id="hotspot-description">Click on different areas of the warehouse to learn more about our facilities.</p>
+            
+            <div class="hotspot-grid">
+                <div class="hotspot-item" data-hotspot="storage">
+                    <i class="fas fa-pallet"></i>
+                    <span>Storage Area</span>
+                </div>
+                <div class="hotspot-item" data-hotspot="packing">
+                    <i class="fas fa-box-open"></i>
+                    <span>Packing Station</span>
+                </div>
+                <div class="hotspot-item" data-hotspot="loading">
+                    <i class="fas fa-truck-loading"></i>
+                    <span>Loading Bay</span>
+                </div>
+                <div class="hotspot-item" data-hotspot="quality">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Quality Control</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="how-to-order.html">How to Order</a></li>
+                    <li><a href="payment.html">Payment</a></li>
+                    <li><a href="delivery.html">Delivery</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-phone"></i> +254 712 345 678</p>
+                <p><i class="fas fa-envelope"></i> info@spurmount.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</p>
+            </div>
+            <div class="footer-section">
+                <h3>Business Hours</h3>
+                <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
+                <p>Saturday: 9:00 AM - 4:00 PM</p>
+                <p>Sunday: Closed</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 SpurMount Wholesale. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Marzipano Library -->
+    <script src="https://cdn.jsdelivr.net/npm/marzipano@0.11.0/build/marzipano.min.js"></script>
+    <script src="js/virtual-tour.js"></script>
+    <script src="js/mobile-menu.js"></script>
+    
+    <script>
+        // Handle hotspot clicks
+        document.querySelectorAll('.hotspot-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const hotspotId = this.getAttribute('data-hotspot');
+                showHotspotInfo(hotspotId);
+            });
+        });
+        
+        function showHotspotInfo(hotspotId) {
+            const info = {
+                'storage': {
+                    title: 'Storage Area',
+                    description: 'Our climate-controlled storage area ensures that all products are kept in optimal conditions. We maintain strict temperature and humidity controls to preserve product quality.'
+                },
+                'packing': {
+                    title: 'Packing Station',
+                    description: 'Our dedicated packing area is where orders are carefully prepared for shipment. We use high-quality packaging materials to ensure your products arrive in perfect condition.'
+                },
+                'loading': {
+                    title: 'Loading Bay',
+                    description: 'The loading bay is where orders are efficiently loaded onto our delivery vehicles. Our organized system ensures quick and accurate order fulfillment.'
+                },
+                'quality': {
+                    title: 'Quality Control',
+                    description: 'Every product undergoes rigorous quality checks before being shipped. Our quality control team ensures that only the best products reach our customers.'
+                }
+            };
+            
+            const hotspotInfo = document.getElementById('hotspot-info');
+            const hotspotTitle = document.getElementById('hotspot-title');
+            const hotspotDesc = document.getElementById('hotspot-description');
+            
+            hotspotTitle.textContent = info[hotspotId].title;
+            hotspotDesc.textContent = info[hotspotId].description;
+            
+            // Update active state
+            document.querySelectorAll('.hotspot-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`.hotspot-item[data-hotspot="${hotspotId}"]`).classList.add('active');
+            
+            // Show the info panel if it's hidden
+            hotspotInfo.classList.add('active');
+        }
+        
+        // Initialize with storage area info
+        document.addEventListener('DOMContentLoaded', () => {
+            showHotspotInfo('storage');
+        });
+    </script>
+</body>
+</html>

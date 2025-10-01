@@ -1,0 +1,513 @@
+{% extends 'base.html' %}
+
+{% block title %}Product Detail - SpurMount Wholesale{% endblock %}
+
+{% block extra_css %}
+<style>
+        /* Product Detail Styles */
+        .product-detail-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+        
+        .product-gallery {
+            position: relative;
+        }
+        
+        .main-product-image {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+            cursor: zoom-in;
+        }
+        
+        .main-product-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .product-info h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .product-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        
+        .discount-badge {
+            background: #ffebee;
+            color: #e53935;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 15px;
+            margin-left: 10px;
+        }
+        
+        .product-description {
+            margin: 20px 0;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .product-meta {
+            margin: 20px 0;
+        }
+        
+        .meta-item {
+            display: flex;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .meta-label {
+            font-weight: 600;
+            width: 120px;
+            color: #666;
+        }
+        
+        .meta-value {
+            flex: 1;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-left: none;
+            border-right: none;
+            font-size: 16px;
+        }
+        
+        .add-to-cart-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .wishlist-btn {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            margin-left: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .wishlist-btn:hover {
+            background: #eee;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        .share-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .facebook { background: #3b5998; }
+        .twitter { background: #1da1f2; }
+        .whatsapp { background: #25d366; }
+        
+        /* Product Tabs */
+        .product-tabs {
+            margin-top: 40px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .nav-tabs .nav-link {
+            color: #555;
+            font-weight: 500;
+            border: none;
+            padding: 12px 20px;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary);
+            background: none;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .tab-content {
+            padding: 20px 0;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 991px) {
+            .product-detail-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .main-product-image {
+                height: 350px;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .wishlist-btn {
+                margin-left: 0;
+                margin-top: 10px;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-product-image {
+                height: 280px;
+            }
+            
+            .product-info h1 {
+                font-size: 24px;
+            }
+            
+            .product-price {
+                font-size: 20px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<!-- Product Detail Section -->
+<section class="product-detail py-5">
+    <div class="container">
+        <div class="product-detail-container">
+            <div class="product-gallery">
+                <img src="https://via.placeholder.com/600x600" alt="Product Image" class="main-product-image">
+            </div>
+            
+            <div class="product-info">
+                <h1 id="product-name">Premium Basmati Rice (50kg)</h1>
+                <div class="product-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Brand:</span>
+                        <span class="meta-value" id="product-brand">Royal Aroma</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Category:</span>
+                        <span class="meta-value" id="product-category">Rice & Grains</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Availability:</span>
+                        <span class="meta-value text-success" id="product-availability">In Stock (100+ bags)</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Product Code:</span>
+                        <span class="meta-value">RICE-BAS-50</span>
+                    </div>
+                </div>
+                
+                <div class="product-price">
+                    <span id="product-price">Ksh 7,999</span>
+                    <span class="original-price">Ksh 8,500</span>
+                    <span class="discount-badge">Save 6%</span>
+                </div>
+                
+                <div class="product-description">
+                    <p>Premium quality Basmati rice imported directly from Pakistan. Known for its long grains, delicate aroma, and non-sticky texture, this rice is perfect for biryani, pilau, and other traditional dishes. Each 50kg bag is vacuum-packed to preserve freshness and aroma.</p>
+                    <p>Key Features:</p>
+                    <ul>
+                        <li>Extra-long grain Basmati rice (8.3mm+)</li>
+                        <li>Vacuum-packed 50kg bags for maximum freshness</li>
+                        <li>Non-sticky and fluffy when cooked</li>
+                        <li>Naturally aromatic with a distinctive flavor</li>
+                        <li>Ideal for restaurants, hotels, and catering businesses</li>
+                    </ul>
+                </div>
+                
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button class="quantity-btn minus">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="100">
+                        <span class="quantity-unit">bags</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    
+                    <button class="add-to-cart-btn">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                    
+                    <button class="wishlist-btn" title="Add to wishlist">
+                        <i class="far fa-heart"></i> Save
+                    </button>
+                    
+                    <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#bulkEnquiryModal">
+                        <i class="fas fa-truck"></i> Bulk Enquiry
+                    </button>
+                </div>
+                
+                <!-- Bulk Enquiry Modal -->
+                <div class="modal fade" id="bulkEnquiryModal" tabindex="-1" aria-labelledby="bulkEnquiryModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="bulkEnquiryModalLabel">Bulk Order Enquiry</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="bulkEnquiryForm">
+                                    <div class="mb-3">
+                                        <label for="enquiryQuantity" class="form-label">Quantity (Bags)</label>
+                                        <input type="number" class="form-control" id="enquiryQuantity" min="10" value="10" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="enquiryName" class="form-label">Your Name</label>
+                                        <input type="text" class="form-control" id="enquiryName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="enquiryPhone" class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" id="enquiryPhone" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="enquiryMessage" class="form-label">Additional Details</label>
+                                        <textarea class="form-control" id="enquiryMessage" rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Send Enquiry</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="share-buttons">
+                    <span>Share:</span>
+                    <a href="#" class="share-btn facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="share-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recommendation Sections -->
+        <div class="container">
+            <!-- Frequently Bought Together -->
+            <div id="frequently-bought-together" class="recommendations-section">
+                <!-- Content will be loaded by JavaScript -->
+            </div>
+            
+            <!-- Customers Also Bought -->
+            <div id="customers-also-bought" class="recommendations-section">
+        </div>
+    </div>
+</section>
+
+<section class="related-products py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title">You May Also Like</h2>
+        <div class="row">
+            <!-- Product Card 1 -->
+            <!-- Product Card 1 -->
+            <div class="col-md-3 col-6 mb-4">
+                <div class="card product-card h-100">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/300x300" class="card-img-top" alt="Premium Rice">
+                        <div class="badge bg-danger position-absolute" style="top: 10px; right: 10px">-15%</div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Premium Rice</h5>
+                        <p class="card-text mt-auto">
+                            <span class="text-primary fw-bold">Ksh 2,500</span>
+                            <small class="text-muted text-decoration-line-through ms-2">Ksh 2,800</small>
+                        </p>
+                        <button class="btn btn-outline-primary btn-sm w-100 mt-2">
+                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 2 -->
+            <div class="col-md-3 col-6 mb-4">
+                <div class="card product-card h-100">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/300x300" class="card-img-top" alt="Beans">
+                        <div class="badge bg-success position-absolute" style="top: 10px; right: 10px">New</div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Beans</h5>
+                        <p class="card-text mt-auto">
+                            <span class="text-primary fw-bold">Ksh 1,800</span>
+                            <small class="text-muted text-decoration-line-through ms-2">Ksh 2,000</small>
+                        </p>
+                        <button class="btn btn-outline-primary btn-sm w-100 mt-2">
+                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 3 -->
+            <div class="col-md-3 col-6 mb-4">
+                <div class="card product-card h-100">
+                    <img src="https://via.placeholder.com/300x300" class="card-img-top" alt="Maize Flour">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Maize Flour</h5>
+                        <p class="card-text mt-auto">
+                            <span class="text-primary fw-bold">Ksh 1,200</span>
+                        </p>
+                        <button class="btn btn-outline-primary btn-sm w-100 mt-2">
+                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 4 -->
+            <div class="col-md-3 col-6 mb-4">
+                <div class="card product-card h-100">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/300x300" class="card-img-top" alt="Green Grams">
+                        <div class="badge bg-warning text-dark position-absolute" style="top: 10px; right: 10px">Limited</div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Green Grams</h5>
+                        <p class="card-text mt-auto">
+                            <span class="text-primary fw-bold">Ksh 2,100</span>
+                            <small class="text-muted text-decoration-line-through ms-2">Ksh 2,400</small>
+                        </p>
+                        <button class="btn btn-outline-primary btn-sm w-100 mt-2">
+                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <!-- Repeat for more products -->
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Product gallery functionality
+    $(document).ready(function() {
+        // Handle quantity buttons
+        $('.quantity-btn.minus').click(function(e) {
+            e.preventDefault();
+            var $input = $(this).siblings('.quantity-input');
+            var value = parseInt($input.val());
+            if (value > 1) {
+                $input.val(value - 1);
+            }
+        });
+        
+        $('.quantity-btn.plus').click(function(e) {
+            e.preventDefault();
+            var $input = $(this).siblings('.quantity-input');
+            var value = parseInt($input.val());
+            $input.val(value + 1);
+        });
+        
+        // Handle image zoom
+        $('.main-product-image').on('mousemove', function(e) {
+            // Add zoom effect here if needed
+        });
+        
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Initialize tabs
+        var tabEls = document.querySelectorAll('button[data-bs-toggle="tab"]');
+        tabEls.forEach(function(tabEl) {
+            tabEl.addEventListener('click', function (event) {
+                event.preventDefault();
+                var tab = new bootstrap.Tab(tabEl);
+                tab.show();
+            });
+        });
+
+        // Handle bulk enquiry form submission
+        $('#bulkEnquiryForm').on('submit', function(e) {
+            e.preventDefault();
+            // Add form submission logic here
+            alert('Thank you for your enquiry! We will contact you shortly.');
+            $('#bulkEnquiryModal').modal('hide');
+        });
+    });
+</script>
+{% endblock %}

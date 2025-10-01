@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Feature Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/products.css">
+    <style>
+        :root {
+            --primary-color: #e31837;
+            --primary-hover: #c41232;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --light-gray: #f8f9fa;
+            --border-color: #e9ecef;
+            --text-color: #333;
+            --text-muted: #6c757d;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .test-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 20px;
+        }
+        
+        .test-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .test-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .test-card-header {
+            background-color: var(--light-gray);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .test-card-header h2 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--text-color);
+        }
+        
+        .test-card-body {
+            padding: 20px;
+            display: none;
+        }
+        
+        .test-card.active .test-card-body {
+            display: block;
+        }
+        
+        .test-card-header .toggle-icon {
+            transition: transform 0.3s;
+        }
+        
+        .test-card.active .test-card-header .toggle-icon {
+            transform: rotate(180deg);
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .test-item {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .test-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .test-item h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .test-item p {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-hover);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+        
+        .test-results {
+            margin-top: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .test-result-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .test-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .test-result-icon {
+            margin-right: 10px;
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .test-result-success .test-result-icon {
+            color: var(--success-color);
+        }
+        
+        .test-result-error .test-result-icon {
+            color: var(--danger-color);
+        }
+        
+        .test-result-warning .test-result-icon {
+            color: var(--warning-color);
+        }
+        
+        .test-result-message {
+            flex: 1;
+        }
+        
+        .test-result-time {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .cart-summary {
+            background: var(--light-gray);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .cart-total {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid var(--border-color);
+        }
+        
+        .feature-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .status-success {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--success-color);
+        }
+        
+        .status-warning {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning-color);
+        }
+        
+        .status-error {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--danger-color);
+        }
+        
+        @media (max-width: 768px) {
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .test-card-header h2 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="test-header">
+            <h1>E-commerce Feature Test Suite</h1>
+        </div>
+        
+        <div class="test-card">
+            <div class="test-card-header" onclick="toggleTestCard(this)">
+                <h2>Quick View Functionality <span id="quickViewStatus" class="feature-status status-warning">Not Tested</span></h2>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="test-card-body">
+                <p>Test the quick view modal functionality including product display, image gallery, and basic interactions.</p>
+                
+                <div class="test-grid">
+                    <div class="test-item">
+                        <h3>Basic Quick View</h3>
+                        <p>Test opening and displaying product details in the quick view modal.</p>
+                        <button class="btn" onclick="testQuickViewBasic()">Run Test</button>
+                    </div>
+                    
+                    <div class="test-item">
+                        <h3>Image Gallery</h3>
+                        <p>Test product image gallery navigation and thumbnail switching.</p>
+                        <button class="btn" onclick="testImageGallery()">Run Test</button>
+                    </div>
+                    
+                    <div class="test-item">
+                        <h3>Quantity Selector</h3>
+                        <p>Test quantity increase/decrease functionality and validation.</p>
+                        <button class="btn" onclick="testQuantitySelector()">Run Test</button>
+                    </div>
+                </div>
+                
+                <div class="test-results" id="quickViewResults">
+                    <!-- Test results will be added here -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-card">
+            <div class="test-card-header" onclick="toggleTestCard(this)">
+                <h2>Shopping Cart <span id="cartStatus" class="feature-status status-warning">Not Tested</span></h2>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="test-card-body">
+                <p>Test shopping cart functionality including adding, updating, and removing items.</p>
+                
+                <div class="test-grid">
+                    <div class="test-item">
+                        <h3>Add to Cart</h3>
+                        <p>Test adding products to the shopping cart with different quantities.</p>
+                        <button class="btn" onclick="testAddToCart()">Run Test</button>
+                    </div>
+                    
+                    <div class="test-item">
+                        <h3>Update Quantity</h3>
+                        <p>Test updating product quantities in the cart.</p>
+                        <button class="btn" onclick="testUpdateQuantity()">Run Test</button>
+                    </div>
+                    
+                    <div class="test-item">
+                        <h3>Remove Items</h3>
+                        <p>Test removing products from the cart.</p>
+                        <button class="btn" onclick="testRemoveFromCart()">Run Test</button>
+                    </div>
+                </div>
+                
+                <div class="test-results" id="cartResults">
+                    <!-- Test results will be added here -->
+                </div>
+                
+                <div class="cart-summary">
+                    <h3>Current Cart</h3>
+                    <div id="cartContents">
+                        <div class="text-muted">Your cart is empty</div>
+                    </div>
+                    <div id="cartTotal" class="cart-total">Total: Ksh 0</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-card">
+            <div class="test-card-header" onclick="toggleTestCard(this)">
+                <h2>Product Listing <span id="listingStatus" class="feature-status status-warning">Not Tested</span></h2>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="test-card-body">
+                <p>Test product listing functionality including filtering, sorting, and pagination.</p>
+                
+                <div class="test-grid">
+                    <div class="test-item">
+                        <h3>Filter Products</h3>
+                        <p>Test filtering products by category, price range, etc.</p>
+                        <button class="btn" onclick="testProductFiltering()">Run Test</button>
+                    </div>
+                    
+                    <div class="test-item">
+                        <h3>Sort Products</h3>
+                        <p>Test sorting products by price, name, etc.</p>
+                        <button class="btn" onclick="testProductSorting()">Run Test</button>
+                    </div>
+                    
+                    <div class="test-item">
+                        <h3>Pagination</h3>
+                        <p>Test navigating through product pages.</p>
+                        <button class="btn" onclick="testPagination()">Run Test</button>
+                    </div>
+                </div>
+                
+                <div class="test-results" id="listingResults">
+                    <!-- Test results will be added here -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-card">
+            <div class="test-card-header" onclick="toggleTestCard(this)">
+                <h2>Checkout Process <span id="checkoutStatus" class="feature-status status-warning">Not Tested</span></h2>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="test-card-body">
+                <p>Test the complete checkout process from cart to order confirmation.</p>
+                
+                <div class="test-grid">
+                    <div class="test-item">
+                        <h3>Guest Checkout</h3>
+                        <p>Test checkout process for guest users.</p>
+                        <button class="btn" onclick="testGuestCheckout()">Run Test</button>
+                    </div>
+                    
+                    <div class="test-item">
+                        <h3>User Checkout</h3>
+                        <p>Test checkout process for logged-in users.</p>
+                        <button class="btn" onclick="testUserCheckout()">Run Test</button>
+                    </div>
+                    
+                    <div class="test-item">
+                        <h3>Order Confirmation</h3>
+                        <p>Test order confirmation and email notifications.</p>
+                        <button class="btn" onclick="testOrderConfirmation()">Run Test</button>
+                    </div>
+                </div>
+                
+                <div class="test-results" id="checkoutResults">
+                    <!-- Test results will be added here -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-actions" style="margin: 30px 0; text-align: center;">
+            <button class="btn btn-success" onclick="runAllTests()" style="padding: 10px 25px; font-size: 16px;">
+                <i class="fas fa-play"></i> Run All Tests
+            </button>
+            <button class="btn btn-danger" onclick="clearAllTests()" style="margin-left: 10px; padding: 10px 25px; font-size: 16px;">
+                <i class="fas fa-trash"></i> Clear All Results
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/quick-view.js"></script>
+    <script>
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize QuickView if available
+            if (typeof QuickView !== 'undefined' && typeof QuickView.init === 'function') {
+                QuickView.init();
+            }
+            
+            // Update cart display
+            updateCartDisplay();
+            
+            // Listen for cart updates
+            window.addEventListener('cartUpdated', updateCartDisplay);
+        });
+        
+        // Toggle test card visibility
+        function toggleTestCard(header) {
+            const card = header.parentElement;
+            card.classList.toggle('active');
+        }
+        
+        // Add test result to the specified container
+        function addTestResult(sectionId, message, type = 'info') {
+            const container = document.getElementById(sectionId + 'Results');
+            if (!container) return;
+            
+            const resultItem = document.createElement('div');
+            resultItem.className = `test-result-item test-result-${type}`;
+            
+            const icon = document.createElement('i');
+            icon.className = `fas ${
+                type === 'success' ? 'fa-check-circle' : 
+                type === 'error' ? 'fa-times-circle' : 
+                type === 'warning' ? 'fa-exclamation-circle' : 'fa-info-circle'
+            } test-result-icon`;
+            
+            const messageEl = document.createElement('div');
+            messageEl.className = 'test-result-message';
+            messageEl.textContent = message;
+            
+            const timeEl = document.createElement('div');
+            timeEl.className = 'test-result-time';
+            timeEl.textContent = new Date().toLocaleTimeString();
+            
+            resultItem.appendChild(icon);
+            resultItem.appendChild(messageEl);
+            resultItem.appendChild(timeEl);
+            
+            container.insertBefore(resultItem, container.firstChild);
+            
+            // Update status indicator
+            updateStatusIndicator(sectionId, type);
+        }
+        
+        // Update status indicator
+        function updateStatusIndicator(sectionId, status) {
+            const statusEl = document.getElementById(sectionId + 'Status');
+            if (!statusEl) return;
+            
+            // Only update if current status is not error (to keep error state)
+            const currentStatus = statusEl.classList.contains('status-error') ? 'error' :
+                                statusEl.classList.contains('status-warning') ? 'warning' :
+                                statusEl.classList.contains('status-success') ? 'success' : null;
+            
+            if (status === 'error' || 
+                (status === 'warning' && currentStatus !== 'error') ||
+                (status === 'success' && !currentStatus)) {
+                
+                // Remove all status classes
+                statusEl.classList.remove('status-success', 'status-warning', 'status-error');
+                
+                // Add the appropriate status class
+                if (status === 'success') {
+                    statusEl.textContent = 'Passed';
+                    statusEl.classList.add('status-success');
+                } else if (status === 'warning') {
+                    statusEl.textContent = 'Partial';
+                    statusEl.classList.add('status-warning');
+                } else if (status === 'error') {
+                    statusEl.textContent = 'Failed';
+                    statusEl.classList.add('status-error');
+                } else {
+                    statusEl.textContent = 'Not Tested';
+                    statusEl.classList.add('status-warning');
+                }
+            }
+        }
+        
+        // Update cart display
+        function updateCartDisplay() {
+            const cartContents = document.getElementById('cartContents');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            if (!cartContents || !cartTotal) return;
+            
+            // Get cart from localStorage
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            if (cart.length === 0) {
+                cartContents.innerHTML = '<div class="text-muted">Your cart is empty</div>';
+                cartTotal.textContent = 'Total: Ksh 0';
+                return;
+            }
+            
+            // Calculate total and build cart items HTML
+            let total = 0;
+            let itemsHtml = '';
+            
+            cart.forEach(item => {
+                const itemTotal = (item.price || 0) * (item.quantity || 1);
+                total += itemTotal;
+                
+                itemsHtml += `
+                    <div class="cart-item">
+                        <div>${item.name || 'Unknown Product'} (${item.quantity || 1})</div>
+                        <div>Ksh ${itemTotal.toLocaleString()}</div>
+                    </div>
+                `;
+            });
+            
+            cartContents.innerHTML = itemsHtml;
+            cartTotal.textContent = `Total: Ksh ${total.toLocaleString()}`;
+        }
+        
+        // Test functions will be added here
+        function testQuickViewBasic() {
+            addTestResult('quickView', 'Starting basic Quick View test...', 'info');
+            
+            if (typeof QuickView === 'undefined' || typeof QuickView.openQuickView !== 'function') {
+                addTestResult('quickView', 'Error: QuickView module not found', 'error');
+                return;
+            }
+            
+            // Open quick view with a test product
+            QuickView.openQuickView('1');
+            
+            // Simulate test results (in a real test, you would check the actual DOM)
+            setTimeout(() => {
+                const quickViewBody = document.querySelector('.quick-view-body');
+                if (quickViewBody && quickViewBody.textContent.includes('Loading')) {
+                    // Assume success if loading indicator is shown
+                    addTestResult('quickView', 'Quick View modal opened successfully', 'success');
+                    
+                    // Test close functionality
+                    setTimeout(() => {
+                        const closeBtn = document.querySelector('.quick-view-close');
+                        if (closeBtn) {
+                            closeBtn.click();
+                            addTestResult('quickView', 'Quick View close button works', 'success');
+                        } else {
+                            addTestResult('quickView', 'Warning: Could not find close button', 'warning');
+                        }
+                    }, 1000);
+                } else {
+                    addTestResult('quickView', 'Error: Quick View did not open correctly', 'error');
+                }
+            }, 500);
+        }
+        
+        function testImageGallery() {
+            addTestResult('quickView', 'Starting image gallery test...', 'info');
+            
+            if (typeof QuickView === 'undefined' || typeof QuickView.openQuickView !== 'function') {
+                addTestResult('quickView', 'Error: QuickView module not found', 'error');
+                return;
+            }
+            
+            // Open quick view with a test product that has multiple images
+            QuickView.openQuickView('1');
+            
+            setTimeout(() => {
+                const thumbnails = document.querySelectorAll('.quick-view-thumbnail');
+                if (thumbnails.length > 1) {
+                    addTestResult('quickView', `Found ${thumbnails.length} thumbnails`, 'success');
+                    
+                    // Test thumbnail click
+                    const firstThumb = thumbnails[0];
+                    const mainImage = document.querySelector('.quick-view-main-image');
+                    
+                    if (mainImage) {
+                        const originalSrc = mainImage.src;
+                        
+                        // Click the first thumbnail (which might already be active)
+                        if (thumbnails.length > 1) {
+                            thumbnails[1].click();
+                            
+                            // Check if main image changed
+                            setTimeout(() => {
+                                if (mainImage.src !== originalSrc) {
+                                    addTestResult('quickView', 'Image gallery navigation works', 'success');
+                                } else {
+                                    addTestResult('quickView', 'Warning: Main image did not change on thumbnail click', 'warning');
+                                }
+                                
+                                // Close the quick view
+                                const closeBtn = document.querySelector('.quick-view-close');
+                                if (closeBtn) closeBtn.click();
+                            }, 300);
+                        } else {
+                            addTestResult('quickView', 'Warning: Not enough thumbnails to test navigation', 'warning');
+                        }
+                    } else {
+                        addTestResult('quickView', 'Error: Could not find main product image', 'error');
+                    }
+                } else {
+                    addTestResult('quickView', 'Warning: No thumbnails found for testing', 'warning');
+                }
+            }, 1000);
+        }
+        
+        function testQuantitySelector() {
+            addTestResult('quickView', 'Starting quantity selector test...', 'info');
+            
+            if (typeof QuickView === 'undefined' || typeof QuickView.openQuickView !== 'function') {
+                addTestResult('quickView', 'Error: QuickView module not found', 'error');
+                return;
+            }
+            
+            // Open quick view with a test product
+            QuickView.openQuickView('1');
+            
+            setTimeout(() => {
+                const quantityInput = document.querySelector('.quantity-input');
+                const minusBtn = document.querySelector('.quantity-btn.minus');
+                const plusBtn = document.querySelector('.quantity-btn.plus');
+                
+                if (!quantityInput || !minusBtn || !plusBtn) {
+                    addTestResult('quickView', 'Error: Could not find quantity controls', 'error');
+                    return;
+                }
+                
+                // Test initial value
+                const initialValue = parseInt(quantityInput.value) || 1;
+                if (initialValue === 1) {
+                    addTestResult('quickView', 'Quantity selector initialized correctly', 'success');
+                } else {
+                    addTestResult('quickView', 'Warning: Initial quantity is not 1', 'warning');
+                }
+                
+                // Test increase quantity
+                plusBtn.click();
+                if (parseInt(quantityInput.value) === initialValue + 1) {
+                    addTestResult('quickView', 'Quantity increase works', 'success');
+                } else {
+                    addTestResult('quickView', 'Error: Quantity did not increase', 'error');
+                }
+                
+                // Test decrease quantity
+                minusBtn.click();
+                if (parseInt(quantityInput.value) === initialValue) {
+                    addTestResult('quickView', 'Quantity decrease works', 'success');
+                } else {
+                    addTestResult('quickView', 'Error: Quantity did not decrease', 'error');
+                }
+                
+                // Test minimum value (should not go below 1)
+                const currentValue = parseInt(quantityInput.value);
+                for (let i = 0; i < currentValue; i++) {
+                    minusBtn.click();
+                }
+                
+                if (parseInt(quantityInput.value) === 1) {
+                    addTestResult('quickView', 'Minimum quantity (1) enforced', 'success');
+                } else {
+                    addTestResult('quickView', 'Error: Quantity went below minimum', 'error');
+                }
+                
+                // Close the quick view
+                const closeBtn = document.querySelector('.quick-view-close');
+                if (closeBtn) closeBtn.click();
+                
+            }, 500);
+        }
+        
+        function testAddToCart() {
+            addTestResult('cart', 'Starting add to cart test...', 'info');
+            
+            if (typeof addToCart !== 'function') {
+                addTestResult('cart', 'Error: addToCart function not found', 'error');
+                return;
+            }
+            
+            // Test adding a product to cart
+            const testProduct = {
+                id: 'test-' + Date.now(),
+                name: 'Test Product',
+                price: 999,
+                quantity: 1,
+                image: 'images/placeholder-product.png'
+            };
+            
+            addToCart(testProduct);
+            
+            // Check if cart was updated
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const addedProduct = cart.find(item => item.id === testProduct.id);
+            
+            if (addedProduct) {
+                addTestResult('cart', 'Product added to cart successfully', 'success');
+                
+                // Verify cart count was updated
+                const cartCount = document.querySelector('.cart-count');
+                if (cartCount && parseInt(cartCount.textContent) > 0) {
+                    addTestResult('cart', 'Cart count updated correctly', 'success');
+                } else {
+                    addTestResult('cart', 'Warning: Cart count not updated', 'warning');
+                }
+            } else {
+                addTestResult('cart', 'Error: Failed to add product to cart', 'error');
+            }
+        }
+        
+        function testUpdateQuantity() {
+            addTestResult('cart', 'Starting update quantity test...', 'info');
+            
+            // First add a test product if cart is empty
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let testProduct = cart[0];
+            
+            if (!testProduct) {
+                testProduct = {
+                    id: 'test-update-' + Date.now(),
+                    name: 'Test Product for Update',
+                    price: 500,
+                    quantity: 1,
+                    image: 'images/placeholder-product.png'
+                };
+                addToCart(testProduct);
+                testProduct = JSON.parse(localStorage.getItem('cart'))[0];
+            }
+            
+            // Update quantity
+            const newQuantity = (testProduct.quantity || 1) + 1;
+            testProduct.quantity = newQuantity;
+            
+            if (typeof updateCartItem === 'function') {
+                updateCartItem(testProduct.id, newQuantity);
+                
+                // Check if quantity was updated
+                setTimeout(() => {
+                    const updatedCart = JSON.parse(localStorage.getItem('cart')) || [];
+                    const updatedProduct = updatedCart.find(item => item.id === testProduct.id);
+                    
+                    if (updatedProduct && updatedProduct.quantity === newQuantity) {
+                        addTestResult('cart', 'Product quantity updated successfully', 'success');
+                    } else {
+                        addTestResult('cart', 'Error: Failed to update product quantity', 'error');
+                    }
+                }, 100);
+            } else {
+                addTestResult('cart', 'Error: updateCartItem function not found', 'error');
+            }
+        }
+        
+        function testRemoveFromCart() {
+            addTestResult('cart', 'Starting remove from cart test...', 'info');
+            
+            // First add a test product if cart is empty
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let testProduct = cart[0];
+            
+            if (!testProduct) {
+                testProduct = {
+                    id: 'test-remove-' + Date.now(),
+                    name: 'Test Product for Removal',
+                    price: 300,
+                    quantity: 1,
+                    image: 'images/placeholder-product.png'
+                };
+                addToCart(testProduct);
+                cart = JSON.parse(localStorage.getItem('cart')) || [];
+                testProduct = cart[0];
+            }
+            
+            const initialCount = cart.length;
+            
+            if (typeof removeFromCart === 'function') {
+                removeFromCart(testProduct.id);
+                
+                // Check if product was removed
+                setTimeout(() => {
+                    const updatedCart = JSON.parse(localStorage.getItem('cart')) || [];
+                    const productStillExists = updatedCart.some(item => item.id === testProduct.id);
+                    
+                    if (!productStillExists) {
+                        addTestResult('cart', 'Product removed from cart successfully', 'success');
+                        
+                        // Verify cart count was updated
+                        const cartCount = document.querySelector('.cart-count');
+                        if (cartCount) {
+                            const expectedCount = Math.max(0, initialCount - 1);
+                            const actualCount = parseInt(cartCount.textContent) || 0;
+                            
+                            if (actualCount === expectedCount) {
+                                addTestResult('cart', 'Cart count updated correctly after removal', 'success');
+                            } else {
+                                addTestResult('cart', `Warning: Cart count not updated correctly (expected ${expectedCount}, got ${actualCount})`, 'warning');
+                            }
+                        }
+                    } else {
+                        addTestResult('cart', 'Error: Product was not removed from cart', 'error');
+                    }
+                }, 100);
+            } else {
+                addTestResult('cart', 'Error: removeFromCart function not found', 'error');
+            }
+        }
+        
+        // Placeholder functions for other tests
+        function testProductFiltering() {
+            addTestResult('listing', 'Product filtering test not implemented yet', 'warning');
+        }
+        
+        function testProductSorting() {
+            addTestResult('listing', 'Product sorting test not implemented yet', 'warning');
+        }
+        
+        function testPagination() {
+            addTestResult('listing', 'Pagination test not implemented yet', 'warning');
+        }
+        
+        function testGuestCheckout() {
+            addTestResult('checkout', 'Guest checkout test not implemented yet', 'warning');
+        }
+        
+        function testUserCheckout() {
+            addTestResult('checkout', 'User checkout test not implemented yet', 'warning');
+        }
+        
+        function testOrderConfirmation() {
+            addTestResult('checkout', 'Order confirmation test not implemented yet', 'warning');
+        }
+        
+        // Run all tests
+        function runAllTests() {
+            // Reset all status indicators
+            document.querySelectorAll('.feature-status').forEach(el => {
+                el.textContent = 'Not Tested';
+                el.className = 'feature-status status-warning';
+            });
+            
+            // Clear all results
+            document.querySelectorAll('.test-results').forEach(el => {
+                el.innerHTML = '';
+            });
+            
+            // Run tests sequentially
+            setTimeout(() => testQuickViewBasic(), 100);
+            setTimeout(() => testImageGallery(), 3000);
+            setTimeout(() => testQuantitySelector(), 6000);
+            setTimeout(() => testAddToCart(), 9000);
+            setTimeout(() => testUpdateQuantity(), 12000);
+            setTimeout(() => testRemoveFromCart(), 15000);
+            
+            // Open the first test section
+            document.querySelector('.test-card').classList.add('active');
+        }
+        
+        // Clear all test results
+        function clearAllTests() {
+            // Reset all status indicators
+            document.querySelectorAll('.feature-status').forEach(el => {
+                el.textContent = 'Not Tested';
+                el.className = 'feature-status status-warning';
+            });
+            
+            // Clear all results
+            document.querySelectorAll('.test-results').forEach(el => {
+                el.innerHTML = '';
+            });
+        }
+    </script>
+</body>
+</html>

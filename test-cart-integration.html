@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Integration Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/products.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .test-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .test-btn {
+            padding: 10px 20px;
+            background-color: #e31837;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .test-btn:hover {
+            background-color: #c41232;
+        }
+        .test-results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            border-left: 4px solid #e31837;
+        }
+        .test-result-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+        .test-result-item.pass {
+            border-left: 4px solid #2ecc71;
+        }
+        .test-result-item.fail {
+            border-left: 4px solid #e74c3c;
+        }
+        .test-result-icon {
+            margin-right: 10px;
+            font-size: 20px;
+            min-width: 24px;
+            text-align: center;
+        }
+        .pass .test-result-icon {
+            color: #2ecc71;
+        }
+        .fail .test-result-icon {
+            color: #e74c3c;
+        }
+        .cart-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .cart-total {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #ddd;
+        }
+        .cart-empty {
+            color: #666;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Cart Integration Test</h1>
+        
+        <div class="test-section">
+            <h2>Test Quick View to Cart Integration</h2>
+            <p>This test verifies that products can be added to the cart from the quick view modal.</p>
+            
+            <div class="test-buttons">
+                <button class="test-btn" id="testQuickView1">Test Quick View (Product 1)</button>
+                <button class="test-btn" id="testQuickView2">Test Quick View (Product 2)</button>
+            </div>
+            
+            <div class="test-results" id="quickViewTestResults">
+                <!-- Test results will be added here -->
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Test Direct Cart Operations</h2>
+            <p>This section tests direct cart operations without using the quick view.</p>
+            
+            <div class="test-buttons">
+                <button class="test-btn" id="addProduct1">Add Product 1 to Cart</button>
+                <button class="test-btn" id="addProduct2">Add Product 2 to Cart</button>
+                <button class="test-btn" id="clearCart">Clear Cart</button>
+            </div>
+            
+            <div class="test-results" id="cartTestResults">
+                <!-- Test results will be added here -->
+            </div>
+            
+            <div class="cart-summary">
+                <h3>Cart Contents</h3>
+                <div id="cartContents">
+                    <div class="cart-empty">Your cart is empty</div>
+                </div>
+                <div id="cartTotal" class="cart-total">Total: Ksh 0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick View Modal -->
+    <div class="quick-view-modal">
+        <div class="quick-view-overlay"></div>
+        <div class="quick-view-content">
+            <button class="quick-view-close">&times;</button>
+            <div class="quick-view-body">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/quick-view.js"></script>
+    <script>
+        // Initialize QuickView and Cart
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize modules
+            if (typeof QuickView !== 'undefined') {
+                QuickView.init();
+                addTestResult('quickViewTestResults', 'QuickView module initialized', true);
+            } else {
+                addTestResult('quickViewTestResults', 'QuickView module not found', false);
+            }
+            
+            if (typeof addToCart === 'function') {
+                addTestResult('cartTestResults', 'Cart module initialized', true);
+            } else {
+                addTestResult('cartTestResults', 'Cart module not found', false);
+            }
+            
+            // Test Quick View buttons
+            document.getElementById('testQuickView1').addEventListener('click', function() {
+                if (typeof QuickView !== 'undefined' && typeof QuickView.openQuickView === 'function') {
+                    QuickView.openQuickView('1');
+                    addTestResult('quickViewTestResults', 'Opened Quick View for Product 1', true);
+                } else {
+                    addTestResult('quickViewTestResults', 'Failed to open Quick View', false);
+                }
+            });
+            
+            document.getElementById('testQuickView2').addEventListener('click', function() {
+                if (typeof QuickView !== 'undefined' && typeof QuickView.openQuickView === 'function') {
+                    QuickView.openQuickView('2');
+                    addTestResult('quickViewTestResults', 'Opened Quick View for Product 2', true);
+                } else {
+                    addTestResult('quickViewTestResults', 'Failed to open Quick View', false);
+                }
+            });
+            
+            // Test direct cart operations
+            document.getElementById('addProduct1').addEventListener('click', function() {
+                if (typeof addToCart === 'function') {
+                    addToCart({
+                        id: 'test-1',
+                        name: 'Test Product 1',
+                        price: 1000,
+                        image: 'images/placeholder-product.png',
+                        quantity: 1
+                    });
+                    addTestResult('cartTestResults', 'Added Test Product 1 to cart', true);
+                    updateCartDisplay();
+                } else {
+                    addTestResult('cartTestResults', 'Failed to add product to cart', false);
+                }
+            });
+            
+            document.getElementById('addProduct2').addEventListener('click', function() {
+                if (typeof addToCart === 'function') {
+                    addToCart({
+                        id: 'test-2',
+                        name: 'Test Product 2',
+                        price: 1500,
+                        image: 'images/placeholder-product.png',
+                        quantity: 1
+                    });
+                    addTestResult('cartTestResults', 'Added Test Product 2 to cart', true);
+                    updateCartDisplay();
+                } else {
+                    addTestResult('cartTestResults', 'Failed to add product to cart', false);
+                }
+            });
+            
+            document.getElementById('clearCart').addEventListener('click', function() {
+                if (typeof localStorage !== 'undefined') {
+                    localStorage.removeItem('cart');
+                    // Refresh cart display
+                    if (typeof updateCartDisplay === 'function') {
+                        updateCartDisplay();
+                    }
+                    addTestResult('cartTestResults', 'Cart cleared', true);
+                } else {
+                    addTestResult('cartTestResults', 'Failed to clear cart', false);
+                }
+            });
+            
+            // Add test result to the specified container
+            function addTestResult(containerId, message, passed) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                
+                const resultItem = document.createElement('div');
+                resultItem.className = `test-result-item ${passed ? 'pass' : 'fail'}`;
+                
+                const icon = document.createElement('i');
+                icon.className = `fas fa-${passed ? 'check-circle' : 'times-circle'} test-result-icon`;
+                
+                const text = document.createElement('span');
+                text.textContent = message;
+                
+                resultItem.appendChild(icon);
+                resultItem.appendChild(text);
+                container.insertBefore(resultItem, container.firstChild);
+                
+                // Auto-scroll to the new result
+                resultItem.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Update cart display
+            function updateCartDisplay() {
+                const cartContents = document.getElementById('cartContents');
+                const cartTotal = document.getElementById('cartTotal');
+                
+                if (!cartContents || !cartTotal) return;
+                
+                // Get cart from localStorage
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                
+                if (cart.length === 0) {
+                    cartContents.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
+                    cartTotal.textContent = 'Total: Ksh 0';
+                    return;
+                }
+                
+                // Calculate total
+                let total = 0;
+                let itemsHtml = '';
+                
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    
+                    itemsHtml += `
+                        <div class="cart-item">
+                            <div>${item.name} (${item.quantity})</div>
+                            <div>Ksh ${itemTotal.toLocaleString()}</div>
+                        </div>
+                    `;
+                });
+                
+                cartContents.innerHTML = itemsHtml;
+                cartTotal.textContent = `Total: Ksh ${total.toLocaleString()}`;
+            }
+            
+            // Initial cart display
+            updateCartDisplay();
+            
+            // Listen for cart updates (from quick view)
+            window.addEventListener('cartUpdated', function() {
+                updateCartDisplay();
+                addTestResult('quickViewTestResults', 'Cart updated from Quick View', true);
+            });
+        });
+    </script>
+</body>
+</html>

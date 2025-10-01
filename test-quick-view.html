@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick View Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/products.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .test-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .test-btn {
+            padding: 10px 20px;
+            background-color: #e31837;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .test-btn:hover {
+            background-color: #c41232;
+        }
+        .test-results {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            border-left: 4px solid #e31837;
+        }
+        .test-result-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+        .test-result-item.pass {
+            border-left: 4px solid #2ecc71;
+        }
+        .test-result-item.fail {
+            border-left: 4px solid #e74c3c;
+        }
+        .test-result-icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        .pass .test-result-icon {
+            color: #2ecc71;
+        }
+        .fail .test-result-icon {
+            color: #e74c3c;
+        }
+        .test-instructions {
+            background-color: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Quick View Test Page</h1>
+        
+        <div class="test-instructions">
+            <h3>Testing Instructions:</h3>
+            <ol>
+                <li>Click the "Test Quick View" button to open the quick view modal</li>
+                <li>Verify that the product details are displayed correctly</li>
+                <li>Test the quantity buttons (+/-) to ensure they work</li>
+                <li>Try adding the product to cart</li>
+                <li>Test the wishlist button</li>
+                <li>Close the modal using the close button, overlay, or Escape key</li>
+            </ol>
+        </div>
+        
+        <div class="test-buttons">
+            <button class="test-btn" id="testBtn1">Test Quick View (Product 1)</button>
+            <button class="test-btn" id="testBtn2">Test Quick View (Product 3)</button>
+            <button class="test-btn" id="testBtn3">Test Quick View (Invalid ID)</button>
+        </div>
+        
+        <div class="test-results">
+            <h3>Test Results:</h3>
+            <div id="testResults">
+                <!-- Test results will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick View Modal (will be loaded from base.html) -->
+    <div class="quick-view-modal">
+        <div class="quick-view-overlay"></div>
+        <div class="quick-view-content">
+            <button class="quick-view-close">&times;</button>
+            <div class="quick-view-body">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/quick-view.js"></script>
+    <script>
+        // Initialize QuickView
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize QuickView
+            if (typeof QuickView !== 'undefined') {
+                QuickView.init();
+                addTestResult('QuickView module loaded', true);
+            } else {
+                addTestResult('QuickView module not found', false);
+            }
+            
+            // Test button 1 - Product 1
+            document.getElementById('testBtn1').addEventListener('click', function() {
+                if (typeof QuickView !== 'undefined' && typeof QuickView.openQuickView === 'function') {
+                    QuickView.openQuickView('1');
+                    addTestResult('Opened Quick View for Product 1', true);
+                } else {
+                    addTestResult('Failed to open Quick View', false);
+                }
+            });
+            
+            // Test button 2 - Product 3
+            document.getElementById('testBtn2').addEventListener('click', function() {
+                if (typeof QuickView !== 'undefined' && typeof QuickView.openQuickView === 'function') {
+                    QuickView.openQuickView('3');
+                    addTestResult('Opened Quick View for Product 3', true);
+                } else {
+                    addTestResult('Failed to open Quick View', false);
+                }
+            });
+            
+            // Test button 3 - Invalid ID
+            document.getElementById('testBtn3').addEventListener('click', function() {
+                if (typeof QuickView !== 'undefined' && typeof QuickView.openQuickView === 'function') {
+                    QuickView.openQuickView('invalid-id');
+                    addTestResult('Tested Quick View with invalid ID', true);
+                } else {
+                    addTestResult('Failed to test Quick View with invalid ID', false);
+                }
+            });
+            
+            // Add test result to the page
+            function addTestResult(message, passed) {
+                const testResults = document.getElementById('testResults');
+                const resultItem = document.createElement('div');
+                resultItem.className = `test-result-item ${passed ? 'pass' : 'fail'}`;
+                
+                const icon = document.createElement('i');
+                icon.className = `fas fa-${passed ? 'check-circle' : 'times-circle'} test-result-icon`;
+                
+                const text = document.createElement('span');
+                text.textContent = message;
+                
+                resultItem.appendChild(icon);
+                resultItem.appendChild(text);
+                testResults.insertBefore(resultItem, testResults.firstChild);
+                
+                // Auto-scroll to the new result
+                resultItem.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Add initial test result
+            addTestResult('Test page loaded successfully', true);
+        });
+    </script>
+</body>
+</html>
