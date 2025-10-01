@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Search, MessageCircle, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Product {
@@ -76,7 +75,6 @@ const Products = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <FloatingWhatsApp />
       
       <div className="container mx-auto px-4 py-12 flex-grow">
         {/* Header */}

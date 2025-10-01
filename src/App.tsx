@@ -10,6 +10,7 @@ import Contact from "./pages/Contact";
 import HowToOrder from "./pages/HowToOrder";
 import Payments from "./pages/Payments";
 import NotFound from "./pages/NotFound";
+import EnhancedWhatsApp from "./components/EnhancedWhatsApp";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <EnhancedWhatsApp />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
