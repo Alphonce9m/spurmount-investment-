@@ -9,7 +9,8 @@ const FloatingWhatsApp = () => {
   const handleSend = () => {
     if (!message.trim()) return;
     
-    const whatsappUrl = `https://wa.me/254XXXXXXXXX?text=${encodeURIComponent(message)}`;
+    const formattedPhone = '254740581156'; // Remove any spaces or special characters
+    const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
     setMessage("");
     setIsOpen(false);

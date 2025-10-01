@@ -67,8 +67,9 @@ const Products = () => {
   };
 
   const handleWhatsAppOrder = (productName: string) => {
-    const message = `Hi, I'm interested in ordering ${productName}`;
-    const whatsappUrl = `https://wa.me/254XXXXXXXXX?text=${encodeURIComponent(message)}`;
+    const message = `Hello Spurmount, I would like to place an order for ${productName}. Please provide more details.`;
+    const formattedPhone = '254740581156'; // Remove any spaces or special characters
+    const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
