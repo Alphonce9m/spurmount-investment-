@@ -28,7 +28,7 @@ const Contact = () => {
 
   const handleWhatsApp = () => {
     const message = "Hi, I'd like to inquire about your products and services.";
-    const whatsappUrl = `https://wa.me/254XXXXXXXXX?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/254740581156?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
@@ -62,8 +62,8 @@ const Contact = () => {
                     <Phone className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-card-foreground">Phone</h4>
-                    <p className="text-muted-foreground">+254 XXX XXX XXX</p>
+                    <h4 className="font-semibold text-card-foreground">Phone & WhatsApp</h4>
+                    <p className="text-muted-foreground">+254 740 581156</p>
                   </div>
                 </div>
 
