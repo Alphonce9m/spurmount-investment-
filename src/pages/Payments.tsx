@@ -10,8 +10,8 @@ const Payments = () => {
   const { toast } = useToast();
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
-  const paybillNumber = "123456"; // Replace with actual paybill
-  const accountNumber = "Spurmount"; // Replace with actual account format
+  const paybillNumber = "400200"; // M-PESA Paybill number
+  const accountNumber = "852404"; // Account number for payment reference
 
   const copyToClipboard = (text: string, field: string) => {
     navigator.clipboard.writeText(text);
