@@ -73,7 +73,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-card-foreground">Email</h4>
-                    <p className="text-muted-foreground">info@spurmount.com</p>
+                    <p className="text-muted-foreground">spurmounttradinginvestment@gmail.com</p>
                   </div>
                 </div>
 
@@ -160,7 +160,7 @@ const Contact = () => {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="your@email.com"
+                    placeholder="spurmounttradinginvestment@gmail.com"
                   />
                 </div>
 

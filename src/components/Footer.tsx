@@ -55,7 +55,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center space-x-2 text-sm text-primary-foreground/80">
                 <Mail className="h-4 w-4" />
-                <span>info@spurmount.com</span>
+                <span>spurmounttradinginvestment@gmail.com</span>
               </li>
               <li className="flex items-center space-x-2 text-sm text-primary-foreground/80">
                 <MapPin className="h-4 w-4" />
