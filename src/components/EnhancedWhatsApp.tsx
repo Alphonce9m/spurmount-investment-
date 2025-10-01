@@ -28,8 +28,44 @@ const EnhancedWhatsApp = () => {
   ];
 
   const handleSendMessage = (customMessage?: string, isAutoMessage = false) => {
-    const msg = customMessage || message.trim();
+    let msg = customMessage || message.trim();
     if (!msg) return;
+
+    // Handle special commands
+    const lowerMsg = msg.toLowerCase().trim();
+    let response = '';
+    
+    if (lowerMsg === 'menu') {
+      response = `*📋 Our Product Categories*\n\n` +
+      `• *Grains & Cereals*\n  - Rice (Basmati, Pishori, Soya)\n  - Maize Flour\n  - Wheat Flour\n  - Soya Beans\n\n` +
+      `• *Pulses & Legumes*\n  - Green Grams\n  - Yellow Peas\n  - Beans (Nairobi, Red, Yellow)\n  - Lentils\n\n` +
+      `• *Spices & Seasonings*\n  - Salt\n  - Black Pepper\n  - Mixed Masala\n  - Curry Powder\n\n` +
+      `• *Cooking Oils*\n  - Sunflower Oil\n  - Vegetable Oil\n  - Palm Oil\n\n` +
+      `• *Canned Goods*\n  - Tomatoes\n  - Baked Beans\n  - Sardines\n\n` +
+      `*📞* Call +254 740 581156 for bulk pricing and orders`;
+      
+      msg = response;
+      isAutoMessage = true;
+    } 
+    else if (lowerMsg === 'prices' || lowerMsg.includes('price list')) {
+      response = `*💰 Current Price List (Per 50kg Bag)*\n\n` +
+      `*Grains & Cereals*\n` +
+      `• Rice (Basmati) - KES 7,500\n` +
+      `• Rice (Pishori) - KES 6,900\n` +
+      `• Maize Flour - KES 3,200\n` +
+      `• Wheat Flour - KES 4,500\n\n` +
+      `*Pulses & Legumes*\n` +
+      `• Green Grams - KES 8,500\n` +
+      `• Yellow Peas - KES 5,800\n` +
+      `• Beans (Nairobi) - KES 9,200\n\n` +
+      `*Special Offer!*\n` +
+      `Order 10+ bags and get 3% discount!\n\n` +
+      `*📅* Prices are subject to change. Last updated: ${new Date().toLocaleDateString()}\n` +
+      `*📞* Call +254 740 581156 to confirm current prices`;
+      
+      msg = response;
+      isAutoMessage = true;
+    }
 
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(msg)}`;
     
@@ -76,7 +112,15 @@ const EnhancedWhatsApp = () => {
     const hasInteracted = localStorage.getItem('hasInteractedWithChat');
     if (!hasInteracted && isOpen) {
       setTimeout(() => {
-        const welcomeMessage = "Hello! 👋 Thank you for reaching out to Spurmount Trading & Investment. We're here to assist you with your wholesale needs. How can we help you today?";
+        const welcomeMessage = `👋 *Welcome to Spurmount Trading & Investment!*\n\nThank you for reaching out to Kenya's premier wholesale supplier of quality dry foodstuffs.\n\n*Business Hours:*\n📅 Mon-Fri: 8:00 AM - 6:00 PM\n📅 Sat: 9:00 AM - 4:00 PM\n📅 Sun: Closed\n\n*Popular Categories:*
+• Grains & Cereals
+• Pulses & Legumes
+• Spices & Seasonings
+• Cooking Oils
+• Canned Goods\n\n*How can we assist you today?* You can ask about:\n• Product availability
+• Bulk pricing
+• Delivery options\n\n*Quick Tip:* Type 'menu' to see our product categories or 'prices' for our latest price list.`;
+        
         handleSendMessage(welcomeMessage, true);
         localStorage.setItem('hasInteractedWithChat', 'true');
         setHasSentWelcome(true);
