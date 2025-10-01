@@ -11,6 +11,7 @@ const EnhancedWhatsApp = () => {
   const [message, setMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [hasSentWelcome, setHasSentWelcome] = useState(false);
   const { toast } = useToast();
   const phoneNumber = "254740581156";
   const businessHours = {
@@ -26,12 +27,22 @@ const EnhancedWhatsApp = () => {
     "Can I place a bulk order?"
   ];
 
-  const handleSendMessage = (customMessage?: string) => {
+  const handleSendMessage = (customMessage?: string, isAutoMessage = false) => {
     const msg = customMessage || message.trim();
     if (!msg) return;
 
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(msg)}`;
-    window.open(whatsappUrl, '_blank');
+    
+    if (!isAutoMessage) {
+      window.open(whatsappUrl, '_blank');
+    } else {
+      // For auto messages, open in a hidden iframe to send without redirect
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = whatsappUrl;
+      document.body.appendChild(iframe);
+      setTimeout(() => document.body.removeChild(iframe), 1000);
+    }
     
     if (!customMessage) {
       setMessage("");
@@ -47,7 +58,7 @@ const EnhancedWhatsApp = () => {
   const handleQuickQuestion = (question: string) => {
     setMessage(question);
     // Auto-send the quick question
-    setTimeout(() => handleSendMessage(question), 300);
+    setTimeout(() => handleSendMessage(question, false), 300);
   };
 
   useEffect(() => {
@@ -60,6 +71,17 @@ const EnhancedWhatsApp = () => {
       (day === 6 && hours >= 9 && hours < 16); // Saturday 9AM-4PM
 
     setIsTyping(isOpen);
+
+    // Send welcome message when component mounts if it's the first time
+    const hasInteracted = localStorage.getItem('hasInteractedWithChat');
+    if (!hasInteracted && isOpen) {
+      setTimeout(() => {
+        const welcomeMessage = "Hello! 👋 Thank you for reaching out to Spurmount Trading & Investment. We're here to assist you with your wholesale needs. How can we help you today?";
+        handleSendMessage(welcomeMessage, true);
+        localStorage.setItem('hasInteractedWithChat', 'true');
+        setHasSentWelcome(true);
+      }, 1500); // Small delay to ensure chat is ready
+    }
   }, []);
 
   return (
@@ -109,15 +131,17 @@ const EnhancedWhatsApp = () => {
 
             {/* Chat Body */}
             <div className="h-96 overflow-y-auto p-4 space-y-4 bg-gray-50">
-              <div className="bg-white p-3 rounded-lg shadow-sm">
-                <p className="text-sm text-gray-700">
-                  👋 Hello! Thanks for reaching out to Spurmount. We're here to help with your wholesale needs. How can we assist you today?
-                </p>
-                <p className="text-xs text-gray-400 mt-2 flex items-center">
-                  <Clock className="h-3 w-3 mr-1" />
-                  {isTyping ? "Typically replies within minutes" : "Our team will reply as soon as possible"}
-                </p>
-              </div>
+              {hasSentWelcome && (
+                <div className="bg-white p-3 rounded-lg shadow-sm">
+                  <p className="text-sm text-gray-700">
+                    👋 Hello! Thanks for reaching out to Spurmount. We're here to help with your wholesale needs. How can we assist you today?
+                  </p>
+                  <p className="text-xs text-gray-400 mt-2 flex items-center">
+                    <Clock className="h-3 w-3 mr-1" />
+                    {isTyping ? "Typically replies within minutes" : "Our team will reply as soon as possible"}
+                  </p>
+                </div>
+              )}
 
               <div className="space-y-2">
                 <p className="text-xs text-gray-500 font-medium">QUICK QUESTIONS</p>
