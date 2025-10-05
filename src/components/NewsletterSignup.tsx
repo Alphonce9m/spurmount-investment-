@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
+import { db } from '@/lib/firebase/config';
 
 const NewsletterSignup = () => {
   const [email, setEmail] = useState("");
@@ -22,31 +23,42 @@ const NewsletterSignup = () => {
       return;
     }
 
-    setLoading(true);
-
-    const { error } = await supabase
-      .from('newsletter_subscribers')
-      .insert([{ email }]);
-
-    if (error) {
-      if (error.code === '23505') {
+    try {
+      setLoading(true);
+      
+      // Check if email already exists
+      const subscribersRef = collection(db, 'newsletter_subscribers');
+      const q = query(subscribersRef, where('email', '==', email));
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
         toast({
           title: "Already Subscribed",
           description: "This email is already subscribed to our newsletter.",
         });
-      } else {
-        toast({
-          title: "Error",
-          description: "Failed to subscribe. Please try again.",
-          variant: "destructive",
-        });
+        return;
       }
-    } else {
+      
+      // Add new subscriber
+      await addDoc(collection(db, 'newsletter_subscribers'), {
+        email,
+        subscribedAt: new Date().toISOString(),
+        active: true
+      });
+      
       toast({
         title: "Success!",
         description: "You've been subscribed to our newsletter.",
       });
       setEmail("");
+      
+    } catch (error) {
+      console.error("Error subscribing:", error);
+      toast({
+        title: "Error",
+        description: "Failed to subscribe. Please try again.",
+        variant: "destructive",
+      });
     }
 
     setLoading(false);

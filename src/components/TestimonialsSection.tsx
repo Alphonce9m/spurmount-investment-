@@ -1,48 +1,35 @@
-import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 
-interface Testimonial {
-  id: string;
-  customer_name: string;
-  company_name: string | null;
-  testimonial_text: string;
-  rating: number;
-}
+// Static testimonials data
+const testimonials = [
+  {
+    id: 1,
+    name: "John Doe",
+    role: "Restaurant Owner",
+    content: "Excellent quality products and reliable delivery. Highly recommended!",
+    rating: 5,
+    image: "/placeholder-user.jpg"
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    role: "Catering Manager",
+    content: "Great variety of dry food products at competitive prices.",
+    rating: 4,
+    image: "/placeholder-user.jpg"
+  },
+  {
+    id: 3,
+    name: "Michael Johnson",
+    role: "Hotel Chef",
+    content: "Consistently fresh and high-quality ingredients for our kitchen.",
+    rating: 5,
+    image: "/placeholder-user.jpg"
+  }
+];
 
 const TestimonialsSection = () => {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchTestimonials = async () => {
-      const { data, error } = await supabase
-        .from('testimonials')
-        .select('*')
-        .eq('is_featured', true)
-        .order('created_at', { ascending: false })
-        .limit(3);
-
-      if (!error && data) {
-        setTestimonials(data);
-      }
-      setLoading(false);
-    };
-
-    fetchTestimonials();
-  }, []);
-
-  if (loading) {
-    return (
-      <section className="py-16 bg-secondary/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-4">Loading testimonials...</div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className="py-16 bg-secondary/30">
       <div className="container mx-auto px-4">
@@ -69,13 +56,11 @@ const TestimonialsSection = () => {
                   ))}
                 </div>
                 <p className="text-muted-foreground mb-6 italic">
-                  "{testimonial.testimonial_text}"
+                  "{testimonial.content}"
                 </p>
                 <div>
-                  <p className="font-semibold text-card-foreground">{testimonial.customer_name}</p>
-                  {testimonial.company_name && (
-                    <p className="text-sm text-muted-foreground">{testimonial.company_name}</p>
-                  )}
+                  <p className="font-semibold text-card-foreground">{testimonial.name}</p>
+                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
                 </div>
               </CardContent>
             </Card>

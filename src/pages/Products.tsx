@@ -2,20 +2,11 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, MessageCircle, Loader2 } from "lucide-react";
+import { Search, ShoppingCart, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { supabase } from "@/integrations/supabase/client";
-
-interface Product {
-  id: string;
-  name: string;
-  description: string | null;
-  category: string;
-  price: number;
-  stock_quantity: number;
-  is_featured: boolean;
-}
+import { supabase } from '@/lib/supabase/client';
+import { Product } from '@/lib/supabase/models/product';
 
 const Products = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,50 +15,91 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
-  const categories = ["All", "Groceries", "Beverages", "Household"];
+  // Update categories to match your product categories in Supabase
+  const categories = ["All", "Grains", "Pulses", "Spices", "Nuts", "Dried Fruits"];
 
+  // Fetch products on component mount
   useEffect(() => {
     fetchProducts();
   }, []);
 
+  // Filter products when search query or category changes
   useEffect(() => {
     filterProducts();
   }, [searchQuery, selectedCategory, products]);
 
+  // Fetch products from Supabase
   const fetchProducts = async () => {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('is_active', true)
-      .order('is_featured', { ascending: false })
-      .order('name', { ascending: true });
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-    if (!error && data) {
-      setProducts(data);
+      if (error) throw error;
+
+      // Transform data to match the Product interface
+      const formattedProducts = data.map((product: any) => ({
+        id: product.id,
+        name: product.name,
+        description: product.description || '',
+        price: Number(product.price) || 0,
+        category: product.category || 'Uncategorized',
+        inStock: product.in_stock || false,
+        isFeatured: product.is_featured || false,
+        stockQuantity: Number(product.stock_quantity) || 0,
+        minOrder: Number(product.min_order) || 1,
+        unit: product.unit || 'kg',
+        weight: Number(product.weight) || 0,
+        images: product.images || [],
+        createdAt: product.created_at || new Date().toISOString(),
+        updatedAt: product.updated_at || new Date().toISOString()
+      }));
+
+      setProducts(formattedProducts);
+      setFilteredProducts(formattedProducts);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
+  // Filter products based on search query and selected category
   const filterProducts = () => {
-    let filtered = products;
+    let filtered = [...products];
 
+    // Apply category filter
     if (selectedCategory !== "All") {
       filtered = filtered.filter(p => p.category === selectedCategory);
     }
 
+    // Apply search query
     if (searchQuery) {
-      filtered = filtered.filter(p =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.category.toLowerCase().includes(searchQuery.toLowerCase())
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(p => 
+        (p.name?.toLowerCase().includes(query) || 
+         p.description?.toLowerCase().includes(query) ||
+         p.category?.toLowerCase().includes(query))
       );
     }
 
     setFilteredProducts(filtered);
   };
 
-  const handleWhatsAppOrder = (productName: string) => {
-    const message = `Hello Spurmount, I would like to place an order for ${productName}. Please provide more details.`;
-    const formattedPhone = '254740581156'; // Remove any spaces or special characters
+  // Handle WhatsApp order button click
+  const handleWhatsAppOrder = (product: Product) => {
+    const message = `Hello Spurmount, I would like to place an order for:
+    
+*Product:* ${product.name}
+*Price:* Ksh ${product.price?.toLocaleString() || '0'}
+*Quantity:* 
+*Delivery Address:* 
+
+Please confirm availability and provide payment details.`;
+
+    const formattedPhone = '254740581156'; // Your WhatsApp business number
     const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
@@ -126,41 +158,46 @@ const Products = () => {
             {filteredProducts.map((product, index) => (
               <Card 
                 key={product.id} 
-                className="shadow-card hover:shadow-elevated transition-smooth border-border/50 animate-fade-up"
+                className="shadow-card hover:shadow-elevated transition-smooth border-border/50 animate-fade-up flex flex-col h-full"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-medium text-accent bg-accent/10 px-2 py-1 rounded">
-                        {product.category}
-                      </span>
-                      {product.is_featured && (
-                        <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded">
-                          Featured
-                        </span>
-                      )}
+                <div className="relative aspect-square">
+                  <img
+                    src={product.images?.[0] || "/placeholder.svg"}
+                    alt={product.name}
+                    className="object-cover w-full h-full"
+                  />
+                  {product.isFeatured && (
+                    <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded">
+                      Featured
                     </div>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-card-foreground">{product.name}</h3>
-                  {product.description && (
-                    <p className="text-sm text-muted-foreground mb-4">{product.description}</p>
                   )}
-                  <p className="text-2xl font-bold text-primary mb-2">
-                    KES {product.price.toLocaleString()}
+                </div>
+                <CardContent className="flex-grow p-4 flex flex-col">
+                  <div className="mb-2">
+                    <span className="text-xs font-medium text-accent bg-accent/10 px-2 py-1 rounded">
+                      {product.category}
+                    </span>
+                  </div>
+                  <h3 className="font-semibold mb-2">{product.name}</h3>
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-grow">
+                    {product.description}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    Stock: {product.stock_quantity} units
-                  </p>
+                  <div className="flex items-center justify-between mt-auto">
+                    <span className="font-bold">Ksh {product.price.toLocaleString()}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {product.stockQuantity} in stock
+                    </span>
+                  </div>
                 </CardContent>
-                <CardFooter>
+                <CardFooter className="border-t p-4">
                   <Button 
-                    variant="cta" 
-                    className="w-full"
-                    onClick={() => handleWhatsAppOrder(product.name)}
+                    variant="default" 
+                    className="w-full bg-green-600 hover:bg-green-700"
+                    onClick={() => handleWhatsAppOrder(product)}
                   >
-                    <MessageCircle className="mr-2 h-4 w-4" />
-                    Order via WhatsApp
+                    <ShoppingCart className="mr-2 h-4 w-4" />
+                    Order Now
                   </Button>
                 </CardFooter>
               </Card>

@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from 'react';
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import About from "./pages/About";
@@ -11,6 +12,11 @@ import HowToOrder from "./pages/HowToOrder";
 import Payments from "./pages/Payments";
 import NotFound from "./pages/NotFound";
 import EnhancedWhatsApp from "./components/EnhancedWhatsApp";
+import Admin from "./pages/Admin";
+import TestFirebase from "./components/TestFirebase";
+
+// Import Firebase CDN config
+import './lib/firebase-cdn';
 
 const queryClient = new QueryClient();
 
@@ -28,6 +34,8 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/how-to-order" element={<HowToOrder />} />
           <Route path="/payments" element={<Payments />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/test-firebase" element={<TestFirebase />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
