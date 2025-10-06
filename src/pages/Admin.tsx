@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ProductsPage from './admin/ProductsPage';
+import { useState, useEffect } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
 
 // Simple admin check - in a real app, you'd want to implement proper authentication
 const ADMIN_PASSWORD = 'admin123'; // In a real app, use environment variables and proper auth
@@ -14,6 +13,7 @@ export default function Admin() {
     e.preventDefault();
     if (password === ADMIN_PASSWORD) {
       setIsAuthenticated(true);
+      navigate('/admin/products');
     } else {
       alert('Incorrect password');
     }
@@ -22,8 +22,17 @@ export default function Admin() {
   const handleLogout = () => {
     setIsAuthenticated(false);
     setPassword('');
+    navigate('/admin');
   };
 
+  // Protect the admin routes
+  useEffect(() => {
+    if (!isAuthenticated && window.location.pathname !== '/admin') {
+      navigate('/admin');
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Show login form if not authenticated
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -51,6 +60,7 @@ export default function Admin() {
                 />
               </div>
             </div>
+
             <div>
               <button
                 type="submit"
@@ -65,26 +75,25 @@ export default function Admin() {
     );
   }
 
+  // Show admin content if authenticated
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+    <div className="min-h-screen bg-gray-50">
+      <div className="p-4">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Admin Dashboard</h1>
           <button
             onClick={handleLogout}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
           >
-            Sign out
+            Logout
           </button>
         </div>
-      </header>
-      <main>
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <div className="px-4 py-6 sm:px-0">
-            <ProductsPage />
-          </div>
+        
+        {/* This Outlet will render the nested routes */}
+        <div className="bg-white p-6 rounded-lg shadow">
+          <Outlet />
         </div>
-      </main>
+      </div>
     </div>
   );
 }

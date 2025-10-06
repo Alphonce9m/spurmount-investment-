@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ShoppingBag, Truck, Shield, ArrowRight } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import StatsSection from "@/components/StatsSection";
 import TrustBadges from "@/components/TrustBadges";
@@ -37,9 +35,8 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col">
       <PromoBanner />
-      <Navbar />
       
       {/* Hero Section */}
       <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden">
@@ -161,8 +158,6 @@ const Home = () => {
           </Link>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };
