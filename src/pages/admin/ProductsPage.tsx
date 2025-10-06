@@ -4,44 +4,49 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Product, emptyProduct } from '@/lib/supabase/models/product';
 import { addProduct, getProducts, deleteProduct, updateProduct } from '@/lib/supabase/services/productService';
+import { Product, emptyProduct } from '@/lib/supabase/models/product';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>(emptyProduct);
   const [editingId, setEditingId] = useState<string | null>(null);
-
-  const loadProducts = async () => {
-    try {
-      setLoading(true);
-      const data = await getProducts();
-      setProducts(data);
-    } catch (error) {
-      console.error('Error loading products:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [formData, setFormData] = useState<Omit<Product, 'id' | 'created_at' | 'updated_at'>>({
+    name: '',
+    description: '',
+    price: 0,
+    category: '',
+    in_stock: true,
+    is_featured: false,
+    stock_quantity: 0,
+    min_order: 1,
+    unit: 'kg',
+    weight: 1,
+    images: [],
+  });
 
   useEffect(() => {
     loadProducts();
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target as HTMLInputElement;
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'number' ? parseFloat(value) : value,
+      [name]: name === 'price' || name === 'weight' || name === 'stock_quantity' || name === 'min_order'
+        ? Number(value)
+        : value,
     }));
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
+    // Map the checkbox name to the correct property name
+    const fieldName = name === 'inStock' ? 'in_stock' : 
+                     name === 'isFeatured' ? 'is_featured' : name;
     setFormData(prev => ({
       ...prev,
-      [name]: checked,
+      [fieldName]: checked,
     }));
   };
 
@@ -67,13 +72,13 @@ export default function ProductsPage() {
       description: product.description || '',
       price: product.price || 0,
       category: product.category || '',
-      inStock: product.inStock || false,
-      isFeatured: product.isFeatured || false,
-      stockQuantity: product.stockQuantity || 0,
-      minOrder: product.minOrder || 1,
+      in_stock: product.in_stock ?? true,
+      is_featured: product.is_featured ?? false,
+      stock_quantity: product.stock_quantity ?? 0,
+      min_order: product.min_order ?? 1,
       unit: product.unit || 'kg',
       weight: product.weight || 1,
-      images: product.images || [],
+      images: product.images || []
     });
     setEditingId(product.id || null);
   };
@@ -89,13 +94,24 @@ export default function ProductsPage() {
     }
   };
 
+  const loadProducts = async () => {
+    try {
+      setLoading(true);
+      const productsList = await getProducts();
+      setProducts(productsList);
+    } catch (error) {
+      console.error('Error loading products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Product Form */}
-        <Card className="lg:col-span-1 h-fit">
+    <div className="container mx-auto py-8">
+      <div className="grid gap-6 md:grid-cols-3">
+        <Card className="md:col-span-1">
           <CardHeader>
-            <CardTitle className="text-lg">
+            <CardTitle>
               {editingId ? 'Edit Product' : 'Add New Product'}
             </CardTitle>
           </CardHeader>
@@ -155,13 +171,13 @@ export default function ProductsPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="minOrder">Minimum Order</Label>
+                  <Label htmlFor="min_order">Minimum Order</Label>
                   <Input
-                    id="minOrder"
-                    name="minOrder"
+                    id="min_order"
+                    name="min_order"
                     type="number"
                     min="1"
-                    value={formData.minOrder}
+                    value={formData.min_order}
                     onChange={handleInputChange}
                     required
                   />
@@ -201,13 +217,13 @@ export default function ProductsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="stockQuantity">Stock Quantity</Label>
+                <Label htmlFor="stock_quantity">Stock Quantity</Label>
                 <Input
-                  id="stockQuantity"
-                  name="stockQuantity"
+                  id="stock_quantity"
+                  name="stock_quantity"
                   type="number"
                   min="0"
-                  value={formData.stockQuantity}
+                  value={formData.stock_quantity}
                   onChange={handleInputChange}
                   required
                 />
@@ -218,7 +234,7 @@ export default function ProductsPage() {
                   type="checkbox"
                   id="inStock"
                   name="inStock"
-                  checked={formData.inStock}
+                  checked={formData.in_stock}
                   onChange={handleCheckboxChange}
                   className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                 />
@@ -230,7 +246,7 @@ export default function ProductsPage() {
                   type="checkbox"
                   id="isFeatured"
                   name="isFeatured"
-                  checked={formData.isFeatured}
+                  checked={formData.is_featured}
                   onChange={handleCheckboxChange}
                   className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                 />
@@ -281,15 +297,15 @@ export default function ProductsPage() {
                       Ksh {product.price?.toFixed(2) || '0.00'} / {product.unit || 'unit'}
                     </p>
                     <p className="text-sm mt-1">
-                      Min. Order: {product.minOrder || 1} {product.unit || 'unit'}
+                      Min. Order: {product.min_order || 1} {product.unit || 'unit'}
                       {product.weight > 0 && ` (${product.weight}kg per ${product.unit || 'unit'})`}
                     </p>
                     <span 
                       className={`inline-block mt-2 px-2 py-1 text-xs rounded-full ${
-                        product.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                        product.in_stock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                       }`}
                     >
-                      {product.inStock ? 'In Stock' : 'Out of Stock'}
+                      {product.in_stock ? 'In Stock' : 'Out of Stock'}
                     </span>
                   </div>
                   <div className="flex space-x-2">

@@ -46,10 +46,10 @@ const Products = () => {
         description: product.description || '',
         price: Number(product.price) || 0,
         category: product.category || 'Uncategorized',
-        inStock: product.in_stock || false,
-        isFeatured: product.is_featured || false,
-        stockQuantity: Number(product.stock_quantity) || 0,
-        minOrder: Number(product.min_order) || 1,
+        in_stock: product.in_stock || false,
+        is_featured: product.is_featured || false,
+        stock_quantity: Number(product.stock_quantity) || 0,
+        min_order: Number(product.min_order) || 1,
         unit: product.unit || 'kg',
         weight: Number(product.weight) || 0,
         images: product.images || [],
@@ -90,14 +90,7 @@ const Products = () => {
 
   // Handle WhatsApp order button click
   const handleWhatsAppOrder = (product: Product) => {
-    const message = `Hello Spurmount, I would like to place an order for:
-    
-*Product:* ${product.name}
-*Price:* Ksh ${product.price?.toLocaleString() || '0'}
-*Quantity:* 
-*Delivery Address:* 
-
-Please confirm availability and provide payment details.`;
+    const message = `*SPURMOUNT TRADING & INVESTMENT*%0A%0A*Hello Spurmount Team,*%0A%0AI would like to place an order for:%0A%0A*Product:* ${product.name}%0A*Price:* Ksh ${product.price?.toLocaleString() || '0'}%0A%0A*Name:* %0A*Email:* %0A*Phone:* %0A*Quantity (in KGs):* %0A*Delivery Address:* %0A%0ALooking forward to your response.`;
 
     const formattedPhone = '254740581156'; // Your WhatsApp business number
     const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
@@ -167,7 +160,7 @@ Please confirm availability and provide payment details.`;
                     alt={product.name}
                     className="object-cover w-full h-full"
                   />
-                  {product.isFeatured && (
+                  {product.is_featured && (
                     <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded">
                       Featured
                     </div>
@@ -183,11 +176,13 @@ Please confirm availability and provide payment details.`;
                   <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-grow">
                     {product.description}
                   </p>
-                  <div className="flex items-center justify-between mt-auto">
-                    <span className="font-bold">Ksh {product.price.toLocaleString()}</span>
-                    <span className="text-sm text-muted-foreground">
-                      {product.stockQuantity} in stock
-                    </span>
+                  <div className="mt-auto">
+                    <div className="flex flex-col">
+                      <span className="font-bold">Ksh {product.price.toLocaleString()}</span>
+                      <p className="text-xs text-muted-foreground italic">
+                        * Prices are subject to change based on market conditions
+                      </p>
+                    </div>
                   </div>
                 </CardContent>
                 <CardFooter className="border-t p-4">

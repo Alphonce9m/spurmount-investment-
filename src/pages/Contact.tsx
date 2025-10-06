@@ -26,11 +26,14 @@ const Contact = () => {
     setFormData({ name: "", email: "", phone: "", message: "" });
   };
 
-  const handleWhatsApp = () => {
-    const message = "Hi, I'd like to inquire about your products and services.";
-    const whatsappUrl = `https://wa.me/254740581156?text=${encodeURIComponent(message)}`;
+  const handleWhatsAppChat = () => {
+    const message = `*SPURMOUNT TRADING & INVESTMENT*%0A%0A*Hello Spurmount Team,*%0A%0AI'm interested in your products and would like to place an order.%0A%0A*Name:* %0A*Email:* %0A*Phone:* %0A*Product of Interest:* %0A*Quantity (in KGs):* %0A%0ALooking forward to your response.`;
+
+    const formattedPhone = '254740581156'; // Your WhatsApp business number
+    const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -90,19 +93,22 @@ const Contact = () => {
             </Card>
 
             {/* WhatsApp CTA */}
-            <Card className="shadow-card gradient-accent border-0">
+            <Card className="shadow-card border-border/50">
               <CardContent className="p-6">
                 <div className="flex items-center space-x-4">
-                  <MessageCircle className="h-12 w-12 text-accent-foreground" />
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <MessageCircle className="h-6 w-6 text-primary" />
+                  </div>
                   <div className="flex-grow">
-                    <h4 className="font-semibold text-accent-foreground mb-1">Quick Contact</h4>
-                    <p className="text-accent-foreground/90 text-sm">Chat with us on WhatsApp</p>
+                    <h4 className="font-semibold text-card-foreground">Instant Chat</h4>
+                    <p className="text-muted-foreground text-sm">Chat with us on WhatsApp</p>
                   </div>
                   <Button 
-                    variant="hero" 
-                    onClick={handleWhatsApp}
-                    className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+                    variant="default"
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                    onClick={handleWhatsAppChat}
                   >
+                    <MessageCircle className="mr-2 h-4 w-4" />
                     Chat Now
                   </Button>
                 </div>

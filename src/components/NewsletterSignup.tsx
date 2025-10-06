@@ -3,8 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
-import { db } from '@/lib/firebase/config';
+import { supabase } from '@/lib/supabase/client';
 
 const NewsletterSignup = () => {
   const [email, setEmail] = useState("");
@@ -27,11 +26,14 @@ const NewsletterSignup = () => {
       setLoading(true);
       
       // Check if email already exists
-      const subscribersRef = collection(db, 'newsletter_subscribers');
-      const q = query(subscribersRef, where('email', '==', email));
-      const querySnapshot = await getDocs(q);
+      const { data: existingSubscribers, error: checkError } = await supabase
+        .from('newsletter_subscribers')
+        .select('*')
+        .eq('email', email);
       
-      if (!querySnapshot.empty) {
+      if (checkError) throw checkError;
+      
+      if (existingSubscribers && existingSubscribers.length > 0) {
         toast({
           title: "Already Subscribed",
           description: "This email is already subscribed to our newsletter.",
@@ -40,11 +42,17 @@ const NewsletterSignup = () => {
       }
       
       // Add new subscriber
-      await addDoc(collection(db, 'newsletter_subscribers'), {
-        email,
-        subscribedAt: new Date().toISOString(),
-        active: true
-      });
+      const { error: insertError } = await supabase
+        .from('newsletter_subscribers')
+        .insert([
+          { 
+            email, 
+            subscribed_at: new Date().toISOString(),
+            active: true 
+          }
+        ]);
+      
+      if (insertError) throw insertError;
       
       toast({
         title: "Success!",
