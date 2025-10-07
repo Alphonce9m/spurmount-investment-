@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
     base: '/',
     server: {
       host: '0.0.0.0',
-      port: 8080,
+      port: 3001,
       strictPort: true,
       open: true,
     },
@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      'process.env': process.env
+      'process.env': {}
     },
     build: {
       outDir: 'dist',

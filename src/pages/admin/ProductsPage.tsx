@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Loader2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Loader2, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -59,6 +59,30 @@ const ProductsPage: React.FC = () => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<ProductFormData>(emptyProduct);
+
+  // Format WhatsApp message
+  const formatWhatsAppMessage = (product: Product) => {
+    const message = `*SPURMOUNT TRADING & INVESTMENT*
+
+*Hello Spurmount Team,*
+
+I would like to place an order for:
+
+*Product:* ${product.name}
+*Price:* Ksh ${product.price}
+*Category:* ${product.category}
+
+*Name:* 
+*Email:* 
+*Phone:* 
+*Quantity (in ${product.unit || 'units'}):* 
+*Delivery Address:* 
+
+Looking forward to your response.`;
+    
+    // Encode the message for URL
+    return encodeURIComponent(message);
+  };
 
   // Load products on component mount
   useEffect(() => {
@@ -501,15 +525,28 @@ const ProductsPage: React.FC = () => {
                         variant="ghost"
                         size="icon"
                         onClick={() => handleEdit(product)}
+                        title="Edit product"
+                        className="h-8 w-8"
                       >
-                        <Edit className="h-4 w-4" />
+                        <Edit className="h-3.5 w-3.5" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => product.id && handleDelete(product.id)}
+                        title="Delete product"
+                        className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50"
                       >
-                        <Trash2 className="h-4 w-4 text-red-500" />
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => window.open(`https://wa.me/254712345678?text=${formatWhatsAppMessage(product)}`, '_blank')}
+                        title="Order via WhatsApp"
+                        className="h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50"
+                      >
+                        <ShoppingCart className="h-3.5 w-3.5" />
                       </Button>
                     </div>
                   </div>
