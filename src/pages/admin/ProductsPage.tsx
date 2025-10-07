@@ -6,10 +6,37 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { addProduct, getProducts, deleteProduct, updateProduct } from '@/lib/supabase/services/productService';
 import { Product } from '@/lib/supabase/models/product';
-import { uploadImage } from '@/lib/supabase/storage';
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
+
+// Format URL for Supabase storage
+const formatImageUrl = (url: string | null | undefined): string => {
+  if (!url) return '';
+  
+  // If it's already a full URL, return it
+  if (url.startsWith('http')) {
+    // Convert signed URLs to public URLs if needed
+    const match = url.match(/storage\/v1\/object\/(sign|public)\/([^?]+)/);
+    if (match) {
+      const path = match[2];
+      return `https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/${path}`;
+    }
+    return url;
+  }
+  
+  // If it's just a path, construct the full URL
+  return `https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/${url.replace(/^\/+/, '')}`;
+};
 
 // Define form data type
-type ProductFormData = Omit<Product, 'id' | 'created_at' | 'updated_at'>;
+type ProductFormData = Omit<Product, 'id' | 'created_at' | 'updated_at'> & {
+  images: string[];
+};
 
 // Empty product template
 const emptyProduct: ProductFormData = {
@@ -26,11 +53,12 @@ const emptyProduct: ProductFormData = {
   images: [],
 };
 
-export default function ProductsPage() {
+const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [uploading, setUploading] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState<ProductFormData>({ ...emptyProduct });
+  const [formData, setFormData] = useState<ProductFormData>(emptyProduct);
 
   // Load products on component mount
   useEffect(() => {
@@ -66,24 +94,73 @@ export default function ProductsPage() {
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
     try {
-      const imageUrl = await uploadImage(file, 'products');
+      setUploading(true);
+      
+      // Upload each image and get their URLs
+      const uploadedImages = await Promise.all(
+        Array.from(files).map(async (file) => {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Math.random().toString(36).substring(2, 15)}-${Date.now()}.${fileExt}`;
+          const filePath = `products/${fileName}`;
+
+          // Upload the file to Supabase Storage
+          const { data, error } = await supabase.storage
+            .from('product-images')
+            .upload(filePath, file);
+            
+          if (error) throw error;
+          
+          // Get the public URL
+          const { data: { publicUrl } } = supabase.storage
+            .from('product-images')
+            .getPublicUrl(data.path);
+            
+          return publicUrl;
+        })
+      );
+
+      // Update form data with new image URLs
       setFormData(prev => ({
         ...prev,
-        images: [...(prev.images || []), imageUrl]
+        images: [...(prev.images || []), ...uploadedImages]
       }));
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error('Error uploading images:', error);
+      alert('Failed to upload images. Please try again.');
+    } finally {
+      setUploading(false);
     }
   };
 
-  const handleRemoveImage = (index: number) => {
+  const handleRemoveImage = async (index: number) => {
+    // Get the URL of the image to be removed
+    const imageToRemove = formData.images[index];
+    
+    try {
+      // Extract the file path from the URL
+      const pathMatch = imageToRemove.match(/storage\/v1\/object\/public\/(.+)/);
+      if (pathMatch) {
+        const filePath = pathMatch[1];
+        // Delete the file from storage
+        const { error } = await supabase.storage
+          .from('product-images')
+          .remove([filePath]);
+          
+        if (error) throw error;
+      }
+    } catch (error) {
+      console.error('Error deleting image from storage:', error);
+      // Continue with removing from UI even if storage deletion fails
+    }
+    
+    // Remove from form data
     setFormData(prev => ({
       ...prev,
-      images: (prev.images || []).filter((_, i) => i !== index)
+      images: prev.images.filter((_, i) => i !== index)
     }));
   };
 
@@ -93,13 +170,13 @@ export default function ProductsPage() {
       setLoading(true);
       
       if (editingId) {
-        await updateProduct(editingId, formData);
+        await updateProduct(editingId, formData as unknown as Product);
       } else {
-        await addProduct(formData);
+        await addProduct(formData as unknown as Omit<Product, 'id' | 'created_at' | 'updated_at'>);
       }
       
       // Reset form and reload products
-      setFormData({ ...emptyProduct });
+      setFormData(emptyProduct);
       setEditingId(null);
       
       // Reload products
@@ -136,7 +213,7 @@ export default function ProductsPage() {
     try {
       setLoading(true);
       await deleteProduct(id);
-      setProducts(products.filter(p => p.id !== id));
+      setProducts(prevProducts => prevProducts.filter(p => p.id !== id));
     } catch (error) {
       console.error('Error deleting product:', error);
     } finally {
@@ -167,36 +244,50 @@ export default function ProductsPage() {
                   <Label>Product Images</Label>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {formData.images?.map((image, index) => {
-                      const imageUrl = typeof image === 'string' ? image : URL.createObjectURL(image);
+                      const imageUrl = formatImageUrl(image);
                       return (
                         <div key={index} className="relative group">
-                          <img
-                            src={imageUrl}
-                            alt={`Product ${index + 1}`}
-                            className="h-20 w-20 object-cover rounded-md"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.onerror = null;
-                              target.src = '/placeholder-product.png';
-                            }}
-                          />
+                          <div className="h-20 w-20 rounded-md overflow-hidden border-2 border-gray-200">
+                            <img
+                              src={imageUrl}
+                              alt={`Product ${index + 1}`}
+                              className="h-full w-full object-cover"
+                              onError={(e) => {
+                                console.error('Failed to load image:', imageUrl);
+                                const target = e.target as HTMLImageElement;
+                                target.onerror = null;
+                                target.src = '/placeholder-product.png';
+                                target.classList.add('opacity-50');
+                              }}
+                            />
+                          </div>
                           <button
                             type="button"
                             onClick={() => handleRemoveImage(index)}
                             className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            disabled={loading}
                           >
                             <Trash2 className="h-3 w-3" />
                           </button>
                         </div>
                       );
                     })}
-                    <label className="flex h-20 w-20 items-center justify-center rounded-md border-2 border-dashed border-gray-300 cursor-pointer hover:border-gray-400">
-                      <Plus className="h-6 w-6 text-gray-400" />
+                    <label className="flex h-20 w-20 flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 cursor-pointer hover:border-gray-400 bg-gray-50">
+                      {uploading ? (
+                        <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
+                      ) : (
+                        <>
+                          <Plus className="h-5 w-5 text-gray-400" />
+                          <span className="mt-1 text-xs text-gray-500">Add Image</span>
+                        </>
+                      )}
                       <input
                         type="file"
                         accept="image/*"
                         className="hidden"
                         onChange={handleImageUpload}
+                        multiple
+                        disabled={uploading || loading}
                       />
                     </label>
                   </div>
@@ -379,9 +470,14 @@ export default function ProductsPage() {
                     <div className="mb-4 h-40 bg-gray-100 rounded-md overflow-hidden">
                       {typeof product.images[0] === 'string' ? (
                         <img
-                          src={product.images[0]}
+                          src={formatImageUrl(product.images[0])}
                           alt={product.name}
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.onerror = null;
+                            target.src = '/placeholder-product.png';
+                          }}
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-400">
@@ -425,4 +521,6 @@ export default function ProductsPage() {
       </div>
     </div>
   );
-}
+};
+
+export default ProductsPage;
