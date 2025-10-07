@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 module.exports = {
   plugins: [
     require('autoprefixer'),
@@ -11,3 +12,11 @@ module.exports = {
     })
   ]
 }
+=======
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+>>>>>>> master
