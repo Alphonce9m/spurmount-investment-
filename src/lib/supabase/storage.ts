@@ -1,14 +1,24 @@
+import { v4 as uuidv4 } from 'uuid';
 import { createClient } from '@supabase/supabase-js';
 import { Database } from './database.types';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-const supabase = createClient<Database>(supabaseUrl, supabaseKey);
+export const supabase = createClient<Database>(supabaseUrl, supabaseKey);
 
-const BUCKET_NAME = 'product-images';
+export const BUCKET_NAME = 'product-images';
 
-export const uploadImage = async (file: File, path: string): Promise<string> => {
+/**
+ * Uploads a file to Supabase Storage
+ * @param file - The file to upload
+ * @param path - The path within the bucket (e.g., 'products' or 'categories')
+ * @returns The public URL of the uploaded file
+ */
+export const uploadFile = async (
+  file: File,
+  path: string = ''
+): Promise<string> => {
   try {
     // Ensure the bucket exists
     const { data: bucket, error: bucketError } = await supabase.storage.getBucket(BUCKET_NAME);
@@ -28,6 +38,87 @@ export const uploadImage = async (file: File, path: string): Promise<string> => 
     } else if (bucketError) {
       console.error('Error checking bucket:', bucketError);
       throw bucketError;
+    }
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${uuidv4()}.${fileExt}`;
+    const filePath = path ? `${path}/${fileName}`.replace(/\/\//g, '/') : fileName;
+
+    const { data, error: uploadError } = await supabase.storage
+      .from(BUCKET_NAME)
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: file.type,
+      });
+
+    if (uploadError) {
+      console.error('Error uploading file:', uploadError);
+      throw uploadError;
+    }
+
+    // Get the public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from(BUCKET_NAME)
+      .getPublicUrl(filePath);
+
+    return publicUrl;
+  } catch (error) {
+    console.error('Error in uploadFile:', error);
+    throw new Error('Failed to upload file');
+  }
+};
+
+/**
+ * Uploads an image file with additional validation
+ * @deprecated Use uploadFile instead
+ */
+export const uploadImage = async (file: File, path: string): Promise<string> => {
+  console.warn('uploadImage is deprecated, use uploadFile instead');
+  return uploadFile(file, path);
+};
+
+/**
+ * Deletes a file from Supabase Storage
+ * @param filePath - The full path of the file to delete (e.g., 'products/image.jpg')
+ */
+export const deleteFile = async (filePath: string): Promise<void> => {
+  try {
+    const { error } = await supabase.storage
+      .from(BUCKET_NAME)
+      .remove([filePath]);
+
+    if (error) {
+      console.error('Error deleting file:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('Error in deleteFile:', error);
+    throw new Error('Failed to delete file');
+  }
+};
+
+/**
+ * Deletes an image file
+ * @deprecated Use deleteFile instead
+ */
+export const deleteImage = async (filePath: string): Promise<void> => {
+  console.warn('deleteImage is deprecated, use deleteFile instead');
+  return deleteFile(filePath);
+};
+
+/**
+ * Gets the public URL for a file in storage
+ * @param path - The path to the file in the bucket
+ * @returns The public URL
+ */
+export function getPublicUrl(path: string): string {
+  const { data: { publicUrl } } = supabase.storage
+    .from(BUCKET_NAME)
+    .getPublicUrl(path);
+  
+  return publicUrl;
+}
     }
     
     // Upload the file

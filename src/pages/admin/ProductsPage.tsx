@@ -1,41 +1,41 @@
-import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Loader2, ShoppingCart } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Plus, Edit, Trash2, Loader2, ShoppingCart, AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { addProduct, getProducts, deleteProduct, updateProduct } from '@/lib/supabase/services/productService';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { toast } from 'sonner';
+import { 
+  addProduct, 
+  getProducts, 
+  deleteProduct, 
+  updateProduct, 
+  ProductServiceError 
+} from '@/lib/supabase/services/productService';
 import { Product } from '@/lib/supabase/models/product';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase/client';
+import { formatImageUrl } from '@/lib/supabase/utils';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import * as z from 'zod';
 
-// Initialize Supabase client
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
+// Define form validation schema
+const productSchema = z.object({
+  name: z.string().min(1, 'Product name is required'),
+  description: z.string().optional(),
+  price: z.number().min(0, 'Price must be a positive number'),
+  category: z.string().min(1, 'Category is required'),
+  in_stock: z.boolean().default(true),
+  is_featured: z.boolean().default(false),
+  stock_quantity: z.number().min(0, 'Stock quantity cannot be negative'),
+  min_order: z.number().min(1, 'Minimum order must be at least 1'),
+  unit: z.string().min(1, 'Unit is required'),
+  weight: z.number().min(0, 'Weight must be a positive number'),
+  images_url: z.string().url('Invalid image URL').nullable(),
+});
 
-// Format URL for Supabase storage
-const formatImageUrl = (url: string | null | undefined): string => {
-  if (!url) return '';
-  
-  // If it's already a full URL, return it
-  if (url.startsWith('http')) {
-    // Convert signed URLs to public URLs if needed
-    const match = url.match(/storage\/v1\/object\/(sign|public)\/([^?]+)/);
-    if (match) {
-      const path = match[2];
-      return `https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/${path}`;
-    }
-    return url;
-  }
-  
-  // If it's just a path, construct the full URL
-  return `https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/${url.replace(/^\/+/, '')}`;
-};
-
-// Define form data type
 type ProductFormData = Omit<Product, 'id' | 'created_at' | 'updated_at'> & {
-  images: string[];
+  images_url: string | null;
 };
 
 // Empty product template
@@ -50,205 +50,265 @@ const emptyProduct: ProductFormData = {
   min_order: 1,
   unit: 'kg',
   weight: 0,
-  images: [],
+  images_url: null,
 };
 
 const ProductsPage: React.FC = () => {
+  // State management
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [uploading, setUploading] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<ProductFormData>(emptyProduct);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  // Format WhatsApp message
+  // Format WhatsApp message for order placement
   const formatWhatsAppMessage = (product: Product) => {
-    const message = `*SPURMOUNT TRADING & INVESTMENT*
-
-*Hello Spurmount Team,*
-
-I would like to place an order for:
-
-*Product:* ${product.name}
-*Price:* Ksh ${product.price}
-*Category:* ${product.category}
-
-*Name:* 
-*Email:* 
-*Phone:* 
-*Quantity (in ${product.unit || 'units'}):* 
-*Delivery Address:* 
-
-Looking forward to your response.`;
+    const message = [
+      'SPURMOUNT TRADING & INVESTMENT',
+      '',
+      'Hello Spurmount Team,',
+      '',
+      `I would like to order: ${product.name || 'Product Name'}`,
+      '',
+      'Thank you.'
+    ];
     
-    // Encode the message for URL
-    return encodeURIComponent(message);
+    // Join with newlines and URL encode
+    return encodeURIComponent(message.join('\n'));
   };
+
+  // Load products with error handling and retry logic
+  const loadProducts = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const data = await getProducts();
+      setProducts(data);
+    } catch (err) {
+      console.error('Error loading products:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load products';
+      setError(errorMessage);
+      toast.error('Failed to load products', {
+        description: errorMessage,
+        action: {
+          label: 'Retry',
+          onClick: loadProducts
+        }
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   // Load products on component mount
   useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const data = await getProducts();
-        setProducts(data);
-      } catch (error) {
-        console.error('Error loading products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
     loadProducts();
-  }, []);
+  }, [loadProducts]);
 
+  // Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
     
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'number' ? Number(value) : value
+      [name]: type === 'number' ? parseFloat(value) || 0 : value
     }));
+
+    // Clear error for this field if it exists
+    if (formErrors[name]) {
+      setFormErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
+  // Handle checkbox changes
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
+    
     setFormData(prev => ({
       ...prev,
       [name]: checked
     }));
+
+    // Clear error for this field if it exists
+    if (formErrors[name]) {
+      setFormErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
+  // Handle image upload
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setError('Please upload an image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image size should be less than 5MB');
+      return;
+    }
+
+    setUploading(true);
+    setError(null);
 
     try {
-      setUploading(true);
+      // In a real app, you would upload the file to a storage service here
+      // For now, we'll just create a local URL for the image
+      const imageUrl = URL.createObjectURL(file);
       
-      // Upload each image and get their URLs
-      const uploadedImages = await Promise.all(
-        Array.from(files).map(async (file) => {
-          const fileExt = file.name.split('.').pop();
-          const fileName = `${Math.random().toString(36).substring(2, 15)}-${Date.now()}.${fileExt}`;
-          const filePath = `products/${fileName}`;
-
-          // Upload the file to Supabase Storage
-          const { data, error } = await supabase.storage
-            .from('product-images')
-            .upload(filePath, file);
-            
-          if (error) throw error;
-          
-          // Get the public URL
-          const { data: { publicUrl } } = supabase.storage
-            .from('product-images')
-            .getPublicUrl(data.path);
-            
-          return publicUrl;
-        })
-      );
-
-      // Update form data with new image URLs
       setFormData(prev => ({
         ...prev,
-        images: [...(prev.images || []), ...uploadedImages]
+        images_url: imageUrl
       }));
-    } catch (error) {
-      console.error('Error uploading images:', error);
-      alert('Failed to upload images. Please try again.');
+    } catch (err) {
+      console.error('Error uploading image:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to upload image';
+      setError(errorMessage);
+      toast.error('Error uploading image', { description: errorMessage });
     } finally {
       setUploading(false);
     }
   };
 
-  const handleRemoveImage = async (index: number) => {
-    // Get the URL of the image to be removed
-    const imageToRemove = formData.images[index];
-    
-    try {
-      // Extract the file path from the URL
-      const pathMatch = imageToRemove.match(/storage\/v1\/object\/public\/(.+)/);
-      if (pathMatch) {
-        const filePath = pathMatch[1];
-        // Delete the file from storage
-        const { error } = await supabase.storage
-          .from('product-images')
-          .remove([filePath]);
-          
-        if (error) throw error;
-      }
-    } catch (error) {
-      console.error('Error deleting image from storage:', error);
-      // Continue with removing from UI even if storage deletion fails
-    }
-    
-    // Remove from form data
+  // Handle image removal
+  const handleRemoveImage = () => {
     setFormData(prev => ({
       ...prev,
-      images: prev.images.filter((_, i) => i !== index)
+      images_url: null
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
+    setError(null);
+    setFormErrors({});
+    
     try {
-      setLoading(true);
+      // Validate form data
+      const validationResult = productSchema.safeParse(formData);
       
+      if (!validationResult.success) {
+        const errors: Record<string, string> = {};
+        validationResult.error.errors.forEach((err) => {
+          if (err.path && err.path.length > 0) {
+            errors[String(err.path[0])] = err.message;
+          }
+        });
+        setFormErrors(errors);
+        return;
+      }
+
       if (editingId) {
-        await updateProduct(editingId, formData as unknown as Product);
+        await updateProduct(editingId, formData);
+        toast.success('Product updated successfully');
       } else {
-        await addProduct(formData as unknown as Omit<Product, 'id' | 'created_at' | 'updated_at'>);
+        await addProduct(formData);
+        toast.success('Product added successfully');
       }
       
       // Reset form and reload products
       setFormData(emptyProduct);
       setEditingId(null);
+      await loadProducts();
+    } catch (err) {
+      console.error('Error saving product:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save product';
+      setError(errorMessage);
       
-      // Reload products
-      const updatedProducts = await getProducts();
-      setProducts(updatedProducts);
-    } catch (error) {
-      console.error('Error saving product:', error);
+      // Show error toast with retry option
+      const formEvent = e as React.FormEvent<HTMLFormElement>;
+      toast.error('Error saving product', { 
+        description: errorMessage,
+        action: {
+          label: 'Retry',
+          onClick: () => handleSubmit(formEvent)
+        }
+      });
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-  const handleEdit = (product: Product) => {
+  // Handle edit button click
+  const handleEdit = useCallback((product: Product) => {
+    if (!product.id) {
+      console.error('Cannot edit product: Missing ID');
+      toast.error('Cannot edit product: Missing ID');
+      return;
+    }
+    
+    const { id, created_at, updated_at, ...productData } = product;
     setFormData({
-      name: product.name || '',
-      description: product.description || '',
-      price: product.price || 0,
-      category: product.category || '',
-      in_stock: product.in_stock || false,
-      is_featured: product.is_featured || false,
-      stock_quantity: product.stock_quantity || 0,
-      min_order: product.min_order || 1,
-      unit: product.unit || 'kg',
-      weight: product.weight || 0,
-      images: product.images || [],
+      ...productData,
+      images_url: product.images_url || null,
     });
-    setEditingId(product.id || null);
+    setEditingId(id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
+  // Handle delete button click
   const handleDelete = async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this product?')) return;
+    if (!window.confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+      return;
+    }
     
     try {
-      setLoading(true);
       await deleteProduct(id);
-      setProducts(prevProducts => prevProducts.filter(p => p.id !== id));
-    } catch (error) {
-      console.error('Error deleting product:', error);
-    } finally {
-      setLoading(false);
+      setProducts(prev => prev.filter(p => p.id !== id));
+      toast.success('Product deleted successfully');
+    } catch (err) {
+      console.error('Error deleting product:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to delete product';
+      toast.error('Error deleting product', { description: errorMessage });
     }
   };
 
+  // Show loading state
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
+      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-muted-foreground">Loading products...</p>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error && products.length === 0) {
+    return (
+      <div className="container mx-auto p-4">
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error loading products</AlertTitle>
+          <AlertDescription>
+            {error}
+            <Button variant="outline" className="mt-2" onClick={loadProducts}>
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Try again
+            </Button>
+          </AlertDescription>
+        </Alert>
       </div>
     );
   }
@@ -265,69 +325,67 @@ Looking forward to your response.`;
               <div className="space-y-4">
                 {/* Image Upload */}
                 <div>
-                  <Label>Product Images</Label>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {formData.images?.map((image, index) => {
-                      const imageUrl = formatImageUrl(image);
-                      return (
-                        <div key={index} className="relative group">
-                          <div className="h-20 w-20 rounded-md overflow-hidden border-2 border-gray-200">
-                            <img
-                              src={imageUrl}
-                              alt={`Product ${index + 1}`}
-                              className="h-full w-full object-cover"
-                              onError={(e) => {
-                                console.error('Failed to load image:', imageUrl);
-                                const target = e.target as HTMLImageElement;
-                                target.onerror = null;
-                                target.src = '/placeholder-product.png';
-                                target.classList.add('opacity-50');
-                              }}
-                            />
+                  <Label htmlFor="images_url">Product Image</Label>
+                  <div className="mt-2 flex items-center gap-4">
+                    {formData.images_url ? (
+                      <div className="relative">
+                        <img
+                          src={formData.images_url}
+                          alt={formData.name || 'Product'}
+                          className="h-32 w-32 rounded-md object-cover"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full"
+                          onClick={handleRemoveImage}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center w-full">
+                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                            <Plus className="w-8 h-8 mb-2 text-gray-500" />
+                            <p className="text-sm text-gray-500">Upload an image</p>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveImage(index)}
-                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                            disabled={loading}
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </button>
-                        </div>
-                      );
-                    })}
-                    <label className="flex h-20 w-20 flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 cursor-pointer hover:border-gray-400 bg-gray-50">
-                      {uploading ? (
-                        <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
-                      ) : (
-                        <>
-                          <Plus className="h-5 w-5 text-gray-400" />
-                          <span className="mt-1 text-xs text-gray-500">Add Image</span>
-                        </>
-                      )}
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleImageUpload}
-                        multiple
-                        disabled={uploading || loading}
-                      />
-                    </label>
+                          <input
+                            id="images_url"
+                            name="images_url"
+                            type="file"
+                            className="hidden"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            disabled={uploading}
+                          />
+                        </label>
+                      </div>
+                    )}
                   </div>
+                  {formErrors.images_url && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.images_url}</p>
+                  )}
                 </div>
 
+                {/* Product Name */}
                 <div>
-                  <Label htmlFor="name">Product Name</Label>
+                  <Label htmlFor="name">Product Name *</Label>
                   <Input
                     id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    required
+                    placeholder="Enter product name"
+                    className={formErrors.name ? 'border-red-500' : ''}
                   />
+                  {formErrors.name && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.name}</p>
+                  )}
                 </div>
 
+                {/* Description */}
                 <div>
                   <Label htmlFor="description">Description</Label>
                   <textarea
@@ -335,98 +393,128 @@ Looking forward to your response.`;
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}
-                    className="flex h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="category">Category</Label>
-                  <Input
-                    id="category"
-                    name="category"
-                    value={formData.category}
-                    onChange={handleInputChange}
-                    required
+                    placeholder="Enter product description"
+                    className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   />
                 </div>
               </div>
 
               <div className="space-y-4">
+                {/* Price */}
                 <div>
-                  <Label htmlFor="price">Price (Ksh)</Label>
+                  <Label htmlFor="price">Price (Ksh) *</Label>
                   <Input
                     id="price"
                     name="price"
                     type="number"
-                    step="0.01"
                     min="0"
+                    step="0.01"
                     value={formData.price}
                     onChange={handleInputChange}
-                    required
+                    placeholder="Enter price"
+                    className={formErrors.price ? 'border-red-500' : ''}
                   />
+                  {formErrors.price && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.price}</p>
+                  )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="min_order">Minimum Order</Label>
-                    <Input
-                      id="min_order"
-                      name="min_order"
-                      type="number"
-                      min="1"
-                      value={formData.min_order}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="unit">Unit</Label>
-                    <select
-                      id="unit"
-                      name="unit"
-                      value={formData.unit}
-                      onChange={handleInputChange}
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      <option value="kg">Kilogram (kg)</option>
-                      <option value="g">Gram (g)</option>
-                      <option value="pcs">Pieces</option>
-                      <option value="packet">Packet</option>
-                    </select>
-                  </div>
+                {/* Category */}
+                <div>
+                  <Label htmlFor="category">Category *</Label>
+                  <Input
+                    id="category"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    placeholder="Enter category"
+                    className={formErrors.category ? 'border-red-500' : ''}
+                  />
+                  {formErrors.category && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.category}</p>
+                  )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="weight">Weight per unit (kg)</Label>
-                    <Input
-                      id="weight"
-                      name="weight"
-                      type="number"
-                      step="0.01"
-                      min="0.01"
-                      value={formData.weight}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="stock_quantity">Stock Quantity</Label>
-                    <Input
-                      id="stock_quantity"
-                      name="stock_quantity"
-                      type="number"
-                      min="0"
-                      value={formData.stock_quantity}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
+                {/* Stock Quantity */}
+                <div>
+                  <Label htmlFor="stock_quantity">Stock Quantity *</Label>
+                  <Input
+                    id="stock_quantity"
+                    name="stock_quantity"
+                    type="number"
+                    min="0"
+                    value={formData.stock_quantity}
+                    onChange={handleInputChange}
+                    placeholder="Enter stock quantity"
+                    className={formErrors.stock_quantity ? 'border-red-500' : ''}
+                  />
+                  {formErrors.stock_quantity && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.stock_quantity}</p>
+                  )}
                 </div>
 
-                <div className="flex items-center space-x-4 pt-2">
+                {/* Minimum Order */}
+                <div>
+                  <Label htmlFor="min_order">Minimum Order *</Label>
+                  <Input
+                    id="min_order"
+                    name="min_order"
+                    type="number"
+                    min="1"
+                    value={formData.min_order}
+                    onChange={handleInputChange}
+                    placeholder="Enter minimum order quantity"
+                    className={formErrors.min_order ? 'border-red-500' : ''}
+                  />
+                  {formErrors.min_order && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.min_order}</p>
+                  )}
+                </div>
+
+                {/* Unit */}
+                <div>
+                  <Label htmlFor="unit">Unit *</Label>
+                  <select
+                    id="unit"
+                    name="unit"
+                    value={formData.unit}
+                    onChange={handleInputChange}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <option value="kg">Kilogram (kg)</option>
+                    <option value="g">Gram (g)</option>
+                    <option value="l">Liter (L)</option>
+                    <option value="ml">Milliliter (ml)</option>
+                    <option value="piece">Piece</option>
+                    <option value="packet">Packet</option>
+                    <option value="carton">Carton</option>
+                  </select>
+                  {formErrors.unit && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.unit}</p>
+                  )}
+                </div>
+
+                {/* Weight */}
+                <div>
+                  <Label htmlFor="weight">Weight (kg) *</Label>
+                  <Input
+                    id="weight"
+                    name="weight"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={formData.weight}
+                    onChange={handleInputChange}
+                    placeholder="Enter weight in kg"
+                    className={formErrors.weight ? 'border-red-500' : ''}
+                  />
+                  {formErrors.weight && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.weight}</p>
+                  )}
+                </div>
+
+                {/* Checkboxes */}
+                <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <input
                       type="checkbox"
@@ -436,9 +524,8 @@ Looking forward to your response.`;
                       onChange={handleCheckboxChange}
                       className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                     />
-                    <Label htmlFor="in_stock">In Stock</Label>
+                    <Label htmlFor="in_stock" className="text-sm font-medium">In Stock</Label>
                   </div>
-
                   <div className="flex items-center space-x-2">
                     <input
                       type="checkbox"
@@ -448,31 +535,40 @@ Looking forward to your response.`;
                       onChange={handleCheckboxChange}
                       className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                     />
-                    <Label htmlFor="is_featured">Featured</Label>
+                    <Label htmlFor="is_featured" className="text-sm font-medium">Featured Product</Label>
                   </div>
                 </div>
-
-                <div className="pt-2">
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {editingId ? 'Update Product' : 'Add Product'}
-                  </Button>
-                  
-                  {editingId && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => {
-                        setFormData({ ...emptyProduct });
-                        setEditingId(null);
-                      }}
-                      className="w-full mt-2"
-                    >
-                      Cancel Edit
-                    </Button>
-                  )}
-                </div>
               </div>
+            </div>
+
+            {/* Form Actions */}
+            <div className="flex justify-end space-x-4 pt-4">
+              {editingId && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setFormData(emptyProduct);
+                    setEditingId(null);
+                    setFormErrors({});
+                  }}
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </Button>
+              )}
+              <Button type="submit" disabled={isSubmitting || uploading}>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {editingId ? 'Updating...' : 'Adding...'}
+                  </>
+                ) : editingId ? (
+                  'Update Product'
+                ) : (
+                  'Add Product'
+                )}
+              </Button>
             </div>
           </form>
         </CardContent>
@@ -490,63 +586,85 @@ Looking forward to your response.`;
             {products.map((product) => (
               <Card key={product.id}>
                 <CardContent className="p-4">
-                  {product.images && product.images.length > 0 && (
-                    <div className="mb-4 h-40 bg-gray-100 rounded-md overflow-hidden">
-                      {typeof product.images[0] === 'string' ? (
-                        <img
-                          src={formatImageUrl(product.images[0])}
-                          alt={product.name}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.onerror = null;
-                            target.src = '/placeholder-product.png';
-                          }}
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                          Invalid image URL
-                        </div>
-                      )}
+                  {product.images_url ? (
+                    <div className="mb-4 h-40 bg-gray-100 rounded-md overflow-hidden relative">
+                      <img
+                        src={formatImageUrl(product.images_url)}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="mb-4 h-40 bg-gray-100 rounded-md flex items-center justify-center">
+                      <ShoppingCart className="h-12 w-12 text-gray-400" />
                     </div>
                   )}
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold">{product.name}</h3>
-                      <p className="text-sm text-gray-500">{product.category}</p>
-                      <p className="font-bold mt-2">Ksh {product.price?.toLocaleString()}</p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {product.in_stock ? 'In Stock' : 'Out of Stock'}
-                        {product.is_featured && ' • Featured'}
-                      </p>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-semibold">{product.name}</h3>
+                        <p className="text-sm text-gray-500">{product.category}</p>
+                        <p className="font-bold mt-2">Ksh {product.price?.toLocaleString()}</p>
+                        <p className="text-sm text-gray-600">
+                          {product.stock_quantity} {product.unit} in stock
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Min. order: {product.min_order} {product.unit}
+                        </p>
+                        <p className="text-sm text-gray-600">Weight: {product.weight} kg</p>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <span className={`px-2 py-1 text-xs rounded-full ${
+                          product.in_stock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                        }`}>
+                          {product.in_stock ? 'In Stock' : 'Out of Stock'}
+                        </span>
+                        {product.is_featured && (
+                          <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
+                            Featured
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex space-x-2">
+                    
+                    <div className="flex justify-between items-center pt-2">
+                      <div className="flex space-x-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEdit(product)}
+                        >
+                          <Edit className="h-4 w-4 mr-1" />
+                          Edit
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => product.id && handleDelete(product.id)}
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Delete
+                        </Button>
+                      </div>
                       <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleEdit(product)}
-                        title="Edit product"
-                        className="h-8 w-8"
+                        type="button"
+                        size="sm"
+                        asChild
                       >
-                        <Edit className="h-3.5 w-3.5" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => product.id && handleDelete(product.id)}
-                        title="Delete product"
-                        className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => window.open(`https://wa.me/254712345678?text=${formatWhatsAppMessage(product)}`, '_blank')}
-                        title="Order via WhatsApp"
-                        className="h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50"
-                      >
-                        <ShoppingCart className="h-3.5 w-3.5" />
+                        <a
+                          href={`https://wa.me/?text=${formatWhatsAppMessage(product)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center"
+                        >
+                          <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.498 14.382v-.002c-.301-.15-1.767-.867-2.04-.966-.273-.1-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.075-.3-.15-1.267-.465-2.412-1.485-.888-.795-1.484-1.761-1.66-2.061-.173-.3-.019-.465.13-.615.137-.135.3-.345.451-.523.146-.18.194-.3.296-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.207-.24-.584-.487-.51-.672-.516-.172-.009-.371-.01-.571-.01-.2 0-.523.074-.797.36-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.195 2.109 3.195 5.1 4.785.714.3 1.27.489 1.704.625.713.227 1.365.195 1.879.12.574-.09 1.767-.721 2.016-1.426.255-.705.255-1.29.18-1.425-.074-.135-.27-.21-.57-.36m-5.446 7.443h-.016c-1.77 0-3.524-.48-5.055-1.38l-.36-.214-3.75.975 1.005-3.645-.239-.375a11.73 11.73 0 01-1.5-5.925C2.51 5.858 7.03 1.5 12.582 1.5 18.065 1.5 22.5 5.79 22.5 11.25c0 5.46-4.435 9.575-9.918 9.575"/>
+                          </svg>
+                          WhatsApp
+                        </a>
                       </Button>
                     </div>
                   </div>

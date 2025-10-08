@@ -1,6 +1,5 @@
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter } from "lucide-react";
 import { Link } from "react-router-dom";
-import NewsletterSignup from "./NewsletterSignup";
 
 const Footer = () => {
   return (
@@ -50,39 +49,34 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3">
               <li className="flex items-center space-x-2 text-sm text-primary-foreground/80">
-                <Phone className="h-4 w-4" />
+                <Phone className="h-4 w-4 flex-shrink-0" />
                 <span>+254 740 581156</span>
               </li>
               <li className="flex items-center space-x-2 text-sm text-primary-foreground/80">
-                <Mail className="h-4 w-4" />
+                <Mail className="h-4 w-4 flex-shrink-0" />
                 <span>spurmounttradinginvestment@gmail.com</span>
               </li>
-              <li className="flex items-center space-x-2 text-sm text-primary-foreground/80">
-                <MapPin className="h-4 w-4" />
+              <li className="flex items-start space-x-2 text-sm text-primary-foreground/80">
+                <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5" />
                 <span>Nairobi, Kenya</span>
               </li>
             </ul>
-            
-            {/* Social Media */}
-            <div className="mt-6">
-              <h4 className="font-semibold mb-4">Follow Us</h4>
-              <div className="flex space-x-4">
-                <a href="#" className="hover:text-accent transition-smooth">
-                  <Facebook className="h-5 w-5" />
-                </a>
-                <a href="#" className="hover:text-accent transition-smooth">
-                  <Instagram className="h-5 w-5" />
-                </a>
-                <a href="#" className="hover:text-accent transition-smooth">
-                  <Twitter className="h-5 w-5" />
-                </a>
-              </div>
-            </div>
           </div>
 
-          {/* Newsletter */}
+          {/* Social Media */}
           <div>
-            <NewsletterSignup />
+            <h4 className="font-semibold mb-4">Connect With Us</h4>
+            <div className="flex space-x-4">
+              <a href="#" className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth">
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth">
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth">
+                <Twitter className="h-5 w-5" />
+              </a>
+            </div>
           </div>
         </div>
 

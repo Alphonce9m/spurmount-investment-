@@ -1,3 +1,4 @@
+// Base product interface that matches our application's domain model
 export interface Product {
   id?: string; // Document ID will be added when retrieved from Supabase
   name: string;
@@ -10,9 +11,15 @@ export interface Product {
   min_order: number;
   unit: string;
   weight: number; // in kg
-  images: string[];
+  images_url: string | null;
   created_at?: string;
   updated_at?: string;
+}
+
+// Interface for the database representation of a product
+export interface FirestoreProduct extends Omit<Product, 'id' | 'created_at' | 'updated_at'> {
+  created_at: string;
+  updated_at: string;
 }
 
 // Default empty product
@@ -27,19 +34,54 @@ export const emptyProduct: Omit<Product, 'id' | 'created_at' | 'updated_at'> = {
   min_order: 1,
   unit: 'kg',
   weight: 1,
-  images: [],
+  images_url: null,
 };
 
-// Helper function to format product from Supabase
-export const formatProductFromSupabase = (product: any): Product => ({
-  ...product,
-  in_stock: product.in_stock ?? true,
-  is_featured: product.is_featured ?? false,
-  stock_quantity: product.stock_quantity ?? 0,
-  min_order: product.min_order ?? 1,
-  unit: product.unit ?? 'kg',
-  weight: product.weight ?? 1,
-  images: product.images ?? [],
-  created_at: product.created_at || new Date().toISOString(),
-  updated_at: product.updated_at || new Date().toISOString(),
-});
+/**
+ * Formats a product from Supabase to our application's Product type
+ * @param product The raw product data from Supabase
+ * @returns A properly formatted Product object
+ */
+export const formatProductFromSupabase = (product: any): Product => {
+  if (!product) {
+    throw new Error('Cannot format null or undefined product');
+  }
+
+  return {
+    id: product.id,
+    name: product.name || 'Unnamed Product',
+    description: product.description || '',
+    price: Number(product.price) || 0,
+    category: product.category || 'uncategorized',
+    in_stock: product.in_stock ?? true,
+    is_featured: product.is_featured ?? false,
+    stock_quantity: Number(product.stock_quantity) || 0,
+    min_order: Number(product.min_order) || 1,
+    unit: product.unit || 'kg',
+    weight: Number(product.weight) || 1,
+    images_url: product.images_url || null,
+    created_at: product.created_at || new Date().toISOString(),
+    updated_at: product.updated_at || new Date().toISOString(),
+  };
+};
+
+/**
+ * Converts a Product to a FirestoreProduct (for saving to the database)
+ * @param product The product to convert
+ * @returns A FirestoreProduct ready to be saved
+ */
+export const toFirestoreProduct = (product: Partial<Product>): Partial<FirestoreProduct> => {
+  // Remove undefined values
+  const cleanProduct = Object.entries(product).reduce((acc, [key, value]) => {
+    if (value !== undefined) {
+      acc[key] = value;
+    }
+    return acc;
+  }, {} as Record<string, any>);
+
+  return {
+    ...cleanProduct,
+    created_at: product.created_at || new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  } as FirestoreProduct;
+};

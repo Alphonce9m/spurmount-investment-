@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ShoppingCart, Loader2 } from "lucide-react";
+import { Search, ShoppingCart, Loader2, AlertCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from '@/lib/supabase/client';
@@ -52,9 +52,9 @@ const Products = () => {
         min_order: Number(product.min_order) || 1,
         unit: product.unit || 'kg',
         weight: Number(product.weight) || 0,
-        images: product.images || [],
-        createdAt: product.created_at || new Date().toISOString(),
-        updatedAt: product.updated_at || new Date().toISOString()
+        images_url: product.images_url || null,
+        created_at: product.created_at || new Date().toISOString(),
+        updated_at: product.updated_at || new Date().toISOString()
       }));
 
       setProducts(formattedProducts);
@@ -90,46 +90,67 @@ const Products = () => {
 
   // Handle WhatsApp order button click
   const handleWhatsAppOrder = (product: Product) => {
-    const message = `*SPURMOUNT TRADING & INVESTMENT*%0A%0A*Hello Spurmount Team,*%0A%0AI would like to place an order for:%0A%0A*Product:* ${product.name}%0A*Price:* Ksh ${product.price?.toLocaleString() || '0'}%0A%0A*Name:* %0A*Email:* %0A*Phone:* %0A*Quantity (in KGs):* %0A*Delivery Address:* %0A%0ALooking forward to your response.`;
-
+    const message = `SPURMOUNT TRADING & INVESTMENT\n\nHello Spurmount Team,\n\nI would like to order: ${product.name}\n\nThank you.`;
     const formattedPhone = '254740581156'; // Your WhatsApp business number
     const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
+  };
+
+  // State to track loading images
+  const [imageLoading, setImageLoading] = useState<{[key: string]: boolean}>({});
+  const [imageError, setImageError] = useState<{[key: string]: boolean}>({});
+
+  // Handle image load start
+  const handleImageLoadStart = (productId: string) => {
+    setImageLoading(prev => ({ ...prev, [productId]: true }));
+    setImageError(prev => ({ ...prev, [productId]: false }));
+  };
+
+  // Handle image load complete
+  const handleImageLoadComplete = (productId: string) => {
+    setImageLoading(prev => ({ ...prev, [productId]: false }));
+  };
+
+  // Handle image error
+  const handleImageError = (productId: string) => {
+    setImageLoading(prev => ({ ...prev, [productId]: false }));
+    setImageError(prev => ({ ...prev, [productId]: true }));
   };
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <div className="container mx-auto px-4 py-12 flex-grow">
+      <div className="container mx-auto px-3 sm:px-4 py-8 sm:py-12 flex-grow">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-foreground font-heading">Our Products</h1>
-          <p className="text-lg text-muted-foreground mb-8">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4 text-foreground font-heading">Our Products</h1>
+          <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8">
             Quality wholesale products at competitive prices
           </p>
           
           {/* Search & Filters */}
-          <div className="max-w-4xl mx-auto space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+          <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4">
+            <div className="relative px-2 sm:px-0">
+              <Search className="absolute left-5 sm:left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 sm:h-5 sm:w-5" />
               <Input
                 type="text"
                 placeholder="Search products or categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                className="pl-9 sm:pl-10 text-sm sm:text-base"
               />
             </div>
 
             {/* Category Filter */}
-            <div className="flex flex-wrap gap-2 justify-center">
+            <div className="flex flex-wrap gap-2 justify-center px-2 sm:px-0">
               {categories.map((category) => (
                 <Button
                   key={category}
                   variant={selectedCategory === category ? "default" : "outline"}
                   onClick={() => setSelectedCategory(category)}
                   size="sm"
+                  className="text-xs sm:text-sm h-8 px-2 sm:px-3"
                 >
                   {category}
                 </Button>
@@ -139,60 +160,85 @@ const Products = () => {
         </div>
 
         {/* Loading State */}
-        {loading && (
-          <div className="flex justify-center items-center py-20">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        {loading ? (
+          <div className="flex justify-center items-center py-16 sm:py-20">
+            <div className="text-center space-y-4">
+              <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto" />
+              <p className="text-muted-foreground">Loading products...</p>
+            </div>
           </div>
-        )}
-
-        {/* Products Grid */}
-        {!loading && filteredProducts.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredProducts.map((product, index) => (
+        ) : (
+          /* Products Grid */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            {filteredProducts.map((product) => (
               <Card 
                 key={product.id} 
-                className="shadow-card hover:shadow-elevated transition-smooth border-border/50 animate-fade-up flex flex-col h-full"
-                style={{ animationDelay: `${index * 0.05}s` }}
+                className="group shadow-card hover:shadow-elevated transition-all duration-300 border-border/50 animate-fade-up flex flex-col h-full overflow-hidden"
               >
-                <div className="relative aspect-square">
+                <div className="relative aspect-square bg-muted/30">
+                  {/* Loading Skeleton */}
+                  {imageLoading[product.id] && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-muted/20">
+                      <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                    </div>
+                  )}
+                  
+                  {/* Image */}
                   <img
-                    src={product.images?.[0] || "/placeholder.svg"}
+                    src={imageError[product.id] ? "/placeholder-product.png" : (product.images_url || "/placeholder-product.png")}
                     alt={product.name}
-                    className="object-cover w-full h-full"
+                    className={`object-cover w-full h-full transition-opacity duration-300 ${imageLoading[product.id] ? 'opacity-0' : 'opacity-100'}`}
+                    onLoadStart={() => handleImageLoadStart(product.id)}
+                    onLoad={() => handleImageLoadComplete(product.id)}
+                    onError={() => handleImageError(product.id)}
+                    loading="lazy"
                   />
+                  
+                  {/* Featured Badge */}
                   {product.is_featured && (
-                    <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded">
+                    <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-[10px] sm:text-xs font-medium px-2 py-0.5 sm:px-2 sm:py-1 rounded">
                       Featured
                     </div>
                   )}
+                  
+                  {/* Error State */}
+                  {imageError[product.id] && !imageLoading[product.id] && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted/50 p-4 text-center">
+                      <AlertCircle className="h-8 w-8 text-muted-foreground mb-2" />
+                      <p className="text-xs text-muted-foreground">Image not available</p>
+                    </div>
+                  )}
                 </div>
-                <CardContent className="flex-grow p-4 flex flex-col">
-                  <div className="mb-2">
-                    <span className="text-xs font-medium text-accent bg-accent/10 px-2 py-1 rounded">
+                <CardContent className="flex-grow p-3 sm:p-4 flex flex-col">
+                  <div className="mb-1.5 sm:mb-2">
+                    <span className="text-[10px] sm:text-xs font-medium text-accent bg-accent/10 px-2 py-0.5 sm:py-1 rounded">
                       {product.category}
                     </span>
                   </div>
-                  <h3 className="font-semibold mb-2">{product.name}</h3>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-grow">
-                    {product.description}
+                  <h3 className="font-semibold text-sm sm:text-base mb-1.5 sm:mb-2 line-clamp-2 h-10 sm:h-12 flex items-center">
+                    {product.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2 flex-grow">
+                    {product.description || 'No description available'}
                   </p>
                   <div className="mt-auto">
                     <div className="flex flex-col">
-                      <span className="font-bold">Ksh {product.price.toLocaleString()}</span>
-                      <p className="text-xs text-muted-foreground italic">
-                        * Prices are subject to change based on market conditions
+                      <span className="font-bold text-base sm:text-lg">Ksh {product.price.toLocaleString()}</span>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground italic mt-0.5">
+                        * Prices may vary based on quantity
                       </p>
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="border-t p-4">
+                <CardFooter className="border-t p-2 sm:p-3 bg-muted/10">
                   <Button 
                     variant="default" 
-                    className="w-full bg-green-600 hover:bg-green-700"
+                    className="w-full bg-green-600 hover:bg-green-700 text-xs sm:text-sm h-9 sm:h-10"
                     onClick={() => handleWhatsAppOrder(product)}
+                    disabled={!product.in_stock}
                   >
-                    <ShoppingCart className="mr-2 h-4 w-4" />
-                    Order Now
+                    <ShoppingCart className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    {product.in_stock ? 'Order Now' : 'Out of Stock'}
                   </Button>
                 </CardFooter>
               </Card>

@@ -1,21 +1,10 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ShoppingBag, Truck, Shield, ArrowRight } from "lucide-react";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import StatsSection from "@/components/StatsSection";
-import TrustBadges from "@/components/TrustBadges";
-import FAQSection from "@/components/FAQSection";
-import PromoBanner from "@/components/PromoBanner";
+import { ShoppingBag, Truck, Shield, ArrowRight, Star } from "lucide-react";
 import heroBanner from "@/assets/hero-banner.jpg";
 
 const Home = () => {
-  const categories = [
-    { name: "Groceries", icon: ShoppingBag, description: "Fresh and quality food products" },
-    { name: "Beverages", icon: ShoppingBag, description: "Wide selection of drinks" },
-    { name: "Household", icon: ShoppingBag, description: "Essential home products" },
-  ];
-
   const features = [
     {
       icon: Shield,
@@ -36,8 +25,6 @@ const Home = () => {
 
   return (
     <div className="flex flex-col">
-      <PromoBanner />
-      
       {/* Hero Section */}
       <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden">
         <div 
@@ -81,8 +68,6 @@ const Home = () => {
         </div>
       </section>
 
-      <TrustBadges />
-
       {/* Features Section */}
       <section className="py-16 gradient-subtle">
         <div className="container mx-auto px-4">
@@ -103,59 +88,51 @@ const Home = () => {
         </div>
       </section>
 
-      <StatsSection />
-
-      {/* Categories Section */}
-      <section className="py-16">
+      {/* Featured Products */}
+      <section className="py-16 bg-muted/20">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-4 text-foreground font-heading">Our Product Categories</h2>
-          <p className="text-center text-muted-foreground mb-12">
-            Explore our wide range of wholesale products
-          </p>
-          <div className="grid md:grid-cols-3 gap-8">
-            {categories.map((category, index) => (
-              <Card 
-                key={index} 
-                className="shadow-card hover:shadow-elevated transition-smooth cursor-pointer group border-border/50 animate-fade-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <CardContent className="p-8 text-center">
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-secondary mb-4 group-hover:scale-110 transition-smooth">
-                    <category.icon className="h-10 w-10 text-primary" />
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Featured Products</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Discover our premium selection of quality products at wholesale prices
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[1, 2, 3].map((item) => (
+              <Card key={item} className="overflow-hidden group">
+                <div className="h-48 bg-muted/50 flex items-center justify-center">
+                  <ShoppingBag className="h-16 w-16 text-muted-foreground/30" />
+                </div>
+                <CardContent className="p-6">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-semibold text-lg">Premium Product {item}</h3>
+                    <div className="flex items-center">
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
+                      <span className="text-sm">4.8</span>
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-semibold mb-2 text-card-foreground">{category.name}</h3>
-                  <p className="text-muted-foreground mb-4">{category.description}</p>
-                  <Link to="/products">
-                    <Button variant="cta" className="w-full">
-                      View Products
+                  <p className="text-sm text-muted-foreground mb-4">
+                    High-quality product description goes here with key features.
+                  </p>
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold">Ksh 1,200</span>
+                    <Button size="sm" asChild>
+                      <Link to="/products">View Details</Link>
                     </Button>
-                  </Link>
+                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
-        </div>
-      </section>
-
-      <TestimonialsSection />
-
-      <FAQSection />
-
-      {/* CTA Section */}
-      <section className="py-16 gradient-hero">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4 text-primary-foreground font-heading">
-            Ready to Start Your Order?
-          </h2>
-          <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-            Experience quality wholesale products delivered to your doorstep
-          </p>
-          <Link to="/products">
-            <Button variant="hero" size="lg">
-              Order Now
-              <ArrowRight className="ml-2 h-5 w-5" />
+          
+          <div className="text-center mt-10">
+            <Button asChild variant="outline">
+              <Link to="/products" className="flex items-center">
+                View All Products <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
             </Button>
-          </Link>
+          </div>
         </div>
       </section>
     </div>
