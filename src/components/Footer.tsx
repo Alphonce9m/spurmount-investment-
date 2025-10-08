@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Spurmount Trading</h3>
+            <h3 className="text-xl font-bold mb-4">Spurmount Trading & Investments</h3>
             <p className="text-sm text-primary-foreground/80 mb-4">
               Eat Quality, Live Quality
             </p>
@@ -81,7 +81,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 pt-8 border-t border-primary-foreground/20 text-center text-sm text-primary-foreground/70">
-          <p>&copy; {new Date().getFullYear()} Spurmount Trading & Investment Wholesalers. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Spurmount Trading & Investments Wholesalers. All rights reserved.</p>
         </div>
       </div>
     </footer>

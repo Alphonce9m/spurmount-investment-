@@ -1,8 +1,8 @@
-# Spurmount Trading & Investment Wholesalers
+# Spurmount Trading & Investments Wholesalers
 
 ## 🚀 Project Overview
 
-Spurmount Trading & Investment is a premier wholesale platform specializing in dry foodstuffs, including grains, cereals, pulses, spices, and other non-perishable food items. This platform connects bulk buyers with quality suppliers in the food industry.
+Spurmount Trading & Investments is a premier wholesale platform specializing in dry foodstuffs, including grains, cereals, pulses, spices, and other non-perishable food items. This platform connects bulk buyers with quality suppliers in the food industry.
 
 ## 📋 Table of Contents
 - [Features](#-features)

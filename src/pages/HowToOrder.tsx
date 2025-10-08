@@ -50,7 +50,7 @@ const HowToOrder = () => {
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">How to Order</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Follow these simple steps to place your wholesale order with SpurMount
+            Follow these simple steps to place your wholesale order with Spurmount
           </p>
         </div>
 

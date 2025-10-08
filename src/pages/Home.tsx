@@ -40,7 +40,7 @@ const Home = () => {
         
         <div className="container mx-auto px-4 z-10 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground mb-6 animate-fade-up font-heading">
-            Spurmount Trading and Investments
+            Spurmount Trading & Investments
           </h1>
           <p className="text-xl md:text-2xl text-primary-foreground/90 mb-4 animate-fade-up" style={{ animationDelay: "0.1s" }}>
             Eat Quality, Live Quality
@@ -71,12 +71,13 @@ const Home = () => {
       {/* Features Section */}
       <section className="py-16 gradient-subtle">
         <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12 text-foreground font-heading">Why Choose Spurmount Trading and Investments?</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-foreground font-heading">Why Choose Spurmount?</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <Card key={index} className="shadow-card hover:shadow-elevated transition-smooth border-border/50 animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
                 <CardContent className="p-6 text-center">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full gradient-accent mb-4">
+                    <feature.icon className="h-8 w-8 text-accent-foreground" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-card-foreground">{feature.title}</h3>
                   <p className="text-muted-foreground">{feature.description}</p>

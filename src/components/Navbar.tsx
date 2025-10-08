@@ -31,7 +31,7 @@ const Navbar = () => {
             />
             <div className="flex flex-col">
               <span className="text-lg font-bold text-primary">Spurmount</span>
-              <span className="text-xs text-muted-foreground -mt-1">Trading & Investment</span>
+              <span className="text-xs text-muted-foreground -mt-1">Trading & Investments</span>
             </div>
           </Link>
 

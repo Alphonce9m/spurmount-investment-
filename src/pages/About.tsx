@@ -14,7 +14,7 @@ const About = () => {
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">About Spurmount</h1>
           <p className="text-xl text-primary font-semibold mb-4">Eat Quality, Live Quality</p>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Spurmount Trading & Investment Wholesalers is your trusted partner for quality wholesale products.
+            Spurmount Trading & Investments Wholesalers is your trusted partner for quality wholesale products.
             We are committed to providing businesses with the finest groceries, beverages, and household items
             at competitive prices.
           </p>
@@ -27,7 +27,7 @@ const About = () => {
               <h2 className="text-3xl font-bold mb-6 text-card-foreground">Our Story</h2>
               <div className="space-y-4 text-muted-foreground text-lg">
                 <p>
-                  Founded with a vision to transform wholesale trading in Kenya, Spurmount Trading & Investment
+                  Founded with a vision to transform wholesale trading in Kenya, Spurmount Trading & Investments
                   Wholesalers has grown to become a reliable source for quality products at wholesale prices.
                 </p>
                 <p>

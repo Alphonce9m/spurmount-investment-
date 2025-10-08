@@ -27,7 +27,7 @@ const Contact = () => {
   };
 
   const handleWhatsAppChat = () => {
-    const message = `SPURMOUNT TRADING & INVESTMENT\n\nHello Spurmount Team,\n\nI would like to inquire about your products.\n\nThank you.`;
+    const message = `SPURMOUNT TRADING & INVESTMENTS\n\nHello Spurmount Team,\n\nI would like to inquire about your products.\n\nThank you.`;
 
     const formattedPhone = '254740581156'; // Your WhatsApp business number
     const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;

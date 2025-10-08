@@ -67,7 +67,7 @@ const ProductsPage: React.FC = () => {
   // Format WhatsApp message for order placement
   const formatWhatsAppMessage = (product: Product) => {
     const message = [
-      'SPURMOUNT TRADING & INVESTMENT',
+      'SPURMOUNT TRADING & INVESTMENTS',
       '',
       'Hello Spurmount Team,',
       '',
