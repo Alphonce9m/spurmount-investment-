@@ -219,7 +219,7 @@ const Products = () => {
                     <div className="flex flex-col">
                       <span className="font-bold text-base sm:text-lg">Ksh {product.price.toLocaleString()}</span>
                       <p className="text-[10px] sm:text-xs text-muted-foreground italic mt-0.5">
-                        * Prices may vary based on quantity
+                        * Prices are subject to market changes
                       </p>
                     </div>
                   </div>
