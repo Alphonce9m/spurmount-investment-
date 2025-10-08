@@ -82,7 +82,7 @@ const Products = () => {
 
   // Handle WhatsApp order
   const handleWhatsAppOrder = (product: Product) => {
-    const phoneNumber = '+254712345678'; // Replace with actual number
+    const phoneNumber = '254740581156'; // Spurmount Trading WhatsApp number
     const message = `Hello! I would like to order ${product.name} (${product.unit}). Price: Ksh ${product.price}.`;
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
