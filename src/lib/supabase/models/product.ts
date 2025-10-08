@@ -22,16 +22,16 @@ export interface FirestoreProduct extends Omit<Product, 'id' | 'created_at' | 'u
   updated_at: string;
 }
 
-// Default empty product
+// Default empty product with ordering enabled by default
 export const emptyProduct: Omit<Product, 'id' | 'created_at' | 'updated_at'> = {
   name: '',
   description: '',
   price: 0,
   category: '',
-  in_stock: true,
+  in_stock: true,        // Enable ordering by default
   is_featured: false,
-  stock_quantity: 0,
-  min_order: 1,
+  stock_quantity: 100,   // Set a default stock quantity
+  min_order: 1,          // Minimum order quantity
   unit: 'kg',
   weight: 1,
   images_url: null,

@@ -235,10 +235,9 @@ const Products = () => {
                     variant="default" 
                     className="w-full bg-green-600 hover:bg-green-700 text-xs sm:text-sm h-9 sm:h-10"
                     onClick={() => handleWhatsAppOrder(product)}
-                    disabled={!product.in_stock}
                   >
                     <ShoppingCart className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                    {product.in_stock ? 'Order Now' : 'Out of Stock'}
+                    Order Now
                   </Button>
                 </CardFooter>
               </Card>

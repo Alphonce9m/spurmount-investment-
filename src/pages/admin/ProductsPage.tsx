@@ -64,6 +64,44 @@ const ProductsPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
+  // Handle adding a new product
+  const handleAddNew = () => {
+    setEditingId(null);
+    setFormData(emptyProduct);
+    setFormErrors({});
+    // Scroll to form
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Update all products to be in stock
+  const updateAllProductsToInStock = async () => {
+    if (!confirm('Are you sure you want to update all products to be in stock?')) return;
+    
+    try {
+      setLoading(true);
+      
+      // Update each product to be in stock with minimum quantity of 1
+      const updatePromises = products.map(product => 
+        updateProduct(product.id!, { 
+          in_stock: true,
+          stock_quantity: Math.max(1, product.stock_quantity || 0)
+        })
+      );
+      
+      await Promise.all(updatePromises);
+      await loadProducts();
+      
+      toast.success('All products have been updated to be in stock');
+    } catch (error) {
+      console.error('Error updating products:', error);
+      toast.error('Failed to update products', {
+        description: error instanceof Error ? error.message : 'An unknown error occurred'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Format WhatsApp message for order placement
   const formatWhatsAppMessage = (product: Product) => {
     const message = [
@@ -615,10 +653,8 @@ const ProductsPage: React.FC = () => {
                         <p className="text-sm text-gray-600">Weight: {product.weight} kg</p>
                       </div>
                       <div className="flex items-center space-x-1">
-                        <span className={`px-2 py-1 text-xs rounded-full ${
-                          product.in_stock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                        }`}>
-                          {product.in_stock ? 'In Stock' : 'Out of Stock'}
+                        <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
+                          In Stock
                         </span>
                         {product.is_featured && (
                           <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
@@ -628,27 +664,16 @@ const ProductsPage: React.FC = () => {
                       </div>
                     </div>
                     
-                    <div className="flex justify-between items-center pt-2">
-                      <div className="flex space-x-2">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleEdit(product)}
-                        >
-                          <Edit className="h-4 w-4 mr-1" />
-                          Edit
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => product.id && handleDelete(product.id)}
-                        >
-                          <Trash2 className="h-4 w-4 mr-1" />
-                          Delete
-                        </Button>
-                      </div>
+                    <div className="flex space-x-2 mt-4">
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => product.id && handleDelete(product.id)}
+                      >
+                        <Trash2 className="h-4 w-4 mr-1" />
+                        Delete
+                      </Button>
                       <Button
                         type="button"
                         size="sm"
