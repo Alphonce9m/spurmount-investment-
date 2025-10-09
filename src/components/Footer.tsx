@@ -1,4 +1,5 @@
-import { Phone, Mail, MapPin, Facebook, Instagram, Twitter } from "lucide-react";
+import { Phone, Mail, MapPin, Instagram } from "lucide-react";
+import { FaTiktok, FaLinkedin } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -67,14 +68,35 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">Connect With Us</h4>
             <div className="flex space-x-4">
-              <a href="#" className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth">
+              <a 
+                href="https://www.instagram.com/spur.mounttradingwholesalers/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors"
+                aria-label="Visit our Instagram"
+                title="Follow us on Instagram"
+              >
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth">
-                <Twitter className="h-5 w-5" />
+              <a 
+                href="https://www.linkedin.com/in/spurmount-trading-and-investments-a4968b389" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors"
+                aria-label="Connect with us on LinkedIn"
+                title="Connect with us on LinkedIn"
+              >
+                <FaLinkedin className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://www.tiktok.com/@spurmountradinginvestmet" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors"
+                aria-label="Visit our TikTok"
+                title="Follow us on TikTok"
+              >
+                <FaTiktok className="h-5 w-5" />
               </a>
             </div>
           </div>

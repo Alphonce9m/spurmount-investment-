@@ -99,28 +99,76 @@ const Home = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((item) => (
-              <Card key={item} className="overflow-hidden group">
-                <div className="h-48 bg-muted/50 flex items-center justify-center">
-                  <ShoppingBag className="h-16 w-16 text-muted-foreground/30" />
+            {[
+              {
+                id: 'sanitary-pads-8pcs',
+                name: 'Softcare Sanitary Pads',
+                description: 'Premium quality sanitary pads, 8 packs for maximum comfort and protection.',
+                price: 1510,
+                unit: '8 packs',
+                image: 'https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/product-images/IMG-20251007-WA0050.jpg',
+                rating: 4.8,
+                marketPrice: 1700,
+                youSave: 190
+              },
+              {
+                id: 'cooking-oil-5l',
+                name: 'Fresh Fry Cooking Oil',
+                description: 'Premium quality cooking oil for all your frying and cooking needs.',
+                price: 1255,
+                unit: '5L',
+                image: 'https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/product-images/IMG-20251007-WA0061.jpg',
+                rating: 4.7,
+                marketPrice: 1400,
+                youSave: 145
+              },
+              {
+                id: 'biryani-rice-25kg',
+                name: 'Prime Biryani Rice',
+                description: 'Premium quality basmati rice, perfect for biryani and other aromatic dishes.',
+                price: 2550,
+                unit: '25kg',
+                image: 'https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/product-images/IMG-20251002-WA0020.jpg',
+                rating: 4.9,
+                marketPrice: 2800,
+                youSave: 250
+              }
+            ].map((product) => (
+              <Card key={product.id} className="overflow-hidden group hover:shadow-lg transition-shadow duration-300">
+                <div className="h-48 bg-muted/50 overflow-hidden">
+                  <img 
+                    src={product.image} 
+                    alt={product.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
                 </div>
                 <CardContent className="p-6">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-lg">Premium Product {item}</h3>
-                    <div className="flex items-center">
+                    <h3 className="font-semibold text-lg text-foreground">{product.name}</h3>
+                    <div className="flex items-center bg-primary/10 px-2 py-1 rounded-full">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                      <span className="text-sm">4.8</span>
+                      <span className="text-sm font-medium">{product.rating}</span>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    High-quality product description goes here with key features.
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                    {product.description}
                   </p>
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold">Ksh 1,200</span>
-                    <Button size="sm" asChild>
-                      <Link to="/products">View Details</Link>
-                    </Button>
+                  <div className="space-y-2">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-foreground">Ksh {product.price.toLocaleString()}</span>
+                      <span className="text-sm text-muted-foreground line-through">Ksh {product.marketPrice.toLocaleString()}</span>
+                      <span className="text-sm text-green-600 font-medium bg-green-50 px-2 py-0.5 rounded-full">
+                        Save Ksh {product.youSave}
+                      </span>
+                    </div>
+                    <span className="text-xs text-muted-foreground">Per {product.unit}</span>
                   </div>
+                  <Button size="sm" className="w-full mt-4" asChild>
+                    <Link to={`/products?search=${encodeURIComponent(product.name.split(' ')[0])}`}>
+                      View Details
+                    </Link>
+                  </Button>
                 </CardContent>
               </Card>
             ))}
