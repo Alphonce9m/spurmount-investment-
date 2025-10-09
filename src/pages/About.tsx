@@ -1,14 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Target, Eye, Heart } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const About = () => {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      
-      <div className="container mx-auto px-4 py-12 flex-grow">
+    <div className="min-h-screen">
+      <div className="container mx-auto px-4 py-12">
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">About Spurmount</h1>
@@ -115,14 +111,12 @@ const About = () => {
               <div className="w-2 h-2 bg-accent rounded-full mt-2"></div>
               <div>
                 <h4 className="font-semibold text-primary-foreground mb-1">Customer Support</h4>
-                <p className="text-primary-foreground/80">Dedicated team ready to assist you</p>
+                <p className="text-primary-foreground/80">Dedicated support for all your needs</p>
               </div>
             </div>
           </div>
         </section>
       </div>
-
-      <Footer />
     </div>
   );
 };

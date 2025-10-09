@@ -5,8 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -33,12 +32,8 @@ const Contact = () => {
     const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
-
-
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-12 flex-grow">
         {/* Header */}
         <div className="text-center mb-12">
@@ -80,13 +75,30 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                    <MapPin className="h-6 w-6 text-primary" />
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                      <MapPin className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-card-foreground">Location</h4>
+                      <p className="text-muted-foreground">Nairobi, Kenya</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        <MapPin className="inline h-4 w-4 mr-1" />
+                        1°14'25.7"S 36°53'42.5"E
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-card-foreground">Location</h4>
-                    <p className="text-muted-foreground">Nairobi, Kenya</p>
+                  <div className="h-48 w-full rounded-lg overflow-hidden border border-border/50">
+                    <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}>
+                      <GoogleMap
+                        mapContainerStyle={{ width: '100%', height: '100%' }}
+                        center={{ lat: -1.240472, lng: 36.895139 }}
+                        zoom={15}
+                      >
+                        <Marker position={{ lat: -1.240472, lng: 36.895139 }} />
+                      </GoogleMap>
+                    </LoadScript>
                   </div>
                 </div>
               </CardContent>
@@ -205,8 +217,6 @@ const Contact = () => {
           </Card>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };

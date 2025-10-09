@@ -2,8 +2,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Search, MessageCircle, CreditCard, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const HowToOrder = () => {
   const steps = [
@@ -42,9 +40,7 @@ const HowToOrder = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-12 flex-grow">
         {/* Header */}
         <div className="text-center mb-16">
@@ -169,8 +165,6 @@ const HowToOrder = () => {
           </Card>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };
