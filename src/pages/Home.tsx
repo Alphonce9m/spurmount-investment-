@@ -106,7 +106,7 @@ const Home = () => {
                 description: 'Premium quality sanitary pads, 8 packs for maximum comfort and protection.',
                 price: 1510,
                 unit: '8 packs',
-                image: 'https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/product-images/IMG-20251007-WA0050.jpg',
+                image: 'https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/product-images/softcare%20pads.jpg',
                 rating: 4.8,
                 marketPrice: 1700,
                 youSave: 190
@@ -117,7 +117,7 @@ const Home = () => {
                 description: 'Premium quality cooking oil for all your frying and cooking needs.',
                 price: 1255,
                 unit: '5L',
-                image: 'https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/product-images/IMG-20251007-WA0061.jpg',
+                image: 'https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/product-images/IMG-20251010-WA0024.jpg',
                 rating: 4.7,
                 marketPrice: 1400,
                 youSave: 145
@@ -128,7 +128,7 @@ const Home = () => {
                 description: 'Premium quality basmati rice, perfect for biryani and other aromatic dishes.',
                 price: 2550,
                 unit: '25kg',
-                image: 'https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/product-images/IMG-20251002-WA0020.jpg',
+                image: 'https://cctpymwbasloxguqntwe.supabase.co/storage/v1/object/public/product-images/IMG-20251010-WA0008.jpg',
                 rating: 4.9,
                 marketPrice: 2800,
                 youSave: 250
