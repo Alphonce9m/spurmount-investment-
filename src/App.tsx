@@ -11,6 +11,7 @@ import Payments from "./pages/Payments";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/scroll-to-top";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
       <BrowserRouter>
         <div className="flex flex-col min-h-screen">
           <Navbar />
+          <ScrollToTop />
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
